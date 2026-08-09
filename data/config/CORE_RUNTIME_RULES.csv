@@ -1,0 +1,18 @@
+rule_id,toolchain_scope,match_field,match_type,pattern,assigned_type,confidence,evidence_label,notes
+CR-001,GEB,function_name,prefix,dt_PR_,core,high,DERIVED_EVIDENCE,GEB program-level generated functions following PLC-BinX-style naming pattern.
+CR-002,GEB,function_name,prefix,dt_FN_,core,high,DERIVED_EVIDENCE,GEB function-level generated functions following PLC-BinX-style naming pattern.
+CR-003,GEB,function_name,prefix,dt_FB_,core,high,DERIVED_EVIDENCE,GEB function-block generated functions following PLC-BinX-style naming pattern.
+CR-004,OpenPLCv2|OpenPLCv3,function_name,contains,PROGRAM0_body__,core,high,DERIVED_EVIDENCE,OpenPLC compiled user program body naming pattern.
+CR-005,OpenPLCv2|OpenPLCv3,function_name,contains,PROGRAM0_init__,core,medium,DERIVED_EVIDENCE,OpenPLC generated program initialization function; retained as core-adjacent.
+CR-006,OpenPLCv2|OpenPLCv3,function_name,contains,RES0_run__,core,medium,DERIVED_EVIDENCE,OpenPLC resource scheduler entry; core-adjacent but not direct user logic.
+CR-007,OpenPLCv2|OpenPLCv3,function_name,contains,RES0_init__,core,medium,DERIVED_EVIDENCE,OpenPLC resource initialization; core-adjacent but not direct user logic.
+RT-001,GEB,function_name,prefix,GEBLIB_,runtime,high,DERIVED_EVIDENCE,GEB runtime/support library naming pattern.
+RT-002,ALL,function_name,prefix,ATvars_,runtime,high,DERIVED_EVIDENCE,Generated I/O variable accessor support functions.
+RT-003,OpenPLCv2|OpenPLCv3,function_name,contains,modbus,runtime,high,DERIVED_EVIDENCE,OpenPLC protocol/runtime support.
+RT-004,OpenPLCv2|OpenPLCv3,function_name,contains,enip,runtime,high,DERIVED_EVIDENCE,OpenPLC protocol/runtime support.
+RT-005,OpenPLCv2|OpenPLCv3,function_name,contains,pccc,runtime,high,DERIVED_EVIDENCE,OpenPLC protocol/runtime support.
+RT-006,OpenPLCv2|OpenPLCv3,function_name,contains,dnp3,runtime,high,DERIVED_EVIDENCE,OpenPLC protocol/runtime support.
+RT-007,OpenPLCv2|OpenPLCv3,function_name,contains,socket,runtime,medium,DERIVED_EVIDENCE,Network/runtime support function.
+RT-008,OpenPLCv2|OpenPLCv3,function_name,contains,hardware,runtime,medium,DERIVED_EVIDENCE,Hardware abstraction/runtime support function.
+RT-009,OpenPLCv2|OpenPLCv3,function_name,contains,buffer,runtime,medium,DERIVED_EVIDENCE,Runtime I/O buffer support; may include partial ambiguity.
+UNK-001,ALL,function_name,default,*,unknown,low,DERIVED_EVIDENCE,Fallback when no core/runtime rule matches.

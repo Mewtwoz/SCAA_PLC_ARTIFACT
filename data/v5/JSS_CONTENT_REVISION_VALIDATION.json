@@ -1,0 +1,193 @@
+{
+  "evidence_label": "DERIVED_EVIDENCE",
+  "validated_utc": "2026-08-09T09:40:22.979619+00:00",
+  "verdict": "JSS_CONTENT_REVISION_VALIDATED",
+  "passed_checks": 36,
+  "total_checks": 36,
+  "main_tex_sha256": "403160d9291c848cf65c0da8ddb56a6a9a3a94cf8bf05d306f4e049de05ff57b",
+  "supplementary_tex_sha256": "2a41f66a11433618072bb2bb01aca0d63fdf037a53ccc5749585db64a4bc4a43",
+  "main_pdf_sha256": "e20b15429e47737a90cdcf525418160fd70098ab8e10610bb21f972762701a69",
+  "supplementary_pdf_sha256": "c9ac53b46273af0357698758541c2b12ce7e8099529db6e2484b031a0422781a",
+  "checks": [
+    {
+      "check_id": "required_file",
+      "passed": true,
+      "detail": "08_split_paper1_plc_binary_analysis/tex/main.tex"
+    },
+    {
+      "check_id": "required_file",
+      "passed": true,
+      "detail": "08_split_paper1_plc_binary_analysis/tex/supplementary.tex"
+    },
+    {
+      "check_id": "required_file",
+      "passed": true,
+      "detail": "08_split_paper1_plc_binary_analysis/tex/main.pdf"
+    },
+    {
+      "check_id": "required_file",
+      "passed": true,
+      "detail": "08_split_paper1_plc_binary_analysis/tex/supplementary.pdf"
+    },
+    {
+      "check_id": "required_file",
+      "passed": true,
+      "detail": "09_paper1_experiment_evidence/v5_jss_method_validation/V5_JSS_METHOD_VALIDATION_RESULT.json"
+    },
+    {
+      "check_id": "required_file",
+      "passed": true,
+      "detail": "09_paper1_experiment_evidence/v5_jss_method_validation/UNGATED_TRANSFER_PROBE_METRICS.csv"
+    },
+    {
+      "check_id": "required_file",
+      "passed": true,
+      "detail": "09_paper1_experiment_evidence/v5_jss_method_validation/SCHEMA_SIMPLIFICATION_METRICS.csv"
+    },
+    {
+      "check_id": "required_file",
+      "passed": true,
+      "detail": "09_paper1_experiment_evidence/v5_jss_method_validation/CROSS_PIPELINE_EVIDENCE_CARDS.csv"
+    },
+    {
+      "check_id": "v5_verdict",
+      "passed": true,
+      "detail": "JSS_METHOD_VALIDATION_READY_WITH_SCOPE_LIMITATIONS"
+    },
+    {
+      "check_id": "output_sha256",
+      "passed": true,
+      "detail": "UNGATED_TRANSFER_PROBE_ROWS.csv: fb75b9b1a9d6e3a7d63eeb959a54d986c2beb729cd96b3126c531071f86d260f"
+    },
+    {
+      "check_id": "output_sha256",
+      "passed": true,
+      "detail": "UNGATED_TRANSFER_PROBE_METRICS.csv: 2bfc2424bec907af81fc70308f8e7e1296a223fe6560e2f6f678a7b12890b734"
+    },
+    {
+      "check_id": "output_sha256",
+      "passed": true,
+      "detail": "UNGATED_TRANSFER_PROBE_REPORT.md: 57c19900928e022d85ddd7d6ec97fb9ce2c94afc257dd69b6b35dc0ef408983f"
+    },
+    {
+      "check_id": "output_sha256",
+      "passed": true,
+      "detail": "SCHEMA_SIMPLIFICATION_METRICS.csv: d84c48a04bb9d1f23f06a25225cdbf1ce0fda755b48a94517a58ed22096b6301"
+    },
+    {
+      "check_id": "output_sha256",
+      "passed": true,
+      "detail": "SCHEMA_SIMPLIFICATION_PREDICTIONS.csv: cd734b11c268020ec8da278dbfb521c02fcd4b37d01c83185463faef7274ed81"
+    },
+    {
+      "check_id": "output_sha256",
+      "passed": true,
+      "detail": "SCHEMA_STATE_COLLISION_AUDIT.csv: 2542ceb00c538e62e125eb0fc9f76fe9f969bbc7079e88bad5e941bf556a02d4"
+    },
+    {
+      "check_id": "output_sha256",
+      "passed": true,
+      "detail": "SCHEMA_SIMPLIFICATION_REPORT.md: 1c0ccafc379edd45953c4308d74b1628c4882b4b5b9362f42a9698829b73a43d"
+    },
+    {
+      "check_id": "output_sha256",
+      "passed": true,
+      "detail": "CROSS_PIPELINE_EVIDENCE_CARDS.csv: 60811b7e8110623eb5a3a768c434b2aacd6529cf1c781fee56f0f5aaaf437618"
+    },
+    {
+      "check_id": "output_sha256",
+      "passed": true,
+      "detail": "CROSS_PIPELINE_ADAPTER_REPORT.md: d5d1e0ee9a96eec81541abd2c70429d6d73b244471e50ab1613133765a68c8a7"
+    },
+    {
+      "check_id": "geb_exact_counts",
+      "passed": true,
+      "detail": "TP=353, TN=263"
+    },
+    {
+      "check_id": "ungated_transfer_boundary",
+      "passed": true,
+      "detail": "OpenPLC production scope is OUT_OF_SCOPE; ungated-probe FN total is 735"
+    },
+    {
+      "check_id": "schema_s3_s6_equivalence",
+      "passed": true,
+      "detail": "S3 and S6 source-task balanced accuracy and macro F1 match"
+    },
+    {
+      "check_id": "cross_pipeline_cards",
+      "passed": true,
+      "detail": "cards=10"
+    },
+    {
+      "check_id": "cross_pipeline_relations",
+      "passed": true,
+      "detail": "relations=6657"
+    },
+    {
+      "check_id": "required_manuscript_boundary",
+      "passed": true,
+      "detail": "OpenPLC rows are out of scope for the production SA-001 rule"
+    },
+    {
+      "check_id": "required_manuscript_boundary",
+      "passed": true,
+      "detail": "Schema economy"
+    },
+    {
+      "check_id": "required_manuscript_boundary",
+      "passed": true,
+      "detail": "Cross-pipeline record portability"
+    },
+    {
+      "check_id": "required_manuscript_boundary",
+      "passed": true,
+      "detail": "public archival URL, DOI, release tag, and artifact license remain unassigned"
+    },
+    {
+      "check_id": "forbidden_revision_phrase",
+      "passed": true,
+      "detail": "uses the released ablation"
+    },
+    {
+      "check_id": "forbidden_revision_phrase",
+      "passed": true,
+      "detail": "source-syntax-valid"
+    },
+    {
+      "check_id": "forbidden_revision_phrase",
+      "passed": true,
+      "detail": "complete cross-compiler portability failure"
+    },
+    {
+      "check_id": "forbidden_revision_phrase",
+      "passed": true,
+      "detail": "The 0.15 line"
+    },
+    {
+      "check_id": "forbidden_revision_phrase",
+      "passed": true,
+      "detail": "rendered as zero"
+    },
+    {
+      "check_id": "forbidden_revision_phrase",
+      "passed": true,
+      "detail": "_claude_academic_advisor"
+    },
+    {
+      "check_id": "forbidden_revision_phrase",
+      "passed": true,
+      "detail": "recovery fraction"
+    },
+    {
+      "check_id": "latex_log",
+      "passed": true,
+      "detail": "main.log: clean for checked failures"
+    },
+    {
+      "check_id": "latex_log",
+      "passed": true,
+      "detail": "supplementary.log: clean for checked failures"
+    }
+  ]
+}

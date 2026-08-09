@@ -1,0 +1,4 @@
+toolchain,production_scope,source_positive,ungated_probe_positive,n,tp,fp,fn,tn,accuracy,balanced_accuracy,macro_f1,interpretation_boundary,evidence_label
+GEB,IN_SCOPE,353,353,617,353,0,0,264,1.000000,1.000000,1.000000,Post-hoc same-snapshot lexical validity case; not prospective or compiler-independent validation.,DERIVED_EVIDENCE
+OpenPLCv2,OUT_OF_SCOPE,359,0,619,0,0,359,260,0.420032,0.500000,0.295791,Post-hoc same-snapshot lexical validity case; not prospective or compiler-independent validation.,DERIVED_EVIDENCE
+OpenPLCv3,OUT_OF_SCOPE,376,0,640,0,0,376,264,0.412500,0.500000,0.292035,Post-hoc same-snapshot lexical validity case; not prospective or compiler-independent validation.,DERIVED_EVIDENCE

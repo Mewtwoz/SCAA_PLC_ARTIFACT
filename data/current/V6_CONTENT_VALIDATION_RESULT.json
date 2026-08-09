@@ -1,0 +1,280 @@
+{
+  "generated_utc": "2026-08-09T11:01:31.784003+00:00",
+  "feature_summary": {
+    "added": {
+      "CODESYS": 75,
+      "GEB": 1,
+      "OpenPLCv2": 1,
+      "OpenPLCv3": 1
+    },
+    "old": 2353,
+    "total": 2431
+  },
+  "card_summary": {
+    "old_card_count": 2353,
+    "regression_mismatch_count": 0,
+    "regression_mismatch_sample_ids": []
+  },
+  "population_flow": [
+    {
+      "analysis_id": "CARD_ACCOUNTING",
+      "starting_population": 2431,
+      "included": 2431,
+      "excluded": 0,
+      "inclusion_basis": "every manifest binary",
+      "exclusion_basis": "none",
+      "evidence_label": "DERIVED_EVIDENCE"
+    },
+    {
+      "analysis_id": "TOOL_OUTPUT_AVAILABILITY",
+      "starting_population": 2431,
+      "included": 2431,
+      "excluded": 0,
+      "inclusion_basis": "target defined for every attempted binary",
+      "exclusion_basis": "none",
+      "evidence_label": "DERIVED_EVIDENCE"
+    },
+    {
+      "analysis_id": "SOURCE_FUNCTION_BLOCK_PRESENCE",
+      "starting_population": 2431,
+      "included": 1876,
+      "excluded": 555,
+      "inclusion_basis": "unambiguous mapped Structured Text oracle",
+      "exclusion_basis": "CODESYS proprietary project source or missing/ambiguous ST mapping",
+      "evidence_label": "DERIVED_EVIDENCE"
+    },
+    {
+      "analysis_id": "HISTORICAL_FUNCTION_CLASSIFIER",
+      "starting_population": 2431,
+      "included": 2353,
+      "excluded": 78,
+      "inclusion_basis": "scorable historical function label",
+      "exclusion_basis": "label missing/sentinel; this gate does not control current RQs",
+      "evidence_label": "DERIVED_EVIDENCE"
+    },
+    {
+      "analysis_id": "SECOND_PIPELINE_CONTRACT_INSTANTIATION",
+      "starting_population": 10,
+      "included": 10,
+      "excluded": 0,
+      "inclusion_basis": "pre-existing samples with manifest, relation, and uncertainty rows",
+      "exclusion_basis": "not a population-generalization sample",
+      "evidence_label": "DERIVED_EVIDENCE"
+    }
+  ],
+  "schema_metrics": [
+    {
+      "task": "TOOL_OUTPUT_AVAILABILITY",
+      "schema": "S2_OBSERVABILITY_UNCERTAINTY",
+      "n": 2431,
+      "tp": 1876,
+      "fp": 0,
+      "fn": 0,
+      "tn": 555,
+      "accuracy": "1.000000",
+      "balanced_accuracy": "1.000000",
+      "macro_f1": "1.000000",
+      "distinct_signatures": 2,
+      "unseen_signature_rows": 0,
+      "ambiguous_rows_full_corpus": 0,
+      "ambiguous_row_fraction": "0.000000",
+      "interpretation_boundary": "Information-retention probe; not analyst utility, semantic accuracy, or a production classifier.",
+      "evidence_label": "DERIVED_EVIDENCE"
+    },
+    {
+      "task": "TOOL_OUTPUT_AVAILABILITY",
+      "schema": "S3_EMPIRICAL_CHANNELS",
+      "n": 2431,
+      "tp": 1876,
+      "fp": 0,
+      "fn": 0,
+      "tn": 555,
+      "accuracy": "1.000000",
+      "balanced_accuracy": "1.000000",
+      "macro_f1": "1.000000",
+      "distinct_signatures": 3,
+      "unseen_signature_rows": 0,
+      "ambiguous_rows_full_corpus": 0,
+      "ambiguous_row_fraction": "0.000000",
+      "interpretation_boundary": "Information-retention probe; not analyst utility, semantic accuracy, or a production classifier.",
+      "evidence_label": "DERIVED_EVIDENCE"
+    },
+    {
+      "task": "TOOL_OUTPUT_AVAILABILITY",
+      "schema": "S6_TYPED_SLOTS",
+      "n": 2431,
+      "tp": 1876,
+      "fp": 0,
+      "fn": 0,
+      "tn": 555,
+      "accuracy": "1.000000",
+      "balanced_accuracy": "1.000000",
+      "macro_f1": "1.000000",
+      "distinct_signatures": 3,
+      "unseen_signature_rows": 0,
+      "ambiguous_rows_full_corpus": 0,
+      "ambiguous_row_fraction": "0.000000",
+      "interpretation_boundary": "Information-retention probe; not analyst utility, semantic accuracy, or a production classifier.",
+      "evidence_label": "DERIVED_EVIDENCE"
+    },
+    {
+      "task": "SOURCE_FUNCTION_BLOCK_PRESENCE",
+      "schema": "S2_OBSERVABILITY_UNCERTAINTY",
+      "n": 1876,
+      "tp": 1088,
+      "fp": 788,
+      "fn": 0,
+      "tn": 0,
+      "accuracy": "0.579957",
+      "balanced_accuracy": "0.500000",
+      "macro_f1": "0.367072",
+      "distinct_signatures": 1,
+      "unseen_signature_rows": 0,
+      "ambiguous_rows_full_corpus": 1876,
+      "ambiguous_row_fraction": "1.000000",
+      "interpretation_boundary": "Information-retention probe; not analyst utility, semantic accuracy, or a production classifier.",
+      "evidence_label": "DERIVED_EVIDENCE"
+    },
+    {
+      "task": "SOURCE_FUNCTION_BLOCK_PRESENCE",
+      "schema": "S3_EMPIRICAL_CHANNELS",
+      "n": 1876,
+      "tp": 451,
+      "fp": 24,
+      "fn": 637,
+      "tn": 764,
+      "accuracy": "0.647655",
+      "balanced_accuracy": "0.692033",
+      "macro_f1": "0.637565",
+      "distinct_signatures": 2,
+      "unseen_signature_rows": 0,
+      "ambiguous_rows_full_corpus": 1876,
+      "ambiguous_row_fraction": "1.000000",
+      "interpretation_boundary": "Information-retention probe; not analyst utility, semantic accuracy, or a production classifier.",
+      "evidence_label": "DERIVED_EVIDENCE"
+    },
+    {
+      "task": "SOURCE_FUNCTION_BLOCK_PRESENCE",
+      "schema": "S6_TYPED_SLOTS",
+      "n": 1876,
+      "tp": 451,
+      "fp": 24,
+      "fn": 637,
+      "tn": 764,
+      "accuracy": "0.647655",
+      "balanced_accuracy": "0.692033",
+      "macro_f1": "0.637565",
+      "distinct_signatures": 2,
+      "unseen_signature_rows": 0,
+      "ambiguous_rows_full_corpus": 1876,
+      "ambiguous_row_fraction": "1.000000",
+      "interpretation_boundary": "Information-retention probe; not analyst utility, semantic accuracy, or a production classifier.",
+      "evidence_label": "DERIVED_EVIDENCE"
+    }
+  ],
+  "transfer_metrics": [
+    {
+      "toolchain": "GEB",
+      "production_scope": "IN_SCOPE",
+      "source_positive": 353,
+      "ungated_probe_positive": 353,
+      "n": 617,
+      "tp": 353,
+      "fp": 0,
+      "fn": 0,
+      "tn": 264,
+      "accuracy": "1.000000",
+      "balanced_accuracy": "1.000000",
+      "macro_f1": "1.000000",
+      "interpretation_boundary": "Post-hoc same-snapshot lexical validity case; not prospective or compiler-independent validation.",
+      "evidence_label": "DERIVED_EVIDENCE"
+    },
+    {
+      "toolchain": "OpenPLCv2",
+      "production_scope": "OUT_OF_SCOPE",
+      "source_positive": 359,
+      "ungated_probe_positive": 0,
+      "n": 619,
+      "tp": 0,
+      "fp": 0,
+      "fn": 359,
+      "tn": 260,
+      "accuracy": "0.420032",
+      "balanced_accuracy": "0.500000",
+      "macro_f1": "0.295791",
+      "interpretation_boundary": "Post-hoc same-snapshot lexical validity case; not prospective or compiler-independent validation.",
+      "evidence_label": "DERIVED_EVIDENCE"
+    },
+    {
+      "toolchain": "OpenPLCv3",
+      "production_scope": "OUT_OF_SCOPE",
+      "source_positive": 376,
+      "ungated_probe_positive": 0,
+      "n": 640,
+      "tp": 0,
+      "fp": 0,
+      "fn": 376,
+      "tn": 264,
+      "accuracy": "0.412500",
+      "balanced_accuracy": "0.500000",
+      "macro_f1": "0.292035",
+      "interpretation_boundary": "Post-hoc same-snapshot lexical validity case; not prospective or compiler-independent validation.",
+      "evidence_label": "DERIVED_EVIDENCE"
+    }
+  ],
+  "invariants": [
+    {
+      "invariant_id": "I1_IDENTITY_HASH",
+      "checked_units": 2431,
+      "failure_count": 0,
+      "pass": "True",
+      "definition": "Every primary card SHA-256 replays against its binary bytes.",
+      "failure_examples": "",
+      "interpretation_boundary": "Machine-checkable record-contract property; not analyst utility or semantic correctness.",
+      "evidence_label": "DERIVED_EVIDENCE"
+    },
+    {
+      "invariant_id": "I2_UNCERTAINTY_CLOSURE",
+      "checked_units": 4176,
+      "failure_count": 0,
+      "pass": "True",
+      "definition": "Every weak EC1-EC5 slot has a typed uncertainty record.",
+      "failure_examples": "",
+      "interpretation_boundary": "Machine-checkable record-contract property; not analyst utility or semantic correctness.",
+      "evidence_label": "DERIVED_EVIDENCE"
+    },
+    {
+      "invariant_id": "I3_UNSUPPORTED_NOT_NEGATIVE",
+      "checked_units": 555,
+      "failure_count": 0,
+      "pass": "True",
+      "definition": "Unsupported CODESYS tool outputs remain partial rather than unexplained missing/negative.",
+      "failure_examples": "",
+      "interpretation_boundary": "Machine-checkable record-contract property; not analyst utility or semantic correctness.",
+      "evidence_label": "DERIVED_EVIDENCE"
+    },
+    {
+      "invariant_id": "I4_SOURCE_TRACE",
+      "checked_units": 1876,
+      "failure_count": 0,
+      "pass": "True",
+      "definition": "Every mapped source hash replays against the source bytes.",
+      "failure_examples": "",
+      "interpretation_boundary": "Machine-checkable record-contract property; not analyst utility or semantic correctness.",
+      "evidence_label": "DERIVED_EVIDENCE"
+    },
+    {
+      "invariant_id": "I5_CROSS_PIPELINE_HASH_JOIN",
+      "checked_units": 6677,
+      "failure_count": 0,
+      "pass": "True",
+      "definition": "Every second-pipeline relation/uncertainty SHA-256 joins its manifest row.",
+      "failure_examples": "",
+      "interpretation_boundary": "Machine-checkable record-contract property; not analyst utility or semantic correctness.",
+      "evidence_label": "DERIVED_EVIDENCE"
+    }
+  ],
+  "all_invariants_pass": true,
+  "human_utility_evidence": "NOT_PERFORMED_PROTOCOL_ONLY",
+  "evidence_label": "DERIVED_EVIDENCE"
+}

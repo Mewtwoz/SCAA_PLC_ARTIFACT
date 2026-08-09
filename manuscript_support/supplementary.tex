@@ -1,0 +1,225 @@
+\documentclass[manuscript,screen,review]{acmart}
+
+\settopmatter{printacmref=true}
+\setcopyright{rightsretained}
+\acmJournal{TCPS}
+
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{seqsplit}
+\usepackage{url}
+
+\Urlmuskip=0mu plus 1mu
+\emergencystretch=3em
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+
+\begin{document}
+
+\title{Supplementary Material for SCAA-PLC}
+
+\author{Bowei Ning}
+\email{2020183@stu.syuct.edu.cn}
+\orcid{0000-0003-4553-9096}
+\affiliation{%
+	\department{School of Artificial Intelligence}
+	\institution{Shenyang University of Technology}
+	\city{Shenyang}
+	\country{China}
+}
+\affiliation{%
+	\institution{Key Laboratory of Information Security for Petrochemical Industry in Liaoning Province}
+	\city{Shenyang}
+	\country{China}
+}
+
+\author{Xuejun Zong}
+\authornote{Corresponding author.}
+\email{xuejun\_zong@syuct.edu.cn}
+\orcid{0009-0000-0084-2775}
+\author{Lian Lian}
+\authornote{Corresponding author.}
+\email{lianlian@syuct.edu.cn}
+\orcid{0000-0002-5093-2450}
+\author{Kan He}
+\email{hekan1978@syuct.edu.cn}
+\author{Yifei Sun}
+\email{sunyifei@syuct.edu.cn}
+\author{Yuxiang Lei}
+\email{z2023365@stu.syuct.edu.cn}
+\affiliation{%
+	\department{School of Information Engineering}
+	\institution{Shenyang University of Chemical Technology}
+	\city{Shenyang}
+	\country{China}
+}
+\affiliation{%
+	\institution{Key Laboratory of Information Security for Petrochemical Industry in Liaoning Province}
+	\city{Shenyang}
+	\country{China}
+}
+
+\author{Plamen Vasilev}
+\email{plamen.vasilev@uctm.edu}
+\affiliation{%
+	\department{Department of Industrial Automation}
+	\institution{University of Chemical Technology and Metallurgy}
+	\city{Sofia}
+	\country{Bulgaria}
+}
+
+\renewcommand{\shortauthors}{Ning et al.}
+\ccsdesc[500]{Security and privacy~Systems security}
+\keywords{PLC binary analysis, evidence auditability, uncertainty reporting, reproducibility}
+
+\maketitle
+
+\section*{Evidence label}
+
+DERIVED\_EVIDENCE.
+
+\section{Purpose and submission boundary}
+
+This supplement contains only details that support the current reporting-method research questions: task-specific population flow, source-rule validity, representation-level information retention, record-contract invariants, bounded second-pipeline instantiation, trace cases, and artifact verification. Historical one-fold classifiers, weighted completeness, EC4 spread, and internal readiness verdicts are not submission evidence. They are retained only in the artifact's \path{history/} directory as non-contributory chronology.
+
+\section{Task-specific population flow}
+
+The full manifest contains 2{,}431 binaries. A target is allowed to restrict this population only when the target cannot be defined for a row. Table~\ref{tab:population_flow} is the machine-readable inclusion policy realized in \path{RQ_POPULATION_FLOW.csv}.
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Current tasks are no longer controlled by the historical function-label gate.}
+\label{tab:population_flow}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}Xrr>{\raggedright\arraybackslash}X}
+\toprule
+Analysis & Included & Excluded & Basis \\
+\midrule
+Card accounting & 2,431 & 0 & Every manifest binary \\
+Tool-output availability & 2,431 & 0 & Target is defined for every attempted binary \\
+Source function-block presence & 1,876 & 555 & Unambiguous mapped Structured Text source \\
+Historical function classifier & 2,353 & 78 & Scorable historical label; not a current RQ gate \\
+Second-pipeline instantiation & 10 & 0 & Existing manifest, relation, and uncertainty join surface \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+The 78-row expansion comprises 75 CODESYS binaries and one binary from each non-CODESYS configuration. Rebuilding their feature rows and cards produces zero state/hash mismatches on the 2{,}353 pre-existing cards.
+
+\section{Source-syntax validity-case protocol}
+
+The production SA-001 rule is the conjunction of GEB scope and the lexical predicate \texttt{dt\_FB\_} in \texttt{core\_symbol\_text}. The transfer probe removes only the GEB scope condition. It does not modify the lexical predicate, use source labels during matching, or write back to production cards. OpenPLC rows are therefore \texttt{OUT\_OF\_SCOPE} for the production rule and are scored only for the ungated probe.
+
+The oracle removes Structured Text comments and extracts line-anchored \texttt{FUNCTION\_BLOCK}, \texttt{FUNCTION}, and \texttt{PROGRAM} declarations. Binary and source rows join by normalized program stem within one toolchain. Multiple source files are accepted only when they agree on explicit \texttt{FUNCTION\_BLOCK} presence. The current complete mapped population contains 617 GEB, 619 OpenPLC v2, and 640 OpenPLC v3 rows. Because the rule was developed and checked on the same snapshot, the GEB result is a post-hoc validity case rather than prospective accuracy.
+
+\section{Fold-wise signature decoder}
+
+Let $s_m(x)$ denote the categorical signature of sample $x$ under representation $m\in\{S2,S3,S6\}$. For held-out fold $k$, the decoder assigns the majority target among training rows with the same signature:
+
+\begin{equation}
+\widehat{y}_{m,k}(x)=
+\begin{cases}
+\operatorname{majority}\{y_j:s_m(x_j)=s_m(x),\,j\notin k\}, & \text{if observed},\\
+\operatorname{majority}\{y_j:j\notin k\}, & \text{otherwise}.
+\end{cases}
+\end{equation}
+
+Ties resolve deterministically toward the numerically smaller class. No held-out row has an unseen signature. \texttt{S2} contains EC1 and EC6; \texttt{S3} contains EC1, EC4, and EC6; \texttt{S6} contains EC1--EC6. This is an information-retention test, not a production classifier or an analyst-utility experiment.
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Full-population representation results used by the main paper.}
+\label{tab:schema_results}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}Xlrrrrr}
+\toprule
+Target & Schema & $n$ & Accuracy & Balanced accuracy & Macro F1 & Ambiguous rows \\
+\midrule
+Tool output & S2 & 2,431 & 1.000 & 1.000 & 1.000 & 0 \\
+Tool output & S3 & 2,431 & 1.000 & 1.000 & 1.000 & 0 \\
+Tool output & S6 & 2,431 & 1.000 & 1.000 & 1.000 & 0 \\
+Source function block & S2 & 1,876 & 0.580 & 0.500 & 0.367 & 1,876 \\
+Source function block & S3 & 1,876 & 0.648 & 0.692 & 0.638 & 1,876 \\
+Source function block & S6 & 1,876 & 0.648 & 0.692 & 0.638 & 1,876 \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+Every source-task signature is target-ambiguous in the full corpus. The result measures information retention under a transparent decoder; it does not establish source-role prediction utility.
+
+\section{Contract invariants and trace cases}
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Machine-checkable invariants and their realized check surfaces.}
+\label{tab:contract_invariants}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.20\textwidth}rr>{\raggedright\arraybackslash}X}
+\toprule
+Invariant & Units & Failures & Definition \\
+\midrule
+I1 identity hash & 2,431 & 0 & Card SHA-256 replays against each binary. \\
+I2 uncertainty closure & 4,176 & 0 & Every weak EC1--EC5 slot has a typed uncertainty row. \\
+I3 unsupported-not-negative & 555 & 0 & CODESYS tool gaps remain partial, not negative. \\
+I4 source trace & 1,876 & 0 & Mapped source hashes replay against source bytes. \\
+I5 cross-pipeline hash join & 6,677 & 0 & Relation/uncertainty hashes join native-manifest rows. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+The running-example artifact contains three rows: \texttt{geb\_ARRAY\_HAV} (direct GEB/source agreement), \texttt{geb\_AIN} (source-negative contrast with U09b), and \texttt{codesys\_\_ARRAY\_ABS} (U01/U02/U11/U13 tool gap). Each row stores raw observation, rule/provenance, EC vector, oracle, allowed conclusion, and one rejected aggregate claim. These traces establish inspectable record chains by construction, not human usefulness.
+
+\section{Bounded second-pipeline instantiation}
+
+The adapter joins a 56-row native manifest to 6{,}657 relation rows and 20 uncertainty rows by \texttt{sample\_id} and SHA-256. It emits 10 cards for binaries with bilateral relation evidence. Function identifiers, static relation counts, graph-edge counts, hint counts, and uncertainty stages map into the existing slot vocabulary; CVE and patch-role fields remain provenance rather than behavioral labels.
+
+All 10 analyzed binaries are OpenPLC-derived GCC/x86-64 artifacts, nine at O0 and one at project-O2. The mapping was implemented by the authors, and no independently sampled adapter failure set exists. This is a bounded contract-instantiation smoke test, not compiler, vendor, architecture, or schema portability.
+
+\section{Schema coverage and content-validity boundary}
+
+All EC slots occur in the 2{,}431-card population. EC1, EC2, EC3, and EC5 contain 1{,}876 filled and 555 partial rows; EC4 contains 475 filled and 1{,}956 partial rows; EC6 is filled for all rows. U01, U02, U11, U13, and U09b occur. The other defined U-codes are unobserved in the primary population.
+
+Observed coverage does not prove category necessity, sufficiency, or saturation. No independent coding or expert content-validation result exists. The artifact therefore includes a \texttt{TEMPLATE\_ONLY} counterbalanced reviewer-task protocol and empty response table. Neither is counted as empirical evidence until independent humans complete it under the required ethics or institutional process.
+
+\section{Current claim-to-artifact matrix}
+
+\begin{small}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.07\textwidth}>{\raggedright\arraybackslash}p{0.12\textwidth}>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}@{}}
+\toprule
+ID & Status & Allowed wording & Evidence \\
+\midrule
+\endfirsthead
+\toprule
+ID & Status & Allowed wording & Evidence \\
+\midrule
+\endhead
+C1 & SAFE & Current card/tool-output accounting covers all 2,431 manifest binaries; source-role analysis covers 1,876 reliable ST mappings. & \path{RQ_POPULATION_FLOW.csv}; \path{ALL_POPULATION_EVIDENCE_CARDS.csv}; \path{ALL_POPULATION_SOURCE_ORACLE.csv} \\
+C2 & CONDITIONAL & The same-snapshot GEB lexical rule agrees on 353 positive and 264 negative rows; its ungated predicate misses 735 OpenPLC source-positive rows. & \path{FULL_POPULATION_TRANSFER_METRICS.csv}; \path{ALL_POPULATION_SOURCE_ORACLE.csv}; post-hoc syntax boundary only \\
+C3 & CONDITIONAL & S3 and S6 retain identical evaluated task information; S2 loses source-role information. & \path{FULL_POPULATION_SCHEMA_METRICS.csv}; information-retention only \\
+C4 & SAFE & Five record-contract invariants pass with zero failures on their declared check surfaces. & \path{CONTRACT_INVARIANT_RESULTS.csv}; machine-contract properties only \\
+C5 & SAFE & Three trace cases connect raw observation, provenance, EC state, U-code, oracle, and allowed conclusion. & \path{RUNNING_EXAMPLE_TRACE_CASES.csv}; no human-utility result \\
+C6 & CONDITIONAL & The record contract is instantiated over 10 OpenPLC/radare2 cards, 6,657 relation rows, and 20 uncertainty rows. & \path{CROSS_PIPELINE_EVIDENCE_CARDS.csv}; bounded smoke test only \\
+C7 & SAFE & The 2,353 pre-existing cards have zero state/hash regression mismatches after the 78-row expansion. & \path{V6_CONTENT_VALIDATION_RESULT.json} \\
+C8 & CONDITIONAL & A GitHub-ready release candidate has relative paths, checksums, third-party notices, and a clean-room validator. & Public URL, DOI, and author-selected licenses remain pending \\
+\bottomrule
+\end{longtable}
+\end{small}
+
+\section{Forbidden claims}
+
+SCAA-PLC does not claim human-utility improvement, complete or sound semantic recovery, vulnerability detection, compiler/vendor/architecture portability, universal CODESYS opacity, a complete uncertainty taxonomy, comparative superiority, supply-chain analysis, or SBOM generation. The independent-review protocol cannot be cited as a result until completed.
+
+\section{Artifact integrity and acquisition policy}
+
+The release candidate contains author-generated derived data, scripts, checksums, environment notes, and clean-room verification logs. It excludes raw PLC-BEAD binaries and sources because the examined upstream snapshot contains no explicit license file. Reviewers acquire the public snapshot separately and run the supplied verifier, which compares binary and source hashes against the evidence-card and source-oracle records. Cross-pipeline raw binaries are also excluded; only derived manifest, relation, and uncertainty tables required by the reporting analysis are included.
+
+The package is not public until the authors select code/data licenses and upload the fixed directory to a reviewer-accessible repository or archive. A GitHub URL alone should be paired with a release tag; a persistent DOI is recommended for the submission version~\cite{heumueller_software_artifacts2020}.
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{refs}
+
+\end{document}

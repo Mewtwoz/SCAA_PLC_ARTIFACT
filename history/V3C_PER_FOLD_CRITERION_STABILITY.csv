@@ -1,0 +1,12 @@
+# V3.5 state signal is declared PLC state-role naming inferred from V2 symbol text and PLC-BEAD sample metadata. It is not binary-byte state inference. It is not runtime state-machine recovery (contrast: Ta'veren NDSS 2026). It is not function-boundary code-region recovery (contrast: PLC-BinX arXiv 2026). Completeness is auditability, not classification accuracy. Direct comparison to A1/A2/Q4/V2 F1 is prohibited.
+fold_id,split_scope,geb_ec4_mean,openplcv2_ec4_mean,openplcv3_ec4_mean,geb_ec4_variance,openplcv2_ec4_variance,openplcv3_ec4_variance,c1_spread_non_codesys,c1_pass,c2_toolchains_passing_variance,c2_pass,locked_criterion_pass,evidence_label
+fold_0,test_only,0.804348,0.550000,0.548611,0.059546,0.022500,0.021943,0.255737,true,1,false,true,DERIVED_EVIDENCE
+fold_1,test_only,0.816176,0.544776,0.542254,0.058121,0.020383,0.019341,0.273923,true,1,false,true,DERIVED_EVIDENCE
+fold_2,test_only,0.805970,0.566176,0.565217,0.059367,0.028709,0.028355,0.240753,true,1,false,true,DERIVED_EVIDENCE
+fold_3,test_only,0.776923,0.573529,0.572464,0.061775,0.031358,0.030981,0.204459,true,1,false,true,DERIVED_EVIDENCE
+fold_4,test_only,0.786885,0.556452,0.561538,0.061139,0.025039,0.026982,0.230434,true,1,false,true,DERIVED_EVIDENCE
+fold_5,test_only,0.766667,0.532787,0.531746,0.062222,0.015318,0.014865,0.234921,true,1,false,true,DERIVED_EVIDENCE
+fold_6,test_only,0.796610,0.517544,0.516949,0.060327,0.008464,0.008187,0.279661,true,1,false,true,DERIVED_EVIDENCE
+fold_7,test_only,0.775862,0.526316,0.533898,0.061831,0.012465,0.015800,0.249546,true,1,false,true,DERIVED_EVIDENCE
+fold_8,test_only,0.794643,0.526316,0.525862,0.060507,0.012465,0.012262,0.268781,true,1,false,true,DERIVED_EVIDENCE
+fold_9,test_only,0.801887,0.549020,0.546296,0.059808,0.022107,0.021005,0.255590,true,1,false,true,DERIVED_EVIDENCE

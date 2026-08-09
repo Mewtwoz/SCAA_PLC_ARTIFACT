@@ -1,0 +1,18 @@
+{
+  "fixture_id": "SYN_UNEXPLAINED_MISSING",
+  "evidence_label": "TEMPLATE_ONLY",
+  "sample": {
+    "sample_id": "SYN_MISSING_UNEXPLAINED_001",
+    "toolchain": "OpenPLCv2",
+    "program_name": "synthetic_unexplained_missing",
+    "fold_id": "synthetic_only"
+  },
+  "nodes": [
+    {"node_id": "SYN_MISSING_UNEXPLAINED_001", "node_type": "sample", "label": "synthetic unexplained missing"},
+    {"node_id": "func_only", "node_type": "function_candidate", "label": "function only"},
+    {"node_id": "fact_only", "node_type": "semantic_fact", "label": "standalone semantic fact"},
+    {"node_id": "card_missing", "node_type": "evidence_card", "label": "unexplained missing card"}
+  ],
+  "edges": [],
+  "uncertainties": []
+}

@@ -1,0 +1,7 @@
+task,schema,n,tp,fp,fn,tn,accuracy,balanced_accuracy,macro_f1,distinct_signatures,unseen_signature_rows,ambiguous_rows_full_corpus,ambiguous_row_fraction,interpretation_boundary,evidence_label
+TOOL_OUTPUT_AVAILABILITY,S2_OBSERVABILITY_UNCERTAINTY,2431,1876,0,0,555,1.000000,1.000000,1.000000,2,0,0,0.000000,"Information-retention probe; not analyst utility, semantic accuracy, or a production classifier.",DERIVED_EVIDENCE
+TOOL_OUTPUT_AVAILABILITY,S3_EMPIRICAL_CHANNELS,2431,1876,0,0,555,1.000000,1.000000,1.000000,3,0,0,0.000000,"Information-retention probe; not analyst utility, semantic accuracy, or a production classifier.",DERIVED_EVIDENCE
+TOOL_OUTPUT_AVAILABILITY,S6_TYPED_SLOTS,2431,1876,0,0,555,1.000000,1.000000,1.000000,3,0,0,0.000000,"Information-retention probe; not analyst utility, semantic accuracy, or a production classifier.",DERIVED_EVIDENCE
+SOURCE_FUNCTION_BLOCK_PRESENCE,S2_OBSERVABILITY_UNCERTAINTY,1876,1088,788,0,0,0.579957,0.500000,0.367072,1,0,1876,1.000000,"Information-retention probe; not analyst utility, semantic accuracy, or a production classifier.",DERIVED_EVIDENCE
+SOURCE_FUNCTION_BLOCK_PRESENCE,S3_EMPIRICAL_CHANNELS,1876,451,24,637,764,0.647655,0.692033,0.637565,2,0,1876,1.000000,"Information-retention probe; not analyst utility, semantic accuracy, or a production classifier.",DERIVED_EVIDENCE
+SOURCE_FUNCTION_BLOCK_PRESENCE,S6_TYPED_SLOTS,1876,451,24,637,764,0.647655,0.692033,0.637565,2,0,1876,1.000000,"Information-retention probe; not analyst utility, semantic accuracy, or a production classifier.",DERIVED_EVIDENCE

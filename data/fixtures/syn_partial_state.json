@@ -1,0 +1,26 @@
+{
+  "fixture_id": "SYN_PARTIAL_STATE",
+  "evidence_label": "TEMPLATE_ONLY",
+  "sample": {
+    "sample_id": "SYN_GEB_PARTIAL_STATE_001",
+    "toolchain": "GEB",
+    "program_name": "synthetic_partial_state",
+    "fold_id": "synthetic_only"
+  },
+  "nodes": [
+    {"node_id": "SYN_GEB_PARTIAL_STATE_001", "node_type": "sample", "label": "synthetic GEB partial state"},
+    {"node_id": "func_core", "node_type": "function_candidate", "label": "dt_PR_core"},
+    {"node_id": "fact_call", "node_type": "semantic_fact", "label": "core call fact"},
+    {"node_id": "call_runtime", "node_type": "call_target", "label": "GEBLIB_runtime"},
+    {"node_id": "card_partial_state", "node_type": "evidence_card", "label": "partial state card"}
+  ],
+  "edges": [
+    {"edge_id": "e1", "source_node": "SYN_GEB_PARTIAL_STATE_001", "target_node": "func_core", "edge_type": "has_function", "confidence": "high", "uncertainty_code": "NOT_APPLICABLE"},
+    {"edge_id": "e2", "source_node": "func_core", "target_node": "fact_call", "edge_type": "contains_semantic_fact", "confidence": "medium", "uncertainty_code": "NOT_APPLICABLE"},
+    {"edge_id": "e3", "source_node": "func_core", "target_node": "call_runtime", "edge_type": "calls", "confidence": "medium", "uncertainty_code": "NOT_APPLICABLE"},
+    {"edge_id": "e4", "source_node": "func_core", "target_node": "card_partial_state", "edge_type": "summarized_by", "confidence": "high", "uncertainty_code": "NOT_APPLICABLE"}
+  ],
+  "uncertainties": [
+    {"uncertainty_id": "u1", "affected_field": "EC4", "uncertainty_code": "U09", "severity": "medium", "recoverability": "needs_manual_review", "notes": "state role ambiguous in synthetic sample"}
+  ]
+}

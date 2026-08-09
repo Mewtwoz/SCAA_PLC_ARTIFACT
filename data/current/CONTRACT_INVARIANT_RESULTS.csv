@@ -1,0 +1,6 @@
+invariant_id,checked_units,failure_count,pass,definition,failure_examples,interpretation_boundary,evidence_label
+I1_IDENTITY_HASH,2431,0,True,Every primary card SHA-256 replays against its binary bytes.,,Machine-checkable record-contract property; not analyst utility or semantic correctness.,DERIVED_EVIDENCE
+I2_UNCERTAINTY_CLOSURE,4176,0,True,Every weak EC1-EC5 slot has a typed uncertainty record.,,Machine-checkable record-contract property; not analyst utility or semantic correctness.,DERIVED_EVIDENCE
+I3_UNSUPPORTED_NOT_NEGATIVE,555,0,True,Unsupported CODESYS tool outputs remain partial rather than unexplained missing/negative.,,Machine-checkable record-contract property; not analyst utility or semantic correctness.,DERIVED_EVIDENCE
+I4_SOURCE_TRACE,1876,0,True,Every mapped source hash replays against the source bytes.,,Machine-checkable record-contract property; not analyst utility or semantic correctness.,DERIVED_EVIDENCE
+I5_CROSS_PIPELINE_HASH_JOIN,6677,0,True,Every second-pipeline relation/uncertainty SHA-256 joins its manifest row.,,Machine-checkable record-contract property; not analyst utility or semantic correctness.,DERIVED_EVIDENCE

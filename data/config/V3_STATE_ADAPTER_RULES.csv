@@ -1,0 +1,21 @@
+rule_id,toolchain_scope,state_role,match_field,match_type,pattern,confidence,fill_contribution,evidence_label,notes
+SA-001,GEB,stateful_block,core_symbol_text,contains,dt_FB_,high,fills_ec4,DERIVED_EVIDENCE,GEB Function Block naming indicates stateful IEC 61131-3 POU evidence.
+SA-002,GEB,cyclic_program,core_symbol_text,contains,dt_PR_,medium,context_only,DERIVED_EVIDENCE,GEB Program naming provides cyclic program context but does not alone fill EC4.
+SA-003,OpenPLCv2|OpenPLCv3,cyclic_program,core_symbol_text,contains,PROGRAM0_body__,medium,context_only,DERIVED_EVIDENCE,OpenPLC cyclic body context; context only unless concrete state-role rule also matches.
+SA-004,OpenPLCv2|OpenPLCv3,cyclic_program,core_symbol_text,contains,RES0_run__,medium,context_only,DERIVED_EVIDENCE,OpenPLC resource run context; context only unless concrete state-role rule also matches.
+SA-005,ALL,timer,program_name,regex,(^|_)TON(_|$),high,fills_ec4,DERIVED_EVIDENCE,IEC timer-on naming in program identifier.
+SA-006,ALL,timer,program_name,regex,(^|_)TOF(_|$),high,fills_ec4,DERIVED_EVIDENCE,IEC timer-off naming in program identifier.
+SA-007,ALL,timer,program_name,regex,(^|_)TP(_|$),high,fills_ec4,DERIVED_EVIDENCE,IEC pulse timer naming in program identifier.
+SA-008,ALL,timer,program_name,regex,(^|_)TIMER(_|$),high,fills_ec4,DERIVED_EVIDENCE,Timer naming in program identifier.
+SA-009,ALL,counter,program_name,regex,(^|_)CTU(_|$),high,fills_ec4,DERIVED_EVIDENCE,IEC count-up naming in program identifier.
+SA-010,ALL,counter,program_name,regex,(^|_)CTD(_|$),high,fills_ec4,DERIVED_EVIDENCE,IEC count-down naming in program identifier.
+SA-011,ALL,counter,program_name,regex,(^|_)(CTUD|COUNTER|CNT)(_|$),medium,fills_ec4,DERIVED_EVIDENCE,Counter naming in program identifier.
+SA-012,ALL,output,program_name,regex,(^|_)(ACTUATOR|PUMP|VALVE|MOTOR|COIL|OUT|OUTPUT|Q)(_|$),high,fills_ec4,DERIVED_EVIDENCE,Output/actuator naming in program identifier.
+SA-013,ALL,input,program_name,regex,(^|_)(SENSOR|SWITCH|INPUT|IN|I)(_|$),high,fills_ec4,DERIVED_EVIDENCE,Input/sensor naming in program identifier.
+SA-014,ALL,memory,program_name,regex,(^|_)(ARRAY|BUFFER|BUF|MEM|STACK|QUEUE|DB[0-9]*)(_|$),medium,fills_ec4,DERIVED_EVIDENCE,Memory/buffer/data-block naming in program identifier.
+SA-015,ALL,retentive,program_name,regex,(^|_)(RMP|RETAIN|RETENTIVE|LATCH)(_|$),medium,fills_ec4,DERIVED_EVIDENCE,Retentive/ramp/latch naming in program identifier.
+SA-016,ALL,memory,binary_name,regex,(^|_)(ARRAY|BUFFER|BUF|MEM|STACK|QUEUE|DB[0-9]*)(_|$),medium,fills_ec4,DERIVED_EVIDENCE,Memory/buffer/data-block naming in binary identifier.
+SA-017,ALL,timer,binary_name,regex,(^|_)(TON|TOF|TP|TIMER)(_|$),high,fills_ec4,DERIVED_EVIDENCE,Timer naming in binary identifier.
+SA-018,ALL,counter,binary_name,regex,(^|_)(CTU|CTD|CTUD|COUNTER|CNT)(_|$),medium,fills_ec4,DERIVED_EVIDENCE,Counter naming in binary identifier.
+SA-019,ALL,output,binary_name,regex,(^|_)(ACTUATOR|PUMP|VALVE|MOTOR|COIL|OUT|OUTPUT|Q)(_|$),high,fills_ec4,DERIVED_EVIDENCE,Output/actuator naming in binary identifier.
+SA-020,ALL,input,binary_name,regex,(^|_)(SENSOR|SWITCH|INPUT|IN|I)(_|$),high,fills_ec4,DERIVED_EVIDENCE,Input/sensor naming in binary identifier.

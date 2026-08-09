@@ -1,0 +1,46 @@
+{
+  "evidence_label": "DERIVED_EVIDENCE",
+  "verdict": "JSS_METHOD_VALIDATION_READY_WITH_SCOPE_LIMITATIONS",
+  "started_utc": "2026-08-09T09:20:12.913132+00:00",
+  "completed_utc": "2026-08-09T09:20:20.152971+00:00",
+  "input_sha256": {
+    "09_paper1_experiment_evidence/v2_core_runtime_recovery/V2_SAMPLE_FEATURES.csv": "d04bb6010214ba62383eca18e81c661df475d4d9beecd46c41b61a1dbb88115c",
+    "09_paper1_experiment_evidence/v3_semantic_evidence_graph/V3_EVIDENCE_CARD_RECORDS_FOLD0_V35.csv": "3867b2891f7ce1cb6e338d843dc0ea9f4d1453fe6835ae54c31c95343bb2eacb",
+    "09_paper1_experiment_evidence/v4_source_oracle_validation/SOURCE_POU_ORACLE_SAMPLE_AUDIT.csv": "34ce56cfcac6507c294498baca4aa693eb0c594122c143749db76a3e9feece37",
+    "data/cross_pipeline/RELATION_EXTRACTION_RECORDS_v2_3.csv": "2ce62532978b400b0c1755b7aed9b7142b09f8c0271c4c8f344b462cf0558488",
+    "data/cross_pipeline/NATIVE_BINARY_MANIFEST_v2_6.csv": "4909a90a695fdd578f596713d775b436016dcc8f9674c149d20171ab47a2b596",
+    "data/cross_pipeline/UNCERTAINTY_LOG_v2_3.csv": "1339896d144af973aad1878c3433eea4298df1e857535ad22856cc4e09f2a5c4"
+  },
+  "output_sha256": {
+    "UNGATED_TRANSFER_PROBE_ROWS.csv": "fb75b9b1a9d6e3a7d63eeb959a54d986c2beb729cd96b3126c531071f86d260f",
+    "UNGATED_TRANSFER_PROBE_METRICS.csv": "2bfc2424bec907af81fc70308f8e7e1296a223fe6560e2f6f678a7b12890b734",
+    "UNGATED_TRANSFER_PROBE_REPORT.md": "57c19900928e022d85ddd7d6ec97fb9ce2c94afc257dd69b6b35dc0ef408983f",
+    "SCHEMA_SIMPLIFICATION_METRICS.csv": "d84c48a04bb9d1f23f06a25225cdbf1ce0fda755b48a94517a58ed22096b6301",
+    "SCHEMA_SIMPLIFICATION_PREDICTIONS.csv": "cd734b11c268020ec8da278dbfb521c02fcd4b37d01c83185463faef7274ed81",
+    "SCHEMA_STATE_COLLISION_AUDIT.csv": "2542ceb00c538e62e125eb0fc9f76fe9f969bbc7079e88bad5e941bf556a02d4",
+    "SCHEMA_SIMPLIFICATION_REPORT.md": "1c0ccafc379edd45953c4308d74b1628c4882b4b5b9362f42a9698829b73a43d",
+    "CROSS_PIPELINE_EVIDENCE_CARDS.csv": "60811b7e8110623eb5a3a768c434b2aacd6529cf1c781fee56f0f5aaaf437618",
+    "CROSS_PIPELINE_ADAPTER_REPORT.md": "d5d1e0ee9a96eec81541abd2c70429d6d73b244471e50ab1613133765a68c8a7"
+  },
+  "transfer_probe_rows": 1873,
+  "schema_metric_rows": 6,
+  "schema_prediction_rows": 12678,
+  "cofill_mismatch_rows_ec1_ec2_ec3_ec5": 0,
+  "cross_pipeline_summary": {
+    "card_count": 10,
+    "relation_row_count": 6657,
+    "relation_type_count": 8,
+    "uncertainty_row_count": 20,
+    "all_manifest_sha256_joins_match": true,
+    "all_cards_have_function_ids": true,
+    "all_cards_have_graph_relations": true,
+    "all_cards_have_two_uncertainty_stages": true,
+    "evidence_label": "DERIVED_EVIDENCE"
+  },
+  "boundaries": [
+    "No analyst-utility claim.",
+    "No semantic-recovery or vulnerability-detection claim.",
+    "The source oracle and PLC-BEAD rows are from the same snapshot.",
+    "The second pipeline uses locally compiled OpenPLC-derived x86-64 binaries."
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "fixture_id": "SYN_CODESYS_GAP",
+  "evidence_label": "TEMPLATE_ONLY",
+  "sample": {
+    "sample_id": "SYN_CODESYS_GAP_001",
+    "toolchain": "CODESYS",
+    "program_name": "synthetic_codesys_gap",
+    "fold_id": "synthetic_only"
+  },
+  "nodes": [
+    {"node_id": "SYN_CODESYS_GAP_001", "node_type": "sample", "label": "synthetic CODESYS gap"},
+    {"node_id": "card_codesys_gap", "node_type": "evidence_card", "label": "CODESYS uncertainty card"}
+  ],
+  "edges": [
+    {"edge_id": "e1", "source_node": "SYN_CODESYS_GAP_001", "target_node": "card_codesys_gap", "edge_type": "summarized_by", "confidence": "low", "uncertainty_code": "U02"}
+  ],
+  "uncertainties": [
+    {"uncertainty_id": "u1", "affected_field": "EC1", "uncertainty_code": "U01", "severity": "blocking", "recoverability": "blocked_by_format", "notes": "synthetic unknown binary format"},
+    {"uncertainty_id": "u2", "affected_field": "EC2", "uncertainty_code": "U13", "severity": "high", "recoverability": "needs_manual_review", "notes": "core logic not identifiable without container parser"},
+    {"uncertainty_id": "u3", "affected_field": "EC3", "uncertainty_code": "U11", "severity": "high", "recoverability": "recoverable_with_tooling", "notes": "semantic facts blocked by missing parser tool"},
+    {"uncertainty_id": "u4", "affected_field": "EC4", "uncertainty_code": "U13", "severity": "medium", "recoverability": "needs_manual_review", "notes": "state evidence requires human/tool follow-up"},
+    {"uncertainty_id": "u5", "affected_field": "EC5", "uncertainty_code": "U02", "severity": "blocking", "recoverability": "blocked_by_format", "notes": "container parse failure prevents relation graph"}
+  ]
+}

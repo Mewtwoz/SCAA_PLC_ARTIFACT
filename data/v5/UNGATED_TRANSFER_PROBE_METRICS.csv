@@ -1,0 +1,4 @@
+scope,production_rule_scope,source_positive,ungated_probe_positive,n,tp,fp,fn,tn,precision,recall,specificity,accuracy,balanced_accuracy,macro_f1,interpretation_boundary,evidence_label
+GEB,IN_SCOPE,353,353,616,353,0,0,263,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,Ungated lexical pattern transfer; production SA-001 remains GEB-scoped.,DERIVED_EVIDENCE
+OpenPLCv2,OUT_OF_SCOPE,359,0,618,0,0,359,259,N/A,0.000000,1.000000,0.419094,0.500000,0.295325,Ungated lexical pattern transfer; production SA-001 remains GEB-scoped.,DERIVED_EVIDENCE
+OpenPLCv3,OUT_OF_SCOPE,376,0,639,0,0,376,263,N/A,0.000000,1.000000,0.411581,0.500000,0.291574,Ungated lexical pattern transfer; production SA-001 remains GEB-scoped.,DERIVED_EVIDENCE

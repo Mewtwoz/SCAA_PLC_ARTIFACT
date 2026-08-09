@@ -1,0 +1,29 @@
+{
+  "fixture_id": "SYN_FULL_OPENPLC",
+  "evidence_label": "TEMPLATE_ONLY",
+  "sample": {
+    "sample_id": "SYN_OPENPLC_FULL_001",
+    "toolchain": "OpenPLCv3",
+    "program_name": "synthetic_full_case",
+    "fold_id": "synthetic_only"
+  },
+  "nodes": [
+    {"node_id": "SYN_OPENPLC_FULL_001", "node_type": "sample", "label": "synthetic sample"},
+    {"node_id": "func_main", "node_type": "function_candidate", "label": "PROGRAM0_body__"},
+    {"node_id": "bb_entry", "node_type": "basic_block_candidate", "label": "entry block"},
+    {"node_id": "call_modbus", "node_type": "call_target", "label": "modbus_update"},
+    {"node_id": "state_counter", "node_type": "state_candidate", "label": "timer_counter_candidate"},
+    {"node_id": "fact_compare", "node_type": "semantic_fact", "label": "branch compares counter"},
+    {"node_id": "card_full", "node_type": "evidence_card", "label": "full synthetic card"}
+  ],
+  "edges": [
+    {"edge_id": "e1", "source_node": "SYN_OPENPLC_FULL_001", "target_node": "func_main", "edge_type": "has_function", "confidence": "high", "uncertainty_code": "NOT_APPLICABLE"},
+    {"edge_id": "e2", "source_node": "func_main", "target_node": "bb_entry", "edge_type": "has_basic_block", "confidence": "high", "uncertainty_code": "NOT_APPLICABLE"},
+    {"edge_id": "e3", "source_node": "func_main", "target_node": "call_modbus", "edge_type": "calls", "confidence": "medium", "uncertainty_code": "NOT_APPLICABLE"},
+    {"edge_id": "e4", "source_node": "func_main", "target_node": "state_counter", "edge_type": "reads_state", "confidence": "medium", "uncertainty_code": "NOT_APPLICABLE"},
+    {"edge_id": "e5", "source_node": "func_main", "target_node": "fact_compare", "edge_type": "contains_semantic_fact", "confidence": "high", "uncertainty_code": "NOT_APPLICABLE"},
+    {"edge_id": "e6", "source_node": "fact_compare", "target_node": "state_counter", "edge_type": "source_to_state", "confidence": "medium", "uncertainty_code": "NOT_APPLICABLE"},
+    {"edge_id": "e7", "source_node": "func_main", "target_node": "card_full", "edge_type": "summarized_by", "confidence": "high", "uncertainty_code": "NOT_APPLICABLE"}
+  ],
+  "uncertainties": []
+}
