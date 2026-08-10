@@ -1,6 +1,6 @@
 {
   "fixture_id": "SYN_UNEXPLAINED_MISSING",
-  "evidence_label": "TEMPLATE_ONLY",
+  "evidence_label": "SYNTHETIC_FIXTURE",
   "sample": {
     "sample_id": "SYN_MISSING_UNEXPLAINED_001",
     "toolchain": "OpenPLCv2",

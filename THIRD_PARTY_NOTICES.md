@@ -15,4 +15,4 @@ The package includes author-generated derived CSV records needed to verify joins
 
 ## Research code and derived data
 
-The authors must select and approve licenses before public upload. The presence of license templates is not itself a license grant.
+Author-generated research code and documentation are licensed under BSD-3-Clause (`LICENSE`). Author-generated derived data are licensed under CC BY 4.0 (`LICENSE-DATA`). Neither license grant extends to excluded upstream source code or binaries.

@@ -1,0 +1,23 @@
+SCAA-PLC Derived Data License
+
+Copyright (c) 2026, Bowei Ning, Xuejun Zong, Lian Lian, Kan He,
+Yifei Sun, Yuxiang Lei, and Plamen Vasilev
+
+Except for third-party material identified in THIRD_PARTY_NOTICES.md, the
+author-generated derived data in data/, history/, and checksums/ is licensed
+under the Creative Commons Attribution 4.0 International License (CC BY 4.0).
+
+You are free to share and adapt that material for any purpose, provided that
+you give appropriate credit, provide a link to the license, and indicate if
+changes were made. The full license terms are available at:
+
+https://creativecommons.org/licenses/by/4.0/legalcode
+
+Suggested attribution:
+
+  Ning, B.; Zong, X.; Lian, L.; He, K.; Sun, Y.; Lei, Y.; and Vasilev, P.
+  SCAA-PLC JSS Artifact, version 2.0.0, 2026.
+
+This license does not apply to separately acquired PLC-BEAD or OpenPLC source
+code or binaries. Those materials remain governed by their respective
+copyright holders and upstream terms.

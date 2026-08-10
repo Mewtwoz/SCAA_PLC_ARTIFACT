@@ -12,4 +12,4 @@ The initial categories were exercised against three landed failure families: COD
 
 ## Validation status
 
-The package reports slot and code coverage plus cross-pipeline contract instantiation. Independent coder agreement, expert content validation, and a new-category saturation study have not been completed. Accordingly, the paper describes EC1--EC6 and U01--U14 as chosen provenance categories, not a complete or universally validated taxonomy. The accompanying reviewer task protocol is `TEMPLATE_ONLY` until independent responses exist.
+The package reports slot and code coverage plus cross-pipeline contract instantiation. Independent coder agreement, expert content validation, and a new-category saturation study are outside the evidence included in this release. Accordingly, the paper describes EC1--EC6 and U01--U14 as chosen provenance categories, not a complete or universally validated taxonomy.

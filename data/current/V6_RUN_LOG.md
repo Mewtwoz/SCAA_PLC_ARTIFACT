@@ -24,8 +24,6 @@
 - `FULL_POPULATION_SCHEMA_METRICS.csv`: `ccc66d6befae466d7ab251966252a36a4e2112a6ebaf5f368a89a827647501b4`
 - `FULL_POPULATION_SCHEMA_PREDICTIONS.csv`: `e888f165834b2f609ba1f843b042c18aa868400525f774d715bc0c6cf7009cc4`
 - `FULL_POPULATION_TRANSFER_METRICS.csv`: `b62bb5a39cbbf48d6303532dc26932660e0e84a85a698269a647984d92e06fc1`
-- `INDEPENDENT_REVIEWER_TRACE_TASKS.csv`: `573400eb81f2a41954a382ae6754a1f2d3a0e21dc837a969c1513bc3c4a1e262`
-- `INDEPENDENT_REVIEWER_TRACE_TASK_PROTOCOL.md`: `26ab8d995a975ec0c29af28571b7120e32742bf25f0f969071b8488c1c1553ae`
 - `RQ_POPULATION_FLOW.csv`: `8f001d10ee32e6f14d3ed305a8df30da9da0943ba70ad7e01bb9daf7b6492b90`
 - `RQ_POPULATION_FLOW_REPORT.md`: `224e8b1b92256aaa25d4a99a32577f26d0b0d7146f0c4cd4de1b7ac755776ba5`
 - `RUNNING_EXAMPLE_TRACE_CASES.csv`: `ce789eb511fd2a71b9c733fa98616ca523079e1ccd8c4135a6f7888844c53f8f`
@@ -35,4 +33,4 @@
 
 ## Boundary
 
-The automated checks establish record-contract consistency, not human utility, semantic recovery, or vulnerability-detection accuracy. The independent-review task remains a template until completed by human participants.
+The automated checks establish record-contract consistency, not human utility, semantic recovery, or vulnerability-detection accuracy. No human-subject result is included in this release.

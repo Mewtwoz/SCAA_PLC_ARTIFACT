@@ -1,4 +1,4 @@
-# SCAA-PLC JSS Artifact Release Candidate
+# SCAA-PLC JSS Artifact v2.0.0
 
 **Evidence label:** `DERIVED_EVIDENCE`
 
@@ -20,9 +20,8 @@ The command uses only the Python standard library, verifies every payload checks
 - `data/cross_pipeline/`: derived native manifest, relation, and uncertainty tables used by the bounded radare2 instantiation. Raw binaries are excluded.
 - `data/config/`: manifest, split, core/runtime rules, and state-adapter rules.
 - `data/v5/`: earlier row-level method-validation outputs retained for result lineage.
-- `reviewer_task/`: independent reviewer-task protocol and empty response tasks (`TEMPLATE_ONLY`). No human result is claimed.
 - `scripts/`: PLC-BEAD acquisition verifier; `run_artifact.py` replays the fold-wise schema confusion counts from packaged rows.
-- `manuscript_support/`: current LaTeX source, supplement, bibliography, and revision report.
+- `manuscript_support/`: current LaTeX source, supplement, bibliography, and referenced PDF figures.
 - `history/`: non-contributory classifier/ablation chronology removed from the submission supplement.
 - `environment/`: observed build environment and dependency notes.
 - `checksums/`: SHA-256 payload manifest.
@@ -41,6 +40,8 @@ This verifies all 2,431 binary hashes without copying raw files into the package
 
 The one-command validator reproduces and checks the derived reporting-analysis surface. Re-running `nm` from raw inputs requires a separately acquired PLC-BEAD snapshot and GNU binutils. Re-running the radare2 extraction requires the excluded OpenPLC binaries and the original extraction environment; the package verifies the landed derived relation/uncertainty joins but does not claim an extraction rerun without those inputs.
 
-## Release status
+## Licenses and release
 
-`READY_FOR_HUMAN_LICENSE_AND_UPLOAD_DECISION`. Before upload, the authors must choose code and data licenses, replace the license templates, create a fixed release tag, and record the reviewer URL. A persistent archive/DOI is recommended for the submission version.
+Version 2.0.0 supersedes the preliminary public commit `46751eacd6294a4840f9dfbe457e024a88a7d123`. Author-generated code and documentation are released under the BSD 3-Clause License in `LICENSE`. Author-generated derived data are released under CC BY 4.0 as described in `LICENSE-DATA`. These grants do not cover separately acquired upstream source code or binaries; see `THIRD_PARTY_NOTICES.md`.
+
+The immutable release is `v2.0.0`. Archiving that release with Zenodo or an equivalent repository is recommended so the citation metadata can be updated with a persistent DOI.

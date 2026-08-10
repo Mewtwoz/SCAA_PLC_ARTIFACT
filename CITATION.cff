@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this artifact, please cite it using the metadata below."
+title: "SCAA-PLC JSS Artifact"
+version: 2.0.0
+date-released: 2026-08-10
+type: software
+authors:
+  - family-names: Ning
+    given-names: Bowei
+  - family-names: Zong
+    given-names: Xuejun
+  - family-names: Lian
+    given-names: Lian
+  - family-names: He
+    given-names: Kan
+  - family-names: Sun
+    given-names: Yifei
+  - family-names: Lei
+    given-names: Yuxiang
+  - family-names: Vasilev
+    given-names: Plamen
+repository-code: "https://github.com/Mewtwoz/SCAA_PLC_ARTIFACT"
+url: "https://github.com/Mewtwoz/SCAA_PLC_ARTIFACT/releases/tag/v2.0.0"
+license: BSD-3-Clause
+keywords:
+  - PLC binary analysis
+  - reproducibility artifact
+  - evidence cards
+  - static analysis

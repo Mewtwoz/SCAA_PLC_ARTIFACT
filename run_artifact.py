@@ -96,7 +96,8 @@ result={
  "checks":checks,
  "failures":sorted(set(fail)),
  "scope":"Derived reporting analysis is self-contained; full raw extraction requires separately acquired PLC-BEAD inputs.",
- "human_actions":["select code/data licenses","upload fixed release and record URL/tag","optionally archive release for DOI"],
+ "release":"v2.0.0",
+ "licenses":{"code":"BSD-3-Clause","derived_data":"CC-BY-4.0"},
  "evidence_label":"DERIVED_EVIDENCE",
 }
 print(json.dumps(result,indent=2))

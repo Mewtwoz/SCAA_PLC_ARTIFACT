@@ -12,9 +12,11 @@
 \usepackage{graphicx}
 \usepackage{seqsplit}
 \usepackage{url}
+\usepackage{placeins}
 
 \Urlmuskip=0mu plus 1mu
 \emergencystretch=3em
+\newcommand{\artifactpath}[1]{\texttt{\seqsplit{#1}}}
 \renewcommand{\thefigure}{S\arabic{figure}}
 \renewcommand{\thetable}{S\arabic{table}}
 
@@ -118,9 +120,10 @@ The oracle removes Structured Text comments and extracts line-anchored \texttt{F
 
 \section{Fold-wise signature decoder}
 
-Let $s_m(x)$ denote the categorical signature of sample $x$ under representation $m\in\{S2,S3,S6\}$. For held-out fold $k$, the decoder assigns the majority target among training rows with the same signature:
+Let $s_m(x)$ denote the categorical signature of sample $x$ under representation $m\in\{S2,S3,S6\}$. For held-out fold $k$, Equation~\eqref{eq:signature_decoder} assigns the majority target among training rows with the same signature:
 
 \begin{equation}
+\label{eq:signature_decoder}
 \widehat{y}_{m,k}(x)=
 \begin{cases}
 \operatorname{majority}\{y_j:s_m(x_j)=s_m(x),\,j\notin k\}, & \text{if observed},\\
@@ -128,7 +131,7 @@ Let $s_m(x)$ denote the categorical signature of sample $x$ under representation
 \end{cases}
 \end{equation}
 
-Ties resolve deterministically toward the numerically smaller class. No held-out row has an unseen signature. \texttt{S2} contains EC1 and EC6; \texttt{S3} contains EC1, EC4, and EC6; \texttt{S6} contains EC1--EC6. This is an information-retention test, not a production classifier or an analyst-utility experiment.
+Ties resolve deterministically toward the numerically smaller class. No held-out row has an unseen signature. \texttt{S2} contains EC1 and EC6; \texttt{S3} contains EC1, EC4, and EC6; \texttt{S6} contains EC1--EC6. This is an information-retention test, not a production classifier or an analyst-utility experiment. Table~\ref{tab:schema_results} reports the resulting full-population metrics.
 
 \begin{table*}[t]
 \centering
@@ -153,6 +156,8 @@ Every source-task signature is target-ambiguous in the full corpus. The result m
 
 \section{Contract invariants and trace cases}
 
+Table~\ref{tab:contract_invariants} defines the five machine-checkable properties and records each realized check surface.
+
 \begin{table*}[t]
 \centering
 \small
@@ -171,7 +176,7 @@ I5 cross-pipeline hash join & 6,677 & 0 & Relation/uncertainty hashes join nativ
 \end{tabularx}
 \end{table*}
 
-The running-example artifact contains three rows: \texttt{geb\_ARRAY\_HAV} (direct GEB/source agreement), \texttt{geb\_AIN} (source-negative contrast with U09b), and \texttt{codesys\_\_ARRAY\_ABS} (U01/U02/U11/U13 tool gap). Each row stores raw observation, rule/provenance, EC vector, oracle, allowed conclusion, and one rejected aggregate claim. These traces establish inspectable record chains by construction, not human usefulness.
+The running-example artifact contains three rows: \texttt{geb\_ARRAY\_HAV} (direct GEB/source agreement), \texttt{geb\_AIN} (source-negative contrast with U09b), and \texttt{codesys\_\_ARRAY\_ABS} (U01/U02/U11/U13 tool gap). Each row stores raw observation, rule/provenance, EC vector, oracle, allowed conclusion, and one rejected aggregate claim. These traces establish inspectable record chains by construction.
 
 \section{Bounded second-pipeline instantiation}
 
@@ -183,12 +188,36 @@ All 10 analyzed binaries are OpenPLC-derived GCC/x86-64 artifacts, nine at O0 an
 
 All EC slots occur in the 2{,}431-card population. EC1, EC2, EC3, and EC5 contain 1{,}876 filled and 555 partial rows; EC4 contains 475 filled and 1{,}956 partial rows; EC6 is filled for all rows. U01, U02, U11, U13, and U09b occur. The other defined U-codes are unobserved in the primary population.
 
-Observed coverage does not prove category necessity, sufficiency, or saturation. No independent coding or expert content-validation result exists. The artifact therefore includes a \texttt{TEMPLATE\_ONLY} counterbalanced reviewer-task protocol and empty response table. Neither is counted as empirical evidence until independent humans complete it under the required ethics or institutional process.
+Observed coverage does not prove category necessity, sufficiency, or saturation. No independent coding or expert content-validation result is included in this release; the reported categories therefore remain bounded to the evaluated evidence.
+
+Figures~\ref{fig:ec_status}--\ref{fig:ec_cofilled} are regenerated from the current 2{,}431-row card table; they do not reuse the historical 2{,}353-row completeness figures retained under \path{history/}.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.86\textwidth]{figs/jss_s1_ec_status_v6.pdf}
+\caption{Current EC-slot status is reported as filled/partial row counts, not as a quality or validity score. EC1, EC2, EC3, and EC5 each contain 1{,}876 filled and 555 partial rows; EC4 contains 475 filled and 1{,}956 partial rows; EC6 is filled for all 2{,}431 rows.}
+\label{fig:ec_status}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.90\textwidth]{figs/jss_s2_primary_reason_v6.pdf}
+\caption{Primary boundary reasons are toolchain-dependent in the current 2{,}431-row population. U01 covers all 555 CODESYS rows; the 1{,}876 non-CODESYS rows contain 1{,}401 U09b records and 475 separate \texttt{NOT\_APPLICABLE} sentinels. U14 is not used for these sentinels.}
+\label{fig:primary_reason}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.72\textwidth]{figs/jss_s3_ec_cofilled_v6.pdf}
+\caption{Pairwise co-filled counts expose the current schema's dependence structure. Four observation slots co-fill on the same 1{,}876 rows, EC4 co-fills with them on 475 rows, and EC6 is filled for every row; these counts do not establish category independence or human utility.}
+\label{fig:ec_cofilled}
+\end{figure*}
+\FloatBarrier
 
 \section{Current claim-to-artifact matrix}
 
-\begin{small}
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.07\textwidth}>{\raggedright\arraybackslash}p{0.12\textwidth}>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}@{}}
+\begin{scriptsize}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.07\textwidth}>{\raggedright\arraybackslash}p{0.16\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.40\textwidth}@{}}
 \toprule
 ID & Status & Allowed wording & Evidence \\
 \midrule
@@ -197,27 +226,27 @@ ID & Status & Allowed wording & Evidence \\
 ID & Status & Allowed wording & Evidence \\
 \midrule
 \endhead
-C1 & SAFE & Current card/tool-output accounting covers all 2,431 manifest binaries; source-role analysis covers 1,876 reliable ST mappings. & \path{RQ_POPULATION_FLOW.csv}; \path{ALL_POPULATION_EVIDENCE_CARDS.csv}; \path{ALL_POPULATION_SOURCE_ORACLE.csv} \\
-C2 & CONDITIONAL & The same-snapshot GEB lexical rule agrees on 353 positive and 264 negative rows; its ungated predicate misses 735 OpenPLC source-positive rows. & \path{FULL_POPULATION_TRANSFER_METRICS.csv}; \path{ALL_POPULATION_SOURCE_ORACLE.csv}; post-hoc syntax boundary only \\
-C3 & CONDITIONAL & S3 and S6 retain identical evaluated task information; S2 loses source-role information. & \path{FULL_POPULATION_SCHEMA_METRICS.csv}; information-retention only \\
-C4 & SAFE & Five record-contract invariants pass with zero failures on their declared check surfaces. & \path{CONTRACT_INVARIANT_RESULTS.csv}; machine-contract properties only \\
-C5 & SAFE & Three trace cases connect raw observation, provenance, EC state, U-code, oracle, and allowed conclusion. & \path{RUNNING_EXAMPLE_TRACE_CASES.csv}; no human-utility result \\
-C6 & CONDITIONAL & The record contract is instantiated over 10 OpenPLC/radare2 cards, 6,657 relation rows, and 20 uncertainty rows. & \path{CROSS_PIPELINE_EVIDENCE_CARDS.csv}; bounded smoke test only \\
-C7 & SAFE & The 2,353 pre-existing cards have zero state/hash regression mismatches after the 78-row expansion. & \path{V6_CONTENT_VALIDATION_RESULT.json} \\
-C8 & CONDITIONAL & A GitHub-ready release candidate has relative paths, checksums, third-party notices, and a clean-room validator. & Public URL, DOI, and author-selected licenses remain pending \\
+C1 & SAFE & Current card/tool-output accounting covers all 2,431 manifest binaries; source-role analysis covers 1,876 reliable ST mappings. & \artifactpath{RQ\_POPULATION\_FLOW.csv}; \artifactpath{ALL\_POPULATION\_EVIDENCE\_CARDS.csv}; \artifactpath{ALL\_POPULATION\_SOURCE\_ORACLE.csv} \\
+C2 & CONDITIONAL & The same-snapshot GEB lexical rule agrees on 353 positive and 264 negative rows; its ungated predicate misses 735 OpenPLC source-positive rows. & \artifactpath{FULL\_POPULATION\_TRANSFER\_METRICS.csv}; \artifactpath{ALL\_POPULATION\_SOURCE\_ORACLE.csv}; post-hoc syntax boundary only \\
+C3 & CONDITIONAL & S3 and S6 retain identical evaluated task information; S2 loses source-role information. & \artifactpath{FULL\_POPULATION\_SCHEMA\_METRICS.csv}; information-retention only \\
+C4 & SAFE & Five record-contract invariants pass with zero failures on their declared check surfaces. & \artifactpath{CONTRACT\_INVARIANT\_RESULTS.csv}; machine-contract properties only \\
+C5 & SAFE & Three trace cases connect raw observation, provenance, EC state, U-code, oracle, and allowed conclusion. & \artifactpath{RUNNING\_EXAMPLE\_TRACE\_CASES.csv}; no human-utility result \\
+C6 & CONDITIONAL & The record contract is instantiated over 10 OpenPLC/radare2 cards, 6,657 relation rows, and 20 uncertainty rows. & \artifactpath{CROSS\_PIPELINE\_EVIDENCE\_CARDS.csv}; bounded smoke test only \\
+C7 & SAFE & The 2,353 pre-existing cards have zero state/hash regression mismatches after the 78-row expansion. & \artifactpath{V6\_CONTENT\_VALIDATION\_RESULT.json} \\
+C8 & SAFE & The immutable \href{https://github.com/Mewtwoz/SCAA_PLC_ARTIFACT/releases/tag/v2.0.0}{\texttt{v2.0.0} GitHub release} has relative paths, checksums, third-party notices, explicit code/data licenses, and a clean-room validator. & Clean-clone validation passed; archival DOI recommended \\
 \bottomrule
 \end{longtable}
-\end{small}
+\end{scriptsize}
 
 \section{Forbidden claims}
 
-SCAA-PLC does not claim human-utility improvement, complete or sound semantic recovery, vulnerability detection, compiler/vendor/architecture portability, universal CODESYS opacity, a complete uncertainty taxonomy, comparative superiority, supply-chain analysis, or SBOM generation. The independent-review protocol cannot be cited as a result until completed.
+SCAA-PLC does not claim human-utility improvement, complete or sound semantic recovery, vulnerability detection, compiler/vendor/architecture portability, universal CODESYS opacity, a complete uncertainty taxonomy, comparative superiority, supply-chain analysis, or SBOM generation. No human-subject result is included in the release.
 
 \section{Artifact integrity and acquisition policy}
 
-The release candidate contains author-generated derived data, scripts, checksums, environment notes, and clean-room verification logs. It excludes raw PLC-BEAD binaries and sources because the examined upstream snapshot contains no explicit license file. Reviewers acquire the public snapshot separately and run the supplied verifier, which compares binary and source hashes against the evidence-card and source-oracle records. Cross-pipeline raw binaries are also excluded; only derived manifest, relation, and uncertainty tables required by the reporting analysis are included.
+The release contains author-generated derived data, scripts, checksums, environment notes, and clean-room verification logs. It excludes raw PLC-BEAD binaries and sources because the examined upstream snapshot contains no explicit license file. Reviewers acquire the public snapshot separately and run the supplied verifier, which compares binary and source hashes against the evidence-card and source-oracle records. Cross-pipeline raw binaries are also excluded; only derived manifest, relation, and uncertainty tables required by the reporting analysis are included.
 
-The package is not public until the authors select code/data licenses and upload the fixed directory to a reviewer-accessible repository or archive. A GitHub URL alone should be paired with a release tag; a persistent DOI is recommended for the submission version~\cite{heumueller_software_artifacts2020}.
+The package is publicly inspectable as the immutable \href{https://github.com/Mewtwoz/SCAA_PLC_ARTIFACT/releases/tag/v2.0.0}{\texttt{v2.0.0} GitHub release}, which supersedes preliminary commit \texttt{46751eacd629}. A clean clone of the release passed \texttt{python3 run\_artifact.py}. That validator rechecks packaged checksums and row counts, stored-invariant-result completeness, schema-metric replay, relation and uncertainty counts, and path sanitization; it does not rerun raw binary or source extraction. Full I1 binary-hash and I4 source-hash replay requires a separately acquired PLC-BEAD snapshot and the supplied acquisition verifier. Author-generated code and documentation use BSD-3-Clause, and author-generated derived data use CC BY 4.0. A persistent DOI is recommended for the submission version~\cite{heumueller_software_artifacts2020}.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{refs}

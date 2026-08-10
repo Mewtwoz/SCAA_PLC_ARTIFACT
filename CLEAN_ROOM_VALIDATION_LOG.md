@@ -2,10 +2,12 @@
 
 **Evidence label:** `DERIVED_EVIDENCE`
 
-- executed_utc: `2026-08-09T11:23:58.396984+00:00`
-- command: `python3 run_artifact.py`
+- validated_at: `2026-08-10 Asia/Shanghai`
+- release: `v2.0.0`
+- command: `python run_artifact.py`
 - exit_code: `0`
-- temporary_copy_removed: `true`
+- expected_status: `PASS`
+- validation_boundary: all packaged checksums, row-count surfaces, five stored invariants, schema-metric replay, relation/uncertainty counts, and path sanitization
 
 ```json
 {
@@ -24,11 +26,13 @@
   },
   "failures": [],
   "scope": "Derived reporting analysis is self-contained; full raw extraction requires separately acquired PLC-BEAD inputs.",
-  "human_actions": [
-    "select code/data licenses",
-    "upload fixed release and record URL/tag",
-    "optionally archive release for DOI"
-  ],
+  "release": "v2.0.0",
+  "licenses": {
+    "code": "BSD-3-Clause",
+    "derived_data": "CC-BY-4.0"
+  },
   "evidence_label": "DERIVED_EVIDENCE"
 }
 ```
+
+The release commit and tag are additionally verified from a fresh remote clone before publication; the exact commit SHA and result are recorded in the GitHub Release notes.

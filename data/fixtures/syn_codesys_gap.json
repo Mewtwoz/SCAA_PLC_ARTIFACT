@@ -1,6 +1,6 @@
 {
   "fixture_id": "SYN_CODESYS_GAP",
-  "evidence_label": "TEMPLATE_ONLY",
+  "evidence_label": "SYNTHETIC_FIXTURE",
   "sample": {
     "sample_id": "SYN_CODESYS_GAP_001",
     "toolchain": "CODESYS",
