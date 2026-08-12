@@ -3,7 +3,7 @@
 **Evidence label:** `DERIVED_EVIDENCE`
 
 - validated_at: `2026-08-12 Asia/Shanghai`
-- release_candidate: `v2.1.0-rc1`
+- release: `v2.1.0`
 - method: package copied to a new `/tmp` directory with `.git`, `__pycache__`, and bytecode excluded
 - command: `python3 run_artifact.py`
 - exit_code: `0`

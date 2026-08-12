@@ -1,4 +1,4 @@
-# SCAA-PLC artifact v2.1.0-rc1 release notes
+# SCAA-PLC artifact v2.1.0 release notes
 
 **Evidence label:** `DERIVED_EVIDENCE`
 
@@ -20,6 +20,9 @@
 
 The RO-Crate recommended-level count is 134/135 checks, not 133/135. One recommended check emitted two findings with the same identifier. The 55/55 required-profile result is unchanged.
 
-## Publication status
+## Publication identity
 
-This directory is a local release candidate. The human owner must publish an immutable Git tag/release and a new Zenodo version before the manuscript is updated from the existing v2.0 identifiers.
+- GitHub release: `https://github.com/Mewtwoz/SCAA_PLC_ARTIFACT/releases/tag/v2.1.0`
+- Release commit: `7f87738ecbf19c09d5d63bee99e6de86ac32bce1`
+- Zenodo version DOI: `10.5281/zenodo.21896622`
+- Zenodo concept DOI: `10.5281/zenodo.21869717`

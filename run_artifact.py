@@ -166,7 +166,7 @@ if extended["status"] != "PASS":
 
 result = {
     "status": "PASS" if not failures else "FAIL",
-    "release_candidate": "v2.1.0-rc1",
+    "release": "v2.1.0",
     "checks": core_checks,
     "extended_validation": extended,
     "failures": sorted(set(failures)),

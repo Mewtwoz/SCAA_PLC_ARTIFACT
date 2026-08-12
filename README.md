@@ -1,10 +1,10 @@
-# SCAA-PLC JSS Artifact v2.1.0 release candidate
+# SCAA-PLC JSS Artifact v2.1.0
 
 **Evidence label:** `DERIVED_EVIDENCE`
 
-This release candidate synchronizes the public v2.0 artifact with the scientifically locked JSS content. It packages the bivariate evidence contract, the source-role and EC1 construction-check records, fault-injection outputs, OpenPLC eligibility audit, bounded Schneider/ARM adapter, author-defined report-requirement check, Workflow Run RO-Crate/PROV-O export, and the current CAS manuscript-support files.
+This release synchronizes the public v2.0 artifact with the scientifically locked JSS content. It packages the bivariate evidence contract, the source-role and EC1 construction-check records, fault-injection outputs, OpenPLC eligibility audit, bounded Schneider/ARM adapter, author-defined report-requirement check, Workflow Run RO-Crate/PROV-O export, and the current CAS manuscript-support files.
 
-The tree is prepared as `v2.1.0-rc1`. It is not an immutable GitHub/Zenodo release until the human owner publishes a new tag and archive version.
+The immutable release is available as GitHub tag [`v2.1.0`](https://github.com/Mewtwoz/SCAA_PLC_ARTIFACT/releases/tag/v2.1.0), fixed at commit `7f87738ecbf19c09d5d63bee99e6de86ac32bce1`. Zenodo archives that release under version DOI [`10.5281/zenodo.21896622`](https://doi.org/10.5281/zenodo.21896622) and concept DOI [`10.5281/zenodo.21869717`](https://doi.org/10.5281/zenodo.21869717).
 
 ## Quick start
 
@@ -59,8 +59,8 @@ python3 scripts/verify_plcbead_acquisition.py /path/to/PLC-BEAD
 
 This verifies all 2,431 binary hashes without copying upstream inputs into the package. See `THIRD_PARTY_NOTICES.md` for OpenPLC and Schneider boundaries.
 
-## Licenses and publication handoff
+## Licenses and publication identity
 
 Author-generated code and documentation are released under BSD-3-Clause (`LICENSE`). Author-generated derived data are released under CC BY 4.0 (`LICENSE-DATA`). These grants do not cover separately acquired upstream source code, PLC-BEAD binaries, OpenPLC binaries, or Schneider firmware.
 
-Before publication, the human owner must create the immutable release/tag, archive it, and replace the release-candidate version/URL in `CITATION.cff` and the manuscript with verified GitHub and Zenodo identifiers. Do not reuse the v2.0 commit or DOI metadata as if it identified this expanded tree.
+The GitHub release/tag, full commit, Zenodo version DOI, and Zenodo concept DOI above identify v2.1.0. The prior v2.0 DOI remains valid for its earlier immutable version but does not identify this expanded tree.

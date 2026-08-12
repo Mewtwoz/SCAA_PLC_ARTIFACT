@@ -1,7 +1,7 @@
 cff-version: 1.2.0
-message: "This is a v2.1.0 release candidate. Cite the immutable tagged release after publication."
+message: "Please cite the immutable v2.1.0 release using the version DOI."
 title: "SCAA-PLC JSS Artifact"
-version: "2.1.0-rc1"
+version: "2.1.0"
 date-released: 2026-08-12
 type: software
 authors:
@@ -20,7 +20,8 @@ authors:
   - family-names: Vasilev
     given-names: Plamen
 repository-code: "https://github.com/Mewtwoz/SCAA_PLC_ARTIFACT"
-url: "https://github.com/Mewtwoz/SCAA_PLC_ARTIFACT"
+url: "https://github.com/Mewtwoz/SCAA_PLC_ARTIFACT/releases/tag/v2.1.0"
+doi: "10.5281/zenodo.21896622"
 license: BSD-3-Clause
 keywords:
   - PLC binary analysis

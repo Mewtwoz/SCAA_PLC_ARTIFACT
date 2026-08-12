@@ -75,7 +75,7 @@
     "code": "BSD-3-Clause",
     "derived_data": "CC-BY-4.0"
   },
-  "release_candidate": "v2.1.0-rc1",
+  "release": "v2.1.0",
   "scope": "The package validates derived reporting analysis, evidence-card construction checks, source-role retention, contract invariants, bounded OpenPLC/Schneider adapters, and portable provenance records. Raw binary/source extraction and human-utility evaluation are outside the one-command replay.",
   "status": "PASS"
 }
