@@ -1,0 +1,7 @@
+test_id,fault_target,injected_fault,observed_guard_result,pass,interpretation_boundary,evidence_label
+FI-I1,I1 identity hash,replace recorded SHA-256,HASH_MISMATCH,True,In-memory mutation of copied records; source evidence was not modified.,DERIVED_EVIDENCE
+FI-I2,I2 uncertainty closure,delete EC1 closure event,UNCLOSED_UNOBSERVED_FIELD,True,In-memory mutation of copied records; source evidence was not modified.,DERIVED_EVIDENCE
+FI-I3,I3 tool-gap non-negativity,promote CODESYS unobserved state to not_supported,TOOL_GAP_MISCLASSIFIED,True,In-memory mutation of copied records; source evidence was not modified.,DERIVED_EVIDENCE
+FI-I4,I4 source trace,replace mapped source SHA-256,SOURCE_HASH_MISMATCH,True,In-memory mutation of copied records; source evidence was not modified.,DERIVED_EVIDENCE
+FI-I5,I5 cross-pipeline join,replace relation-row SHA-256,RELATION_MANIFEST_HASH_MISMATCH,True,In-memory mutation of copied records; source evidence was not modified.,DERIVED_EVIDENCE
+FI-ADAPTER-01,relation adapter allowlist,inject unknown relation type,UNSUPPORTED_RELATION_TYPE,True,In-memory mutation of copied records; source evidence was not modified.,DERIVED_EVIDENCE

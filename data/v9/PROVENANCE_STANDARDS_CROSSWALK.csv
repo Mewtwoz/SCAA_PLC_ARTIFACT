@@ -1,0 +1,9 @@
+scaa_element,prov_o_mapping,workflow_run_ro_crate_mapping,empirical_reporting_role,mapping_status,boundary,evidence_label
+binary/sample identity,prov:Entity; prov:value/content hash,File entity with sha256,subject and input identity,DIRECT_CONCEPTUAL,No formal profile conformance claim,DERIVED_EVIDENCE
+configured extraction run,prov:Activity used binary and generated observation,CreateAction with instrument,"procedure, software, version, command",DIRECT_CONCEPTUAL,Runtime export is illustrative,DERIVED_EVIDENCE
+tool and version,prov:SoftwareAgent associatedWith activity,SoftwareApplication instrument,instrumentation and environment,DIRECT_CONCEPTUAL,Package-manager provenance varies by tool,DERIVED_EVIDENCE
+EC observation field,prov:Entity generatedBy extraction activity,formalParameter/output entity,sample-level measurement,PARTIAL_CONCEPTUAL,EC semantics are SCAA-specific,DERIVED_EVIDENCE
+support status,SCAA extension property on observation entity,PropertyValue extension,result interpretation boundary,SCAA_EXTENSION,Not a PROV-O truth or confidence term,DERIVED_EVIDENCE
+closure status and U-code,SCAA extension entity linked to observation,PropertyValue/HowToStep extension,missingness and uncertainty disclosure,SCAA_EXTENSION,Not a standardized uncertainty ontology,DERIVED_EVIDENCE
+source rule and source hash,prov:Entity used by rule activity,File/CreativeWork input,oracle/rule provenance,DIRECT_CONCEPTUAL,Source syntax is not runtime semantics,DERIVED_EVIDENCE
+I1-I5 invariant ledger,prov:Activity verification with generated result,CreateAction result,artifact consistency and reproducibility,PARTIAL_CONCEPTUAL,Contract checks are not semantic validation,DERIVED_EVIDENCE

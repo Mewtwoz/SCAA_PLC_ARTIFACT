@@ -1,0 +1,584 @@
+\documentclass[a4paper,fleqn]{cas-dc}
+
+\usepackage[authoryear,longnamesfirst]{natbib}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{seqsplit}
+\usepackage{url}
+\usepackage{xurl}
+\usepackage{placeins}
+
+\Urlmuskip=0mu plus 1mu
+\emergencystretch=4em
+\setlength{\tabcolsep}{3pt}
+\newcommand{\SCAA}{SCAA-PLC}
+\newcommand{\artifactpath}[1]{\texttt{\seqsplit{#1}}}
+\providecommand{\Description}[1]{}
+
+\begin{document}
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{0.8}
+\def\textpagefraction{0.08}
+\shorttitle{Sample-Level Evidence Contracts for PLC Binary-Analysis Studies}
+\shortauthors{Ning et al.}
+\hypersetup{pdfauthor={Bowei Ning, Xuejun Zong, Lian Lian, Kan He, Yifei Sun, Yuxiang Lei, Plamen Vasilev}}
+
+\title[mode=title]{SCAA-PLC: Sample-Level Evidence Contracts for PLC Binary-Analysis Studies}
+
+\author[aff1,aff2]{Bowei Ning}[orcid=0000-0003-4553-9096]
+
+\author[aff3,aff2]{Xuejun Zong}[orcid=0009-0000-0084-2775]
+\cormark[1]
+\ead{xuejun_zong@syuct.edu.cn}
+
+\author[aff3,aff2]{Lian Lian}[orcid=0000-0002-5093-2450]
+\ead{lianlian@syuct.edu.cn}
+
+\author[aff3,aff2]{Kan He}
+
+\author[aff3,aff2]{Yifei Sun}
+
+\author[aff1,aff2]{Yuxiang Lei}
+
+\author[aff4]{Plamen Vasilev}
+
+\cortext[cor1]{Corresponding authors.}
+
+\affiliation[aff1]{organization={School of Artificial Intelligence, Shenyang University of Technology},
+                    city={Shenyang}, country={China}}
+\affiliation[aff2]{organization={Key Laboratory of Information Security for Petrochemical Industry in Liaoning Province},
+                    city={Shenyang}, country={China}}
+\affiliation[aff3]{organization={School of Information Engineering, Shenyang University of Chemical Technology},
+                    city={Shenyang}, country={China}}
+\affiliation[aff4]{organization={Department of Industrial Automation, University of Chemical Technology and Metallurgy},
+                    city={Sofia}, country={Bulgaria}}
+
+
+\begin{abstract}
+Aggregate metrics in binary-analysis studies obscure which observations support each sample and why configured tool paths produce no usable output. SCAA-PLC is a sample-level evidence-card reporting method that separates nominal observation support from explanation closure and links uncertainty codes, hashes, provenance, and execution records without treating tool output as semantic ground truth. We instantiated the contract for all 2{,}431 PLC-BEAD binaries; 1{,}876 unambiguous Structured Text mappings supported source-role analysis. In a same-snapshot validity case, a GEB-scoped lexical rule agreed exactly with a source-syntax oracle, whereas the ungated predicate had zero recall on 735 source-positive OpenPLC rows. On the nontrivial source-role retention task, the three-channel and full-contract representations yielded identical held-out predictions; all representations losslessly preserved the EC1-derived tool-output state by construction. A hash-joined adapter constructed 10 evidence cards from 6{,}657 radare2 relations; a separately acquired Schneider ARM/VxWorks corpus with an author-built adapter yielded two closed cards while leaving unavailable semantic and graph fields unobserved. Five contract invariants had zero failures, six injected faults triggered their intended guards, and a Workflow Run RO-Crate export passed 55/55 required checks. Together, these results establish reproducible sample accounting, explicit evidence-state closure, and hash-linked adapter instantiation across heterogeneous PLC binary-analysis records.
+\end{abstract}
+
+\begin{keywords}
+PLC binaries \sep empirical software evaluation \sep evidence cards \sep provenance \sep uncertainty logging \sep reproducibility
+\end{keywords}
+
+\maketitle
+\hypersetup{pdftitle={SCAA-PLC: Sample-Level Evidence Contracts for PLC Binary-Analysis Studies},pdfauthor={Bowei Ning, Xuejun Zong, Lian Lian, Kan He, Yifei Sun, Yuxiang Lei, Plamen Vasilev}}
+
+\section{Introduction}
+
+Empirical binary-analysis studies commonly compress heterogeneous samples into aggregate scores. Such scores cannot show which binary-visible observations were available, whether a result came from binary content or benchmark metadata, or why a tool produced no usable output. This creates a software-evaluation problem: reviewers can inspect the reported metric without being able to trace each sample to its input, transformation, evidence state, and known boundary. SCAA-PLC addresses that problem by making each sample, observation source, evidence state, interpretation boundary, and execution trace explicit.
+
+A concrete example illustrates the gap. For \path{geb_ARRAY_HAV}, GNU \texttt{nm} emits a \texttt{dt\_FB\_} name and the corresponding Structured Text file explicitly declares a \texttt{FUNCTION\_BLOCK}; EC4 is \texttt{supported} and needs no closure event. For \path{geb_AIN}, the fixed state-role rule is attempted but finds no qualifying pattern; EC4 is \texttt{not\_supported} with an explained U09b boundary, while the source separately declares a \texttt{FUNCTION}. For \path{codesys__ARRAY_ABS}, the same \texttt{nm}-based path emits no symbols, so EC1--EC5 are \texttt{unobserved} with explained tool/format closure rather than negative semantic findings. An aggregate metric cannot preserve these different evidential states.
+
+Figure~\ref{fig:motivation} contrasts that aggregate view with the three sample-level evidence states retained by SCAA-PLC.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figs/fig1_motivation.pdf}
+\Description{Three observed samples are compressed into an aggregate symbol count, which loses source-role, tool-gap, and claim-boundary information. SCAA-PLC instead preserves supported, rule-not-supported with explanation, and unobserved-with-explanation states for the three samples.}
+\caption{Aggregate-only reporting collapses three distinct observation states, whereas SCAA-PLC retains their source, uncertainty, and allowable-claim boundaries. The recorded examples show the sample-level distinctions preserved by the evidence contract.}
+\label{fig:motivation}
+\end{figure*}
+
+The primary study uses all 2{,}431 PLC-BEAD binaries from CODESYS, GEB Automation IDE (GEB), OpenPLC v2, and OpenPLC v3. A deterministic ten-fold assignment keeps samples sharing the same inferred program name in one fold. The historical function-classification task can score 2{,}353 rows, but that label gate no longer controls the present reporting tasks: card and tool-output accounting use all 2{,}431 rows, and source-role analysis uses the 1{,}876 rows with an unambiguous Structured Text mapping. The inferred-name-disjoint protocol provides a reproducible program-level separation. The reporting contract retains five typed observation fields, an independent card-closure field, source rules, uncertainty events, graph records, and execution logs. The compared representations are \(S2=\{\mathrm{EC1},\text{card closure}\}\), \(S3=\{\mathrm{EC1},\mathrm{EC4},\text{card closure}\}\), and \(S6=\{\mathrm{EC1--EC5},\text{card closure}\}\); the numerals denote conceptual reporting fields rather than stored columns. Because four observation fields co-vary on PLC-BEAD, this comparison tests the empirical information added by EC4 while retaining the full contract as the trace-preserving form.
+
+The validity design separates a production rule from a transfer probe. SA-001 is explicitly scoped to GEB and agrees with the source-syntax oracle on 353 function-block and 264 non-function-block rows. A separate ungated probe removes only the toolchain gate and applies the unchanged \texttt{dt\_FB\_} pattern to all three source-available toolchains. The probe has zero recall on 359 OpenPLC v2 and 376 OpenPLC v3 source-positive rows. These OpenPLC rows are false negatives for the ungated probe, not for the scoped production rule. Within its declared same-snapshot scope, the case isolates the behavior of the production rule from the transfer behavior of its lexical predicate.
+
+Two further analyses test the reporting method rather than the GEB convention alone. First, a transparent signature decoder is trained on nine inferred-name folds and evaluated on the tenth for the nontrivial source-function-block target. The three-channel and full-contract representations have the same balanced accuracy (0.692) and macro F1 (0.638), compared with 0.500 and 0.367 for the two-field summary. A separate construction check confirms that all three representations losslessly preserve the 2{,}431-row EC1-derived tool-output state. The result identifies three-channel redundancy for source-role retention while the full contract retains field-level provenance. Second, two adapters instantiate the same contract outside the primary feature table. The native OpenPLC/radare2 path~\citep{radare2} begins with 56 hash-profiled binaries; 10 meet the reconstructed adapter-input rule because their sample identifiers and SHA-256 values join to 6{,}657 landed relation rows and 20 uncertainty records. The other 46 remain reported as lacking landed relation rows. A separately acquired Schneider ARM/VxWorks corpus with an author-built adapter uses verified archive, payload, and derived function-list hashes to construct two closed cards. Together, the adapters exercise the contract over relation-rich x86-64 records and derived ARM/VxWorks function summaries while preserving their distinct observation patterns.
+
+This paper makes four contributions:
+
+\begin{enumerate}
+\item It defines a sample-level evidence-card contract that separates nominal observation support from explanation closure and links both to provenance and execution records, with five machine-checkable invariants and row-level trace cases.
+\item It separates a GEB-scoped production rule from an ungated cross-toolchain probe and evaluates the same-snapshot lexical boundary against a separately extracted source-syntax oracle.
+\item It separates a lossless EC1 construction check from a nontrivial fold-wise source-role retention task, showing that three empirical channels match the full contract while two fields lose source-role information.
+\item It demonstrates bounded record-contract instantiation on native OpenPLC/radare2 and a separately acquired Schneider/ARM corpus, adds six guard-triggering fault injections, profile-validates a Workflow Run RO-Crate export, checks three PROV-O link families, and evaluates three author-constructed report representations against nine author-defined design requirements as an engineering control.
+\end{enumerate}
+
+These contributions target three research questions:
+\begin{itemize}
+\item \textbf{RQ1 (Rule validity and transfer):} Does the scoped GEB rule agree with a separately extracted source-syntax oracle, and what happens when its lexical predicate is applied without a toolchain gate?
+\item \textbf{RQ2 (Dataset-specific channel redundancy):} How do the two-field, three-channel, and full-contract representations compare on the nontrivial source-role retention task, and do they losslessly encode the EC1-derived tool-output state?
+\item \textbf{RQ3 (Bounded contract instantiation):} Can the reporting contract be instantiated over additional binary-analysis pipelines while preserving applicable hashes, provenance, and explicit uncertainty?
+\end{itemize}
+
+Section~2 reviews PLC binary recovery and empirical reporting. Section~3 defines the task-specific populations, evidence sets, and controls. Section~4 specifies SCAA-PLC, Section~5 evaluates rule validity, dataset-specific channel redundancy, contract invariants, bounded additional-pipeline instantiation, author-defined report requirements, and execution controls, and Section~6 discusses interpretation and limitations.
+
+
+% Source: PAPER1_MANUSCRIPT_S2_BACKGROUND_DRAFT.md
+
+\section{Background and Related Work}
+
+PLC binary analysis sits at the intersection of industrial-control semantics, compiler artifacts, and evaluation design. Operational technology guidance supplies the control-system context~\citep{nist_sp800_82r3}. Firmware systems such as FIRMADYNE, KARONTE, FirmSolo, HALucinator, and SaTC pursue re-hosting, cross-binary analysis, or vulnerability discovery~\citep{firmadyne_ndss2016,karonte_sp2020,firmsolo_usenix2023,halucinator_usenix2020,satc_tdsc2024}; they do not provide a commensurate baseline for sample-level evidence reporting.
+
+Binary representation and symbol-recovery methods illustrate stronger analysis outputs. SAFE and sem2vec learn function representations~\citep{safe_dimva2019,sem2vec_tosem2023}, whereas ReSym reconstructs variable and data-structure names in stripped binaries~\citep{resym_ccs2024}. SCAA-PLC instead records what a configured public-tool path observed and why an observation is not supported or is unavailable under that path.
+
+The reporting design follows four methodological lines. Benchmark measurements require a specified task, workload, and interpretation~\citep{sim_benchmarking2003}; code duplication can inflate cross-partition evaluation~\citep{allamanis2019adverse}; and computational provenance connects workflow inputs, transformations, and outputs~\citep{freire_provenance2008}. PROV-O supplies interoperable Entity--Activity--Agent relations, while Workflow Run RO-Crate packages workflow execution inputs, outputs, code, and contextual metadata~\citep{w3c_prov_o2013,leo_workflow_run_rocrate2024}. Software-engineering reporting guidelines, the SIGSOFT Empirical Standards, and later practice studies emphasize explicit design, validity, and reporting boundaries~\citep{kitchenham_reporting2008,revoredo_reporting2021,ralph_empirical_standards2021}. Metadata-driven experimentation extends that direction toward machine-interpretable study records~\citep{santana_metadata2026}.
+
+Artifact studies emphasized persistent, executable packages and explicit reproduction boundaries~\citep{heumueller_software_artifacts2020,olszewski_replicability2025}. Guevara-Vega et al. proposed an ACM-badges-driven structure for human-oriented experiment artifacts~\citep{guevara_vega_research_artifacts2024}. At the observation-data level, Kessel and Atkinson proposed Sequence Sheets, Stimulus Response Matrices, and Stimulus Response Hypercubes for correlating stimuli and responses in test-driven software experiments~\citep{kessel_atkinson_open_science2024}. Their unit is an execution observation under a controlled test, whereas SCAA-PLC records a configured binary-tool observation, including explicit not-supported and unobserved states, explanation closure, and byte/hash traceability. EUBA studied uncertainty sources and their presentation to binary analysts~\citep{euba_sandia2021}; Datasheets and Model Cards documented datasets and models~\citep{datasheets_for_datasets,model_cards}. Evaluation Cards joined benchmark, model, and run records for different reader modes~\citep{evaluation_cards_arxiv2026}. SCAA-PLC narrows these lines to a domain-bounded observation contract tailored to per-sample PLC-binary evidence.
+
+Binary-analysis ground truth is itself a methodological choice. Alves-Foss and Venugopal catalogued reference sources including symbol tables, debug data, instrumented compilers, other analysis tools, and manual judgments, and showed why their construction and disclosure affect evaluation validity~\citep{alves_foss_ground_truth2022}. SCAA-PLC follows that principle by using source syntax only as a bounded oracle for explicit \texttt{FUNCTION\_BLOCK} declarations, retaining configured-tool output as observation rather than semantic truth, and linking every scored row to its sample, source, and content hashes.
+
+Representation-Confusion Attacks in Reverse Engineering (RARE) examines an adversarial setting in which binary-derived content is promoted from observation to instruction authority or claim-validating evidence in LLM-assisted reverse engineering~\citep{santos_grueiro_rare2026}. Its support and provenance gates test whether evidence from one origin is incorrectly counted as independent support. SCAA-PLC addresses a different, non-adversarial reporting problem: it keeps configured-tool observations, claim-support boundaries, provenance, and uncertainty distinct at the sample level. The shared concern is unsupported role promotion; neither task nor reported outcomes are treated as a performance baseline for the other.
+
+\subsection{PLC-BEAD, PLCEmbed, and public PLC binary benchmarks}
+
+PLC-BEAD and PLCEmbed provide the public dataset and reference baseline context~\citep{plcbead_plcembed_kdd2025,plcbead_plcembed_repo}. PLC-BEAD contains CODESYS, GEB, OpenPLC v2, and OpenPLC v3 binaries under a shared label space. PLCEmbed applies a convolutional and Transformer-style raw-byte model and reports 40.35\% function-classification F1 under its original non-program-level split. The local split instead prevents identical inferred program names from crossing folds. The two results therefore require protocol attribution rather than direct ranking.
+
+PLC binary datasets contain compiler variants and source-level relatives. A row-level split can place same-name variants in both partitions. The inferred-name-disjoint split used here prevents that specific overlap but does not identify renamed or near-duplicate source programs. It is therefore an auditable partition condition, not evidence of generalization to all unseen program families.
+
+\subsection{Program-level re-evaluation and protocol context}
+
+PLC-BinX provides the closest external reference for that choice~\citep{plcbinx_arxiv2026}. It reports PLCEmbed function-classification F1 of 4.90\% under a ten-fold program-level re-evaluation, whereas the PLCEmbed KDD 2025 result is 40.35\% under the original split. Their difference demonstrates protocol sensitivity; it does not isolate split policy as the only causal factor, because implementation and aggregation details also differ. One-fold local classifier diagnostics are retained only in the artifact's \path{history/} directory; they are not part of the method contribution, submission supplement, or a reproduction of either published aggregate.
+
+The published results motivate protocol-qualified reporting. Regardless of whether an aggregate score is high or low, it can combine readable symbols, weak state-role support, runtime-only artifacts, and configured-tool gaps. SCAA-PLC therefore adds per-sample evidence and uncertainty records rather than treating unlike protocol values as a leaderboard.
+
+\subsection{CODESYS reverse engineering and format-specific boundaries}
+
+CODESYS is a central configured-tool boundary in PLC-BEAD because the local samples are v3 \texttt{.app} files. ICSREF targets CODESYS v2 \texttt{.PRG} artifacts~\citep{icsref_ndss2019}; the local compatibility audit found Python 2.7, format, header-offset, and architecture-heuristic mismatches. Benkraouda et al. demonstrated that CODESYS-specific format knowledge can enable analysis beyond generic tools~\citep{benkraouda_codesys2023}. These results prevent the local negative \texttt{nm} finding from being generalized to CODESYS binaries as a class.
+
+Rapid7's CODESYS analysis and vendor source-upload documentation further show that engineering artifacts and runtime interactions have format-specific lifecycle assumptions~\citep{rapid7_codesys_whitepaper2023,codesys_source_upload_docs}. Source transfer and engineering-project handling are not equivalent to static recovery of a local \texttt{.app} container. The evidence cards therefore record only that \texttt{nm} emitted no symbols under the evaluated configuration.
+
+This framing avoids treating the CODESYS subset as an error case to be hidden. A transparent result should state which samples are unsupported by the configured tools and why. SCAA-PLC therefore carries CODESYS through the evidence-card pipeline as explicit uncertainty, preserving the distinction between a negative tool-output finding and a positive recovery claim.
+
+\subsection{IEC 61131-3 and declared PLC state-role naming}
+
+IEC 61131-3 defines functions, function blocks, and programs as program organization units (POUs)~\citep{iec61131_3}. This standard supplies the semantic vocabulary for distinguishing a stateful function block from other POU roles. It does not prescribe compiler-emitted binary symbol names. The observed \texttt{dt\_FB\_} prefix is therefore treated as a GEB-specific naming convention found in this dataset, not as an IEC requirement or a portable binary invariant.
+
+The state-adapter rules (SA-001--SA-004) consequently implement empirical substring tests over emitted names. IEC 61131-3 explains the role category to which a match is assigned; the dataset and compiler output determine whether the pattern is observable. EC4 is described as declared PLC state-role naming evidence to preserve that distinction.
+
+\subsection{Binary-level PLC recovery as complementary work}
+
+Ta'veren targets binary-level state-machine recovery~\citep{taveren_ndss2026}; PLC-BinX targets cross-platform function boundaries and code regions~\citep{plcbinx_arxiv2026}; and CLEVER reconstructs PLC control logic through decompilation~\citep{clever_tifs2024}. CLADF combines extraction and reverse engineering with run-time control-logic integrity checking on Schneider PLCs~\citep{cladf_jiot2024}. Those systems recover or compare program semantics. SCAA-PLC provides a reporting and audit layer for a lighter observation path and can, in principle, accept stronger recovery outputs, but such integration is not evaluated here.
+
+This distinction is important for reviewer expectations. A binary-level recovery paper can ask whether a method finds program structure or state-machine transitions. The present work asks a different question: when a PLC binary analysis pipeline has heterogeneous observations and tool/format gaps, how should those states be represented, checked, and bounded against overclaiming? The answer is an evidence-card protocol with explicit uncertainty, task-specific populations, content hashes, and machine-checkable contract invariants.
+
+\subsection{Evaluation methodology and reproducibility context}
+
+The evaluation-methodology contribution ties reported observations to an inferred-name split, byte-read logs, evidence-card fields, uncertainty categories, RQ-specific inclusion flow, contract invariants, and hash-checked regression fixtures. This provenance design keeps static tool output, dataset metadata, and hand-authored rules distinguishable.
+
+Existing PLC binary-analysis work provides stronger recovery algorithms, richer binary lifting, or neural baselines. SCAA-PLC contributes a complementary reporting layer between public-tool output and downstream interpretation. The processing pipeline creates records; the framework comprises the pipeline, evidence cards, taxonomy, and audit controls; and the evaluation protocol specifies the split and leakage rules. These terms are used with those meanings throughout the paper.
+
+Table~\ref{tab:closest_work} compares the nearest work by evidence unit, validation target, and uncertainty boundary. These axes distinguish a reporting method from recovery and prediction systems without using task-incommensurate accuracy values as a ranking.
+
+\begin{table*}[t]
+\centering
+\normalsize
+\caption{Closest methodological positioning by evidence unit, validation target, and reporting boundary.}
+\label{tab:closest_work}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.19\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}X}
+\toprule
+Work & Evidence unit / task & Validation target & Uncertainty and artifact boundary \\
+\midrule
+Binary uncertainty and recovery~\citep{euba_sandia2021,icsref_ndss2019,clever_tifs2024} & Analyst uncertainty or recovered binary structure/logic & Human interpretation or semantic recovery & Stronger human/semantic targets; no comparable PLC sample/run reporting contract \\
+Evaluation Cards~\citep{evaluation_cards_arxiv2026} & Joined benchmark, model, and run records & Cross-stakeholder evaluation reporting & Human-informed AI-evaluation schema; not binary-tool observations or byte-read provenance \\
+PROV-O / Workflow Run RO-Crate~\citep{w3c_prov_o2013,leo_workflow_run_rocrate2024} & Interoperable entity/activity/agent provenance and packaged workflow runs & Provenance exchange and workflow-run packaging & Generic model/profile; no domain-specific support/closure semantics \\
+SE standards and artifacts~\citep{ralph_empirical_standards2021,guevara_vega_research_artifacts2024} & Method-specific evidence expectations and structured experiment artifacts & Study quality, reporting, and artifact completeness & Study/package level; no PLC-binary field semantics \\
+Test-driven observation structures~\citep{kessel_atkinson_open_science2024} & Sequence Sheets plus stimulus--response matrices/hypercubes & Open and reusable execution observations & Controlled test stimuli/responses; no configured binary-tool gap states, closure contract, or byte/hash trace \\
+Binary-analysis ground-truth methodology~\citep{alves_foss_ground_truth2022} & Reference sources and oracle-generation procedures & Validity and disclosure of binary-analysis ground truth & Domain-wide methodology; SCAA adds PLC sample/source hashes, scored-row trace, and non-observation closure \\
+SCAA-PLC & Per-binary observation status, explanation closure, uncertainty, and read provenance & Source-syntax boundary, dataset-specific redundancy, invariants, author-defined design requirements, two bounded adapter paths, and standards-profiled run export & Versioned public artifact plus local hash-addressed derived extensions \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+
+% Source: PAPER1_MANUSCRIPT_S3_DATASET_PROTOCOL_DRAFT.md
+
+\section{Dataset and Protocol}
+
+This paper uses three evidence sets. The primary set is PLC-BEAD, a bounded public benchmark used to evaluate source-rule validity, dataset-specific channel redundancy, and execution controls. A native OpenPLC set analyzed with radare2/r2pipe tests relation-rich record adaptation. A separately acquired Schneider Modicon M340 version pair tests whether the same status/closure contract can represent derived ARM/VxWorks observations without promoting unavailable semantics. Neither adapter set is a vulnerability-detection benchmark, and two files from one vendor do not establish ecosystem portability.
+
+\subsection{Dataset inventory and task-specific populations}
+
+The primary inventory is \texttt{PLCBEAD\_MANIFEST.csv}. Each row records one binary, its inferred program name, compiler configuration, path, file metadata, function label, split group, and audit fields. Table~\ref{tab:s3_1} separates the population needed by each current task from the historical classification subset. The manifest contains 555 CODESYS, 617 GEB, 619 OpenPLC v2, and 640 OpenPLC v3 samples. Card construction and tool-output accounting include all 2{,}431 rows. Source-role analysis includes all 1{,}876 non-CODESYS rows with an unambiguous Structured Text mapping. The 2{,}353-row function-label subset remains relevant only to archived classifier diagnostics. Figure~\ref{fig:motivation} introduces the three sample-level traces used throughout the method and evaluation.
+
+
+\begin{table*}[t]
+\centering
+\normalsize
+\caption{The current reporting tasks retain all manifest rows; source-role analysis is limited by reliable Structured Text mapping rather than function-class labels.}
+\label{tab:s3_1}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
+\toprule
+Configuration & Manifest/card rows & Source-oracle rows & \texttt{nm}-readable rows & Explained tool-gap rows \\
+\midrule
+CODESYS & 555 & 0 & 0 & 555 \\
+GEB & 617 & 617 & 617 & 0 \\
+OpenPLC v2 & 619 & 619 & 619 & 0 \\
+OpenPLC v3 & 640 & 640 & 640 & 0 \\
+\textbf{Total} & \textbf{2,431} & \textbf{1,876} & \textbf{1,876} & \textbf{555} \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+The 78 rows outside the historical classifier subset comprise 75 CODESYS rows and one row from each of GEB, OpenPLC v2, and OpenPLC v3. They carry missing or sentinel function labels, but all have binary paths and split assignments. The v6 rebuild therefore profiles and hashes them, constructs their cards, and includes them in tool-output accounting. It also extends the source oracle to the three non-CODESYS rows. This removes an obsolete label-based selection condition without changing the original 2{,}353 cards: all prior card states and binary hashes match in the regression check.
+
+\subsection{Program-level split protocol}
+
+The split unit is an inferred program name, not a binary row. The \texttt{program\_name} field removes one leading configuration marker (\texttt{codesys\_}, \texttt{geb\_}, \texttt{openplcV2\_}, or \texttt{openplcV3\_}) and the filename extension from \texttt{binary\_name}. This rule produces 714 unique names; all 2{,}431 manifest rows agree with that derivation. Of the 714 names, 458 occur in four configurations, 162 in three, 19 in two, and 75 in one. Each of the 714 inferred names maps to a single observed \texttt{func\_label} in this snapshot, so no majority resolution is required. Within each label, names are sorted and assigned round-robin to \texttt{fold\_0} through \texttt{fold\_9}. The assignment is deterministic and keeps every observed configuration sharing one inferred name in the same fold.
+
+Let $S$ denote the full manifest sample set, $g(s)$ the inferred name for sample $s$, and $k(g(s))$ its recorded fold. For held-out fold $q$, the test rows are the samples whose inferred name maps to $q$, while the training rows are the remaining samples. The protocol enforces $\{g(s): s \in \mathrm{test}_q\} \cap \{g(s): s \in \mathrm{train}_q\} = \emptyset$, with \texttt{PLCBEAD\_PROGRAM\_LEVEL\_SPLIT.csv} as the authoritative realization. A downstream task may use a subset only when its target is unavailable, as in the source-role oracle; the inclusion reason is recorded separately from the fold assignment.
+
+This inferred-name-disjoint split prevents the same normalized filename from crossing a fold and supplies the deterministic program-level partition used in RQ2. Section~6 discusses the broader source-clone and repeated-split extensions needed for an unseen-program generalization study.
+
+\subsection{Scope of nm-based symbol text extraction}
+
+The symbol-extraction stage invokes GNU binutils \texttt{nm}, a symbol-table listing tool, on each input~\citep{gnu_binutils_nm}. It records symbol text already present in the artifact rather than reconstructing absent names. \path{ALL_POPULATION_SAMPLE_FEATURES.csv} contains one status row per manifest sample. The 1{,}876 non-CODESYS rows have status \path{NM_SYMBOLS_RECOVERED}; the 555 CODESYS v3 \texttt{.app} rows emit no symbol text and have status \path{CODESYS_CONTAINER_NOT_RECOVERED}.
+
+These statuses encode the symbol text emitted by the configured tool. Section~\ref{sec:source_oracle} independently calibrates the narrow function-block naming rule against source syntax; the remaining fields preserve their originating tool records. This produces directly observed symbol records for 1{,}876 rows and explicit tool-boundary records for all 555 local CODESYS v3 \texttt{.app} rows.
+
+\subsection{Leakage logging and protocol controls}
+
+The byte-read protocol is defined separately from the fold assignment. The split file determines which samples belong to each fold, while the leakage audit records whether any feature-generation run reads sample bytes from outside the allowed path or from the wrong split membership. \texttt{V3B\_LEAKAGE\_AUDIT\_PROTOCOL.md} defines the allowlisted PLC-BEAD binary directory, required read mode, required byte-read log columns, and hard-fail conditions. \texttt{V3C\_LEAKAGE\_AUDIT\_SUMMARY.md} summarizes the all-fold audit.
+
+Table~\ref{tab:s3_2} reports the realized split and the scope of the path/membership audit.
+
+
+\begin{table*}[t]
+\centering
+\normalsize
+\caption{Inferred-name split and path/membership audit protocol.}
+\label{tab:s3_2}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
+\toprule
+Protocol dimension & Value \\
+\midrule
+Split type & Inferred-name-disjoint, label-stratified \\
+Folds & 10 \\
+Total samples in current card/tool-output population & 2,431 \\
+Per-fold approximate current test size & \textasciitilde{}243 \\
+Task-specific target handling & Source-role: 1,876 mapped ST rows; historical classifier only: 2,353 label-available rows \\
+Leakage allowlist source & \texttt{V3B\_LEAKAGE\_AUDIT\_PROTOCOL.md} \\
+Historical leakage log rows (all folds) & 23,530 for the archived 2,353-row classifier surface \\
+Full-population v6 identity reads & 2,431; one hash replay per current card \\
+Detected path/membership violations & 0 \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+The archived all-fold log contains $2{,}353 \times 10=23{,}530$ byte-read rows from the former classifier surface. The v6 rebuild adds one identity replay for every current card and confirms that every replayed SHA-256 matches its card. Each logged event stores the sample, fold, train/test membership, resolved path, read mode, byte count, SHA-256, allowlist status, and violation status. No path-allowlist or fold-membership violation was detected. The historical and current checks are retained as distinct provenance layers; Section~6 discusses statistical leakage risks beyond these logged path, membership, and identity controls.
+
+\subsection{Additional-pipeline contract-instantiation sets}
+
+The second set is generated independently of the PLC-BEAD \texttt{nm} feature table. It contains 10 hash-profiled x86-64 OpenPLC-derived ELF binaries with 6{,}657 radare2/r2pipe relation rows, eight relation types, and 20 uncertainty records. The relation rows cover function calls, basic-block edges, imports, strings, data references, source/sink hints, patch-affected-function hints, and symbol-to-stripped mappings. The SHA-256 value in every relation and uncertainty record matches the corresponding native-manifest entry.
+
+The OpenPLC adapter uses only observable record properties. Function identifiers support EC1; static relation rows support EC3; function-call and basic-block edges support EC5. Verified target semantics and declared POU roles are unobserved in EC2 and EC4 with recorded explanations, while the existing static-analysis and label-scope records complete card-level closure. CVE identifiers and patch roles are retained as provenance but are not used as behavioral labels.
+
+The separately acquired external-vendor corpus contains legally acquired Schneider Modicon M340 BMXP341000 SV340 and SV370 archives, and its adapter was built by the authors. Read-only inspection verifies the archive and embedded VxWorks-payload SHA-256 values; the adapter additionally hashes the retained architecture-aware function lists. Forced ARM32 analysis records 7{,}733 and 7{,}920 heuristic function boundaries, respectively. These structural counts support EC1 and EC3. Core-logic status, declared state role, and relation-graph availability remain unobserved in EC2, EC4, and EC5 with explicit closure. No raw payload is copied into the derived package, and no CVE, behavioral-patch, function-correctness, or semantic label is assigned. This two-version adapter narrows the former vendor/architecture gap but does not estimate portability across products or vendors.
+
+\subsection{Protocol summary}
+
+For PLC-BEAD, the manifest defines the sample universe; the split file defines inferred-name membership; the sample-feature file records symbol observability; and the audit protocol records byte-read controls. For OpenPLC, the native manifest, relation table, and uncertainty log define the admissible join surface. For Schneider, archive, payload, and derived-list hashes define the admissible record surface; raw proprietary payloads remain outside the derived package.
+
+A readable-symbol status establishes only that the configured tool emitted names in this environment. A no-symbol status establishes only that this path emitted none. The later evidence cards preserve that observational boundary.
+
+
+% Source: PAPER1_MANUSCRIPT_S5_SCAA_PLC_FRAMEWORK_DRAFT.md
+
+\section{SCAA-PLC Framework}
+
+\subsection{Framework overview and scope}
+
+SCAA-PLC (Sample-Centric Auditable Analysis for PLC binaries) converts binary-analysis observations into structured, inspectable records. In this study, \emph{auditability} is operationalized as traceability from a reported field to its sample, hash, tool output, rule, uncertainty code, and execution log.
+
+Four terms distinguish the design. The \emph{pipeline} extracts symbol observations and constructs graph/card records. The \emph{framework} combines that pipeline with the evidence schema, uncertainty taxonomy, and audit controls. The \emph{protocol} specifies program splitting and admissible byte reads. The resulting \emph{reporting layer} sits between raw tool output and downstream interpretation.
+
+Table~\ref{tab:scope} fixes the interpretation boundary once for the remainder of the paper. Here, ``evidence'' means a reproducible observation produced by the configured pipeline, such as an \texttt{nm}-emitted name, a rule-table match, or a recorded uncertainty event. Figure~\ref{fig:framework} separates the linear four-module production path from the three evaluation paths. Evaluation results do not feed back into card construction.
+
+\begin{table*}[t]
+\centering
+\normalsize
+\caption{Evaluated scope and evidence required for broader claims.}
+\label{tab:scope}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
+\toprule
+Evaluated & Not evaluated & Evidence required to extend scope \\
+\midrule
+PLC-BEAD sample accounting; \texttt{nm}-emitted symbols; source-syntax agreement and ungated transfer for one GEB pattern; two-field/three-channel/full-contract information retention; OpenPLC/radare2 and Schneider/ARM record adaptation; Workflow Run RO-Crate/PROV-O export; design-requirement and fault-injection checks; path/membership audit & Runtime state machines; ground-truth function boundaries; vulnerability detection; physical-process behavior; analyst decision utility; universal CODESYS support; broad cross-vendor generalization & Format-aware recovery oracle; additional vendors and architectures; expert function-boundary oracle; clone-aware repeated splits; controlled analyst study; task-level or behavioral validation \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figs/fig2_framework.pdf}
+\Description{A linear production path runs from M1 protocol and identity through M2 observation adapters, M3 evidence contract, and M4 audit outputs. Below it, an independent validation plane links RQ1 to observation adapters, RQ2 to the evidence contract, and RQ3 to audit outputs without feeding results back into card construction.}
+\caption{SCAA-PLC constructs each record through four linear modules, while three separate validation paths evaluate rule scope, dataset-specific channel redundancy, and contract instantiation. Solid arrows denote record flow; dashed connectors denote evaluation links and do not feed results back into card construction.}
+\label{fig:framework}
+\end{figure*}
+
+\subsection{Design requirements and contract invariants}
+
+The schema was derived from five reporting requirements rather than from an assumption that its fields are independent constructs. DR1 preserves sample identity through a content hash. DR2 keeps each observation traceable to its tool output or source rule. DR3 distinguishes a rule that was attempted without qualifying support from a field that was not observable under the configured tool/format. DR4 records explanation closure independently of that observation status. DR5 keeps run and join provenance machine-checkable. These requirements connect empirical-study reporting~\citep{kitchenham_reporting2008,revoredo_reporting2021,ralph_empirical_standards2021}, metadata-driven experimentation~\citep{santana_metadata2026}, computational provenance~\citep{freire_provenance2008,w3c_prov_o2013,leo_workflow_run_rocrate2024}, and explicit binary-analysis uncertainty~\citep{euba_sandia2021} to the PLC-binary setting. The standards export maps the deterministic summary workflow, three card inputs, and two generated outputs to Workflow Run RO-Crate entities and a \texttt{CreateAction}; a companion PROV-O graph records \texttt{prov:used}, \texttt{prov:wasGeneratedBy}, and \texttt{prov:wasAssociatedWith}. The bivariate support/closure semantics remain SCAA-specific.
+
+The initial field and U-code vocabulary was exercised against three observed failure families: a CODESYS container/tool mismatch, absent qualifying state-role naming after rule execution, and cross-pipeline relation/label-scope uncertainty. All five observation fields and the closure field are instantiated in the primary population. Five uncertainty codes (U01, U02, U11, U13, and U09b) are empirically exercised core codes in the current construction; non-applicability is stored separately. The remaining defined U-codes are specified extension codes with explicit handling rules but no observed primary-population instances.
+
+Five positive invariants make the implemented guarantee testable: (I1) every card hash replays against its binary; (I2) every \texttt{not\_supported} or \texttt{unobserved} EC1--EC5 field has an explanation event; (I3) configured-tool gaps remain \texttt{unobserved} rather than becoming negative findings; (I4) every mapped source hash replays against its source bytes; and (I5) every additional-pipeline relation or uncertainty hash joins its manifest entry. Section~5 reports the checked units and failures for each invariant. Six complementary fault injections alter copied records to exercise the rejection branches of I1--I5 and the relation-type allowlist.
+
+\subsection{Evidence-card structure}
+
+The evidence card connects per-sample tool observations to evaluation. For observation field $i\in\{1,\ldots,5\}$, it records $z_i(s)=(a_i(s),c_i(s))$. The nominal support state $a_i\in\{\texttt{supported},\texttt{not\_supported},\texttt{unobserved}\}$ says whether the configured predicate has qualifying support, was applicable but did not yield qualifying support, or could not be observed. The orthogonal closure state $c_i\in\{\texttt{not\_required},\texttt{explained},\texttt{unexplained}\}$ says whether a boundary explanation is needed and present. Row identifiers and U-codes accompany these states. Table~\ref{tab:s5_1} defines the observable predicate and closure handoff for each field.
+
+
+\begin{table*}[t]
+\centering
+\normalsize
+\caption{Bivariate evidence-card observation and closure decisions.}
+\label{tab:s5_1}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.07\textwidth}>{\raggedright\arraybackslash}p{0.20\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.24\textwidth}}
+\toprule
+Field & Purpose & Support-status rule & Closure handoff \\
+\midrule
+EC1 & Function-candidate availability & \texttt{supported} if the configured extractor emits candidates; otherwise \texttt{unobserved} & \texttt{explained} with U01/U02/U04, else \texttt{unexplained} \\
+EC2 & Core/control-logic candidate status & \texttt{supported} if fixed-rule provenance yields a candidate; otherwise rule-specific \texttt{not\_supported} or tool-bound \texttt{unobserved} & \texttt{explained} with U05/U13, else \texttt{unexplained} \\
+EC3 & Static-fact availability & \texttt{supported} if static fact rows exist; otherwise \texttt{unobserved} & \texttt{explained} with U06/U07/U08/U11, else \texttt{unexplained} \\
+EC4 & Declared state-role evidence & \texttt{supported} for a qualifying fixed-rule match; \texttt{not\_supported} after an applicable non-match; \texttt{unobserved} for a tool/format gap & \texttt{explained} with U08/U09a/U09b/U13, else \texttt{unexplained} \\
+EC5 & Relation-graph availability & \texttt{supported} if non-uncertainty graph edges exist; otherwise \texttt{unobserved} & \texttt{explained} with U02/U06/U07/U08/U12, else \texttt{unexplained} \\
+Closure & Card-level explanation coverage & \texttt{complete} iff every not-supported/unobserved field has \texttt{explained} closure & U01--U14; field state remains separate \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+EC2 uses the fixed core/runtime table described in Section~\ref{sec:state_adapter}. The card-level closure value is \texttt{complete} iff $a_i=\texttt{supported}$ or $c_i=\texttt{explained}$ for every EC1--EC5 field; otherwise it is \texttt{incomplete}. This removes the ordinal implication of the former 0/0.5/1 encoding: explanation status neither raises nor lowers support. The five observation pairs, closure value, and trace rows are the reported method outputs. No weighted aggregate is used.
+
+\paragraph{Worked example.} Three observed cards illustrate the bivariate semantics. The GEB sample \path{geb_ARRAY_HAV} is \texttt{supported} in EC1--EC5; its EC4 record includes an SA-001 match on the in-binary \texttt{dt\_FB\_} naming pattern, and its source file separately declares a \texttt{FUNCTION\_BLOCK}. The GEB sample \path{geb_AIN} is supported in EC1, EC2, EC3, and EC5, but the applicable EC4 rule finds no qualifying pattern, so EC4 is \texttt{not\_supported} with \texttt{explained} U09b closure; the source separately declares a \texttt{FUNCTION}. In contrast, \path{codesys__ARRAY_ABS} produces no \texttt{nm} output: EC1--EC5 are \texttt{unobserved} with recorded explanations. All three cards have complete closure. Source syntax is used only for the later validity test, not to assign card support states.
+
+\paragraph{EC-field co-state structure.} EC1, EC2, EC3, and EC5 have zero row-level support-status mismatches on all 2{,}431 PLC-BEAD cards. EC4 contains 475 \texttt{supported}, 1{,}401 \texttt{not\_supported}, and 555 \texttt{unobserved} rows; card closure is complete for all 2{,}431 rows. The full contract therefore encodes three empirical channels on PLC-BEAD. The fields remain separate trace categories because the adapters produce different patterns: OpenPLC has supported EC1, EC3, and EC5, whereas Schneider has supported EC1 and EC3 but explicitly unobserved EC2, EC4, and EC5. This contrast shows how the field-level decomposition accommodates different binary-analysis evidence surfaces.
+
+The card is thus a reporting contract rather than a multidimensional quality scale. The evaluation directly compares reduced representations with the full trace-preserving contract.
+
+\subsection{Uncertainty taxonomy}
+
+The uncertainty taxonomy records why evidence is unavailable, rule-limited, or tool-dependent. A single missing-data flag would collapse format boundaries, architecture ambiguity, incomplete relation extraction, state-role ambiguity, metadata gaps, and tool failure into one bucket. SCAA-PLC instead groups U-codes by evidence failure mode so that later tables can report what type of limitation occurred.
+
+Supplementary Table~S4 groups the U-codes by the evidence boundary that each event records.
+
+Uncertainty coverage records where the evidence path stops and which later review or tool step could narrow it. Supplementary Fig.~S2 reports per-configuration and overall U-code frequencies. All 555 CODESYS rows have primary reason U01. Among the 1{,}876 non-CODESYS rows, 1{,}401 have U09b (state adapter attempted but weak) and 475 use a separate \texttt{NOT\_APPLICABLE} sentinel. U14 is defined but unobserved in the primary population.
+
+The taxonomy is ordered to preserve reviewer-auditable provenance. Format and container issues appear before graph-level issues because later graph records cannot be interpreted if the input representation is not stable. State-role uncertainty is split from relation uncertainty because a sample can have call or control-flow evidence without supporting declared state-role evidence. Tool failure and tool disagreement are separated because a missing output from one tool has a different evidentiary meaning from conflicting outputs across tools. Human-review-required marks cases where automated evidence is insufficient for a final interpretation. Defined but unobserved codes remain in the specification to make their intended handling explicit; they are not counted as empirical coverage.
+
+\subsection{State-adapter rule families}
+\label{sec:state_adapter}
+
+The state-adapter (SA) layer applies fixed naming rules to emitted symbol text or PLC-BEAD metadata. SA-001--SA-004 are symbol-derived; SA-005--SA-020 are metadata-derived controls.
+
+SA-001 matches the \texttt{dt\_FB\_} pattern observed in GEB symbol text; the fixed rule interprets that pattern as declared function-block naming and assigns EC4 as \texttt{supported}. It is an empirical GEB convention in PLC-BEAD, not an IEC 61131-3 binary naming rule. SA-002--SA-004 retain program or cyclic-execution context without independently supporting EC4. The metadata rules match timer, counter, input, output, memory, and latch terms in \texttt{program\_name} or \texttt{binary\_name}.
+
+Table~\ref{tab:s5_3} summarizes the symbol-derived rule families used in the reported evaluation.
+
+\begin{table*}[t]
+\centering
+\normalsize
+\caption{State-adapter rule families used for declared PLC naming evidence.}
+\label{tab:s5_3}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
+\toprule
+Rules & Scope & Match field & Recorded contribution \\
+\midrule
+SA-001 & GEB & \texttt{core\_symbol\_text}: \texttt{dt\_FB\_} & Direct declared function-block evidence; EC4 \texttt{supported} \\
+SA-002--SA-004 & GEB/OpenPLC v2/v3 & \texttt{core\_symbol\_text}: program/cyclic patterns & Context records only; do not independently support EC4 \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+Full regular expressions remain in \texttt{V3\_STATE\_ADAPTER\_RULES.csv}. The evaluation separates the symbol and metadata families without changing their definitions.
+
+\subsection{Construction procedure and implementation controls}
+
+The implementation accepts either the PLC-BEAD manifest path or an explicitly marked synthetic-fixture path; other inputs hard-fail. Dataset runs also enforce the split membership and byte-read allowlist. Algorithm~\ref{alg:evidence_card} states the concrete record-construction order.
+
+\begin{algorithm}[tbp]
+\caption{Evidence-card construction}
+\label{alg:evidence_card}
+\begin{algorithmic}[1]
+\Require sample $s$, manifest/split, symbol record, fixed rule tables
+\Ensure graph, card, uncertainty, and byte-read records
+\Statex \textbf{M1: Protocol \& identity}
+\State Verify sample membership, path allowlist, and input mode; otherwise hard-fail
+\State Read the binary once, record byte count and SHA-256, and log fold membership [I1]
+\Statex \textbf{M2: Observation adapters}
+\State Observe EC1 from \texttt{nm}-emitted function candidates
+\State Observe EC2 from the 17-row core/runtime rule table
+\State Observe EC3 and EC5 from emitted fact rows and non-uncertainty graph edges
+\State Observe EC4 from fixed SA rules; only SA-001 gives qualifying symbol-derived support
+\Statex \textbf{M3: Evidence contract}
+\State For each EC1--EC5 field, assign \texttt{supported}, applicable-rule \texttt{not\_supported}, or tool-bound \texttt{unobserved} [I3]
+\State Independently assign closure as \texttt{not\_required}, \texttt{explained} by a qualifying U-code, or \texttt{unexplained} [I2]
+\State Set card closure to \texttt{complete} iff every not-supported/unobserved field is explained
+\State Select \texttt{primary\_missing\_reason} by severity, field order, then U-code
+\Statex \textbf{M4: Audit outputs}
+\State Emit graph, card, uncertainty, and byte-read records [I4--I5]
+\end{algorithmic}
+\end{algorithm}
+
+The manifest, split, feature, graph, card, uncertainty, and byte-read files together form the reproducibility contract evaluated next.
+
+
+% Source: PAPER1_MANUSCRIPT_S6_EVALUATION_DRAFT.md
+
+\section{Evaluation}
+
+\subsection{Evaluation scope}
+
+Within the scope defined in Table~\ref{tab:scope}, the evaluation addresses the three research questions through (i) a source-syntax test that separates a scoped production rule from an ungated transfer probe, (ii) a fold-wise comparison of two-field, three-channel, and full-contract representations, and (iii) bounded adapter tests over OpenPLC/radare2 and Schneider/ARM evidence. Full-population card construction, five contract invariants, six negative/fault-injection tests, an author-defined nine-requirement coverage check, standards-profile validation, path/membership auditing, and synthetic regression provide engineering controls. Historical one-fold classifiers and EC4 spread diagnostics are excluded from the submission supplement and retained only in the artifact's non-contributory history directory.
+
+\subsection{Evaluation artifacts and source traceability}
+
+The evaluation uses the hash-addressed card, uncertainty, source-oracle, contract-invariant, and JSS validation packages. The v6 package adds 2{,}431-row features and cards, a 1{,}876-row source oracle, RQ-specific population flow, fold-wise predictions, trace cases, schema coverage, and invariant results. The local v9 closure package adds bivariate cards, a complete ten-fold replay, report-representation query results, a provenance-standards crosswalk, an illustrative three-trace JSON-LD export, exact environment records, and fault-injection outcomes. The v11 closure package exposes the 56-to-10 OpenPLC eligibility flow and recasts the report-query output as author-defined design-requirement coverage. The released SCAA-PLC artifact~\citep{scaa_plc_artifact_v2} remains fixed at Git commit \href{https://github.com/Mewtwoz/SCAA_PLC_ARTIFACT/commit/fec22022f7cfd960424fe64a636e507467c0c898}{\texttt{fec22022f7cf}} and archived on Zenodo under DOI \href{https://doi.org/10.5281/zenodo.21869718}{\texttt{10.5281/zenodo.21869718}}. It packages the v6 derived inputs under package-relative paths, compresses the 195-MiB feature table, records file checksums, and provides a one-command validator plus a clean-room log. The v9--v11 packages are not asserted to be part of that frozen release; publishing a new archival release remains a human action. Author-generated code and documentation are licensed under BSD-3-Clause, and author-generated derived data are licensed under CC BY 4.0. Raw PLC-BEAD binaries and sources are not redistributed because the examined upstream snapshot contains no explicit license file; a verifier checks a separately acquired snapshot against the card and source hashes.
+
+\subsection{Evaluation setup}
+
+The source-syntax analysis uses exact confusion counts because it evaluates every row with a reliable Structured Text mapping in the local snapshot rather than sampling from a declared population. Card/tool-output accounting uses all 2{,}431 manifest rows. The source-role representation comparison uses the frozen ten-fold inferred-name assignment. For each fold, a transparent signature-majority decoder learns the majority target value for each observed card signature from the other nine folds and predicts the held-out fold. Every included sample is predicted once, providing a direct measure of source-role information retained by each representation. The EC1-derived tool-output state is evaluated separately as a lossless construction check. The OpenPLC adapter uses hashes, relation records, function identifiers, and uncertainty rows already emitted by that pipeline. The Schneider adapter uses archive, in-memory payload, and retained function-list hashes plus heuristic function summaries; it writes no proprietary payload to the derived package. Supplementary Table~S9 records the active WSL kernel, Python 3.10.12, GCC 11.4.0, Clang 14.0.0, GNU nm 2.38, file 5.41, radare2 6.1.9 at commit \texttt{654d5474ce}, r2pipe 1.9.6, locale, commands, and the required radare2 library path.
+
+OpenAI Codex (GPT-5, OpenAI) was used under author direction for language editing, LaTeX restructuring, and assistance with evidence-processing and validation scripts. It did not supply binary observations, source labels, participant data, or vulnerability judgments. Numerical statements were regenerated from the recorded data, and the resulting scripts, artifacts, and manuscript changes were reviewed by the authors. This disclosure describes the research workflow; AI assistance is not an evaluated component of SCAA-PLC.
+
+\subsection{Source-syntax oracle validity test}
+\label{sec:source_oracle}
+
+The separately extracted oracle removes Structured Text comments and extracts line-anchored \texttt{FUNCTION\_BLOCK}, \texttt{FUNCTION}, and \texttt{PROGRAM} declarations from the same PLC-BEAD snapshot. A binary row is mapped to source files with the same normalized program stem within its compiler configuration. Multiple matching files are accepted only if they agree on explicit \texttt{FUNCTION\_BLOCK} presence. This is a syntactic POU-role oracle, not runtime-state or source-to-binary semantic ground truth.
+
+Two distinct tests prevent a scope gate from predetermining the transfer result. The production SA-001 rule requires GEB and \texttt{dt\_FB\_}; OpenPLC is therefore \texttt{OUT\_OF\_SCOPE}, not negative. The ungated probe removes only the GEB condition and applies the unchanged lexical predicate to GEB, OpenPLC v2, and OpenPLC v3. Figure~\ref{fig:rq1_matrices} visualizes the exact full-population outcomes; Supplementary Table~S5 retains the numerical table. On the 617 GEB rows, both predicates matched the source oracle on 353 positive and 264 negative rows. The ungated probe emits no positives on either OpenPLC configuration despite 735 source-positive rows.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figs/fig3_rq1_outcome_matrices.pdf}
+\Description{Three two-by-two outcome matrices compare the source oracle with the GEB-scoped rule and the same lexical predicate used as an ungated probe on OpenPLC v2 and v3. GEB has 353 true positives and 264 true negatives. OpenPLC v2 has 359 false negatives and 260 true negatives; OpenPLC v3 has 376 false negatives and 264 true negatives. Every matrix has zero false positives.}
+\caption{RQ1 full-population outcome matrices. Recall is 1.000 for the GEB-scoped rule and 0.000 for the ungated OpenPLC v2 and v3 probes; FP is zero in all three configurations. OpenPLC counts characterize the ungated probe, not the scoped production rule.}
+\label{fig:rq1_matrices}
+\end{figure*}
+
+The OpenPLC rows are out of scope for the production SA-001 rule; the 735 OpenPLC false negatives belong only to the ungated probe. Together, the matrices establish a same-snapshot GEB agreement case and a complete lexical-transfer failure on the two evaluated OpenPLC configurations. This contrast identifies \texttt{dt\_FB\_} as a GEB-specific convention and empirically justifies the explicit scope gate in SA-001. Section~6 discusses the post-hoc construction of the source-rule test.
+
+\subsection{End-to-end trace cases}
+
+Figure~\ref{fig:motivation} carries the running example into the evaluation. Each trace starts from an observed tool record, identifies the governing source or tool boundary, and ends with the strongest allowed evidence state. Supplementary Table~S6 stores the exact observations, EC states, boundary evidence, and allowed conclusions; the machine-readable table also stores binary/source hashes and full row identifiers.
+
+The aggregate statement ``all PLC-BEAD binaries expose \texttt{nm}-readable functions'' is rejected by the third trace, while ``unsupported output proves absence of control logic'' is rejected because its fields are \texttt{unobserved}, not \texttt{not\_supported}, and carry explanation closure. This demonstrates the contract's claim-tracing operation across raw observations, evidence states, and source records.
+
+\subsection{Author-defined report-design requirement coverage}
+
+An engineering control checks whether three author-constructed representations contain nine author-defined report requirements. Aggregate-only reporting contains population and tool totals; flat provenance contains sample, hash, tool, raw observation, reason text, and source hash fields without typed support/closure links; the SCAA contract adds those links and their completeness rule. The requirements were derived directly from the SCAA-PLC reporting contract, and the two simpler structures are deliberately reduced controls rather than implemented literature baselines. On the three recorded trace cases, the structures satisfy 2/9, 6/9, and 9/9 requirements, respectively. Supplementary Table~S10 lists every check. The matrix provides structural verification of the implemented field/link contract.
+
+\subsection{Dataset-specific channel redundancy and information retention}
+
+The comparison defines three representations over the bivariate cards: \(S2=\{\mathrm{EC1},\text{card closure}\}\), \(S3=\{\mathrm{EC1},\mathrm{EC4},\text{card closure}\}\), and \(S6=\{\mathrm{EC1--EC5},\text{card closure}\}\). The nontrivial decoder target is whether a mapped source file explicitly declares a function block for the 1{,}876 source-mapped non-CODESYS rows. A separate construction check compares each representation with the tool-output state derived from the same recovery status that assigns EC1. Its expected lossless result verifies encoding consistency; it is not an independent predictive task. The representation names count conceptual reporting fields rather than storage columns or ordinal measurements.
+
+Figure~\ref{fig:rq2_folds} reports the ten held-out source-role results without collapsing the observed fold variation. \texttt{S3} and \texttt{S6} produce identical predictions on all 1{,}876 rows, while \texttt{S2} predicts only the fold-majority class. Separately, all three representations pass the EC1 construction check on all 2{,}431 rows. Supplementary Table~S2 retains both the exact pooled source-role metrics and the construction-check values. The co-state audit also finds zero support-status mismatches among EC1, EC2, EC3, and EC5 on all 2{,}431 cards. The nontrivial result identifies three empirical channels sufficient for source-role retention, while the full contract retains distinct provenance categories for record inspection and cross-pipeline instantiation.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figs/fig4_rq2_fold_retention.pdf}
+\Description{Paired points show balanced accuracy and macro F1 for S2, S3, and S6 in each of ten held-out inferred-name folds. S3 and S6 points coincide in every fold, while S2 is lower for the nontrivial source-role task. A separate EC1 construction check is lossless for all schemas.}
+\caption{S3 and S6 coincide in all ten held-out folds on the 1{,}876-row source-role retention task, while S2 is lower. Each marker is one inferred-name fold and thin lines connect that fold across S2, S3, and S6. S3 and S6 have zero prediction mismatches. All three representations also pass the separate 2{,}431-row EC1 construction check.}
+\label{fig:rq2_folds}
+\end{figure*}
+
+Every source-task signature is target-ambiguous in the full corpus because the evidence channels do not uniquely identify source POU role. The majority decoder therefore provides a controlled probe of retained information. S3 produces the same held-out source-role outputs as S6; the full field-level contract remains the trace-preserving reporting form.
+
+\subsection{Contract-invariant validation}
+
+Figure~\ref{fig:rq3_contract} reports the positive guarantees defined in Section~4 alongside the additional-pipeline join topology. The checks replay raw hashes or row-level joins; none is inferred from a reported aggregate. All five invariants pass with zero failures. Supplementary Table~S3 retains each exact checked surface and definition.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figs/fig5_rq3_contract_audit.pdf}
+\Description{The left panel joins ten relation-backed OpenPLC binaries to 6,657 relation rows and 20 uncertainty rows, producing ten adapted evidence cards with matching sample and hash joins. The right panel lists invariants I1 through I5, their different checked-unit counts, and zero failures for each.}
+\caption{RQ3 OpenPLC adapter and audit ledger. The adapter joins binary, relation, and uncertainty records into 10 evidence cards; five observation fields plus card closure summarize the resulting support pattern. I1--I5 have different checked-unit populations, and zero failures establish the declared record-contract properties. The Schneider adapter is reported separately because it has no retained relation graph.}
+\label{fig:rq3_contract}
+\end{figure*}
+
+The invariants target complementary record properties: I2 checks explanation coverage, I3 keeps configured-tool gaps distinct from negative findings, and I5 checks referential integrity across pipeline outputs. To confirm that the guards are operative, six in-memory fault injections alter one copied hash, closure event, CODESYS support state, source hash, additional-pipeline hash, or relation type. Every mutation triggers the intended rejection branch. Supplementary Table~S11 reports the six results.
+
+\subsection{Bounded additional-pipeline contract instantiation}
+
+The first additional-pipeline test starts from 56 OpenPLC-derived ELF binaries in the v2.6 native manifest. The landed relation table contains rows for 10 of them. Eligibility requires a matching sample identifier and equality between every relation-row SHA-256 and the manifest SHA-256; 10 binaries pass, while 46 are retained in the audit registry as lacking landed relation rows. Figure~\ref{fig:rq3_contract} shows the join topology, and Supplementary Figure~S1 plus Table~S1 report the complete eligibility flow. All 6{,}657 relation and 20 uncertainty rows join without an identity mismatch. The resulting 10 cards contain function identifiers and graph relations, and each contains uncertainty from both static-analysis and label-scope stages.
+
+The different field pattern is material: function and graph observations support EC1, EC3, and EC5, while verified target semantics and declared POU roles are unobserved in EC2 and EC4 with recorded closure. The 10 binaries are all OpenPLC-derived GCC/x86-64 artifacts.
+
+The Schneider adapter constructs two additional cards from a separately acquired external-vendor corpus comprising one ARM32 VxWorks product and two firmware versions; the adapter itself was built by the authors. Both cards close: EC1 and EC3 are supported by hash-addressed heuristic function summaries, while EC2, EC4, and EC5 remain unobserved with explanations. The derived function-list counts are 7{,}733 for SV340 and 7{,}920 for SV370; no relation graph or ground-truth function oracle is retained. A deterministic three-corpus summary over 2{,}431 PLC-BEAD, 10 OpenPLC, and two Schneider cards passes its internal closure checks. Its Workflow Run RO-Crate export passes 55/55 required checks; 134/135 checks pass when recommended checks are included, with two findings attached to the remaining local workflow-file identifier check. Supplementary Tables~S13 and S14 report the exact state and validation counts. Together, the two adapters answer RQ3 at the record-instantiation level across distinct input and observation structures.
+
+\subsection{Leakage and regression checks}
+
+These checks validate implementation behavior separately from the three research questions. CODESYS rows have \texttt{unobserved} EC1--EC5 fields because the evaluated \texttt{nm} path emitted no symbols; card closure records the associated explanations.
+
+The historical byte-read audit flags an event when its resolved path is outside the allowlist or its recorded inferred-name fold disagrees with run membership. None of the 23{,}530 events is flagged. The row count is the Cartesian check of the archived 2{,}353-row classifier surface across ten runs, not 23{,}530 distinct binaries. The v6 current-population rebuild adds 2{,}431 direct hash reads and finds no identity mismatch. As defined in Section~3.4, these results cover logged path, membership, and identity properties only.
+
+Regression uses four hand-crafted fixtures: complete OpenPLC evidence, a CODESYS-like format gap, an attempted state rule without qualifying support, and unexplained unobserved fields. Those fixtures generate six reference output tables whose normalized SHA-256 values remain unchanged after the rule-priority and mode-guard revision. Historical classifier and ablation diagnostics are preserved under \path{history/} in the artifact, while the fixtures provide stable reference behavior for the current record-construction branches.
+
+Together these controls expose which bytes were read, which rules generated each table, and whether a maintenance change altered the synthetic reference behavior.
+
+\subsection{Evaluation summary}
+
+SCAA-PLC constructs traceable records for all 2{,}431 PLC-BEAD binaries. The source oracle establishes a bounded GEB naming case and exposes complete lexical-transfer failure on the evaluated OpenPLC compilers. On the nontrivial source-role task, three empirical channels retain the same information as the full bivariate contract, while two fields lose source-role information; all representations separately pass the EC1 construction check. Five contract invariants pass with zero failures, all six injected record faults trigger their intended guards, and the OpenPLC adapter instantiates the contract without a hash-join failure. Its audit registry exposes the full 56-binary starting population, the 10 relation-backed inputs, and all 46 exclusions. The Schneider adapter adds two closed vendor/ARM cards while explicitly recording unavailable core-logic, state-role, and graph observations. The standards export passes every required Workflow Run RO-Crate check, with two recommended local-identifier findings. The author-defined design-requirement check verifies the expected structural differences among three constructed representations. Within the declared measurement scope, these results establish full-population accounting, trace closure, dataset-specific channel redundancy, and bounded implementation feasibility.
+
+
+% Source: PAPER1_MANUSCRIPT_S7_DISCUSSION_DRAFT.md
+
+\section{Discussion, Limitations \& Related Contrast}
+
+\subsection{CODESYS boundary under the evaluated tools}
+
+The most important configured boundary is the local PLC-BEAD CODESYS v3 \texttt{.app} subset. For all 555 manifest rows, the configured path emitted no \texttt{nm}-readable symbols. These rows remain in current card-level accounting; the former 480/2{,}353 count describes only the historical label-available subset. Keeping all 555 prevents a function-label gate from obscuring the dataset--tool interface.
+
+Supplementary Table~S8 distinguishes this configured-tool result from format-specific CODESYS capabilities reported elsewhere.
+
+The ICSREF row explains why a framework for CODESYS v2 \texttt{.PRG} input is not directly applicable to the local v3 \texttt{.app} files. The compatibility artifact retains the full runtime, format, parser-offset, and architecture-heuristic details omitted from the compact table.
+
+\paragraph{Observed boundaries.} In the five-file probe recorded by \path{CODESYS_TOOL_TRIAL_RESULTS.csv}, \texttt{file(1)} reports generic \texttt{data} rather than an Executable and Linkable Format (ELF) or Portable Executable (PE) file, so \texttt{nm} emits no symbol table. The radare2 default loader reports \texttt{havecode false} and zero functions. Neither \texttt{binwalk}~\citep{binwalk} nor \texttt{unblob}~\citep{unblob} matches a supported extraction signature. These observations support the U01 format/container handling applied to the 555 current CODESYS cards. Because only five containers were probed with those additional tools, this is a bounded tool trial rather than proof that all CODESYS formats are intrinsically opaque.
+
+\subsection{Measurement validity and framework complexity}
+
+The full boundaries are defined in Table~\ref{tab:scope}. Three validity considerations shape interpretation. First, SA-001 was identified and evaluated post hoc on the same PLC-BEAD snapshot; its 353 positive and 264 negative agreements are calibration evidence for the scoped lexical convention rather than prospective validation. EC1--EC3 and EC5 continue to depend on configured-tool output and fixed rules. Second, one nontrivial representation task measures source-role information retention under a transparent signature decoder, whereas the EC1 tool-output result is a lossless construction check and the nine author-defined requirements check field/link presence by construction. Third, ``inspectable'' denotes artifact-level traceability. This study did not conduct independent content-validity, coder-agreement, or controlled analyst-utility studies, so taxonomy necessity, completeness, interpretability, and decision benefit remain open validation questions.
+
+EC1, EC2, EC3, and EC5 have identical support-status patterns on PLC-BEAD, leaving three effective statistical channels. The explicit representation comparison shows that the three-channel and full-contract representations are indistinguishable on the nontrivial source-role retention task, whereas the two-field summary loses source-role information. The separate EC1 construction check confirms lossless encoding in every representation. The full layout is therefore justified as a provenance decomposition rather than a set of independent predictive dimensions. The five invariants and six negative tests make that decomposition falsifiable at the record level; future human evaluation can separately examine its presentation cost and decision utility.
+
+\subsection{Related contrast}
+
+Ta'veren recovers binary-level state machines, PLC-BinX analyzes function boundaries and code regions, and ICSREF targets CODESYS v2 \texttt{.PRG} inputs. CLEVER and CLADF evaluate stronger decompilation or run-time integrity tasks. SCAA-PLC records the provenance and limits of a lighter public-tool path. The radare2 adapter shows that relation-rich outputs can populate the same reporting contract, but no format-aware CODESYS integration or semantic-equivalence test is included.
+
+For empirical software evaluation and review, this separates observable PLC-binary support from format-induced tool gaps before downstream conclusions are drawn. The profile-validated Workflow Run RO-Crate export and three checked PROV-O link families identify where generic provenance terms apply and where SCAA-specific status and closure properties remain necessary. Passing the profile's required checks establishes packaging conformance for this run, not validity of the binary observations. The SIGSOFT standards and JSS artifact-structure work provide study/package expectations rather than a substitute for these field semantics~\citep{w3c_prov_o2013,leo_workflow_run_rocrate2024,ralph_empirical_standards2021,guevara_vega_research_artifacts2024}.
+
+\subsection{Limits on generalization}
+
+The source-rule and representation evaluations cover one public corpus and one deterministic inferred-name split. The OpenPLC adapter adds an x86-64 relation-rich path, and the Schneider extension adds one ARM32 product and two firmware versions; the latter retains heuristic function summaries but no relation graph or behavioral oracle. These cases establish bounded contract instantiation across distinct record structures rather than broad ecosystem portability. Broader evaluation can add source-clone grouping, repeated split realizations, format-aware CODESYS processing, and further vendors or architectures.
+
+\subsection{Ethics and broader impact}
+
+The study uses a public benchmark and two legally acquired restricted Schneider firmware archives. Read-only processing records hashes and derived function summaries; no raw proprietary payload is redistributed. The study emits no exploit, vulnerability verdict, or deployment recommendation. Explicitly retaining unsupported samples and tool assumptions supports responsible reuse because downstream readers can distinguish missing evidence from a negative semantic finding.
+
+
+% Source: PAPER1_MANUSCRIPT_S8_CONCLUSION_DRAFT.md
+
+\section{Conclusion}
+
+SCAA-PLC converts PLC binary-analysis observations into per-sample records that retain nominal support status, explanation closure, rule provenance, hashes, and execution controls. We have instantiated the evaluated build for all 2{,}431 manifest binaries and 1{,}876 source-mapped rows. A separately extracted source oracle provided a bounded GEB naming case, while an ungated probe showed that the same lexical predicate did not transfer to the evaluated OpenPLC compilers. On the nontrivial source-role task, three empirical channels retained the same information as the full contract; all representations also losslessly encoded the EC1-derived tool-output state by construction.
+
+A radare2 path instantiated the contract for 10 of 56 manifest binaries and all 6{,}657 landed relations; the remaining 46 binaries are explicitly registered as lacking relation rows. A legally acquired Schneider ARM/VxWorks pair added two closed cards with distinct observation patterns. Five invariants had zero failures, all six injected record faults triggered their intended guards, and a standards-profiled export passed all 55 required Workflow Run RO-Crate checks. The author-defined requirement matrix verified the implemented report structure. Together, these results provide a reproducible foundation for comparing stronger PLC-binary recovery outputs without losing sample identity, evidence boundaries, or execution provenance.
+\FloatBarrier
+\section*{Funding}
+
+This work was supported by the Liaoning Provincial Science and Technology Major Projects under Grant No.~2026JH1/11700024 and the Liaoning Provincial Applied Basic Research Programs under Grant Nos.~2025JH2/101300012 and 2026JH2/101300068. Additional support was provided by the 2026 Central Government-Guided Local Science and Technology Development Program of Liaoning Province for Regional Innovation System Development under Grant No.~[2026]48(4) and the 2026 Liaoning Provincial International Industrial Technology Research and Development Program under Grant No.~[2026]60(3).
+
+\section*{Data availability}
+
+The PLC-BEAD corpus is obtainable from the \href{https://github.com/AICPS/PLCBEAD_PLCEmbed}{PLC-BEAD public repository} (examined commit \texttt{b9593436eb36d1c7847870207692b6b2eb7747c3}). Because that snapshot contains no explicit license file, the SCAA-PLC artifact does not redistribute its raw binaries or sources. It instead provides a hash verifier for a separately acquired copy. The author-generated artifact is released from the \href{https://github.com/Mewtwoz/SCAA_PLC_ARTIFACT/releases/tag/v2.0}{SCAA-PLC GitHub repository}, fixed at commit \href{https://github.com/Mewtwoz/SCAA_PLC_ARTIFACT/commit/fec22022f7cfd960424fe64a636e507467c0c898}{\texttt{fec22022f7cf}}, and persistently archived at \href{https://doi.org/10.5281/zenodo.21869718}{\texttt{10.5281/zenodo.21869718}}~\citep{scaa_plc_artifact_v2}. The release includes manifests, all-population cards, source-oracle outputs, schema predictions, contract-invariant results, trace cases, cross-pipeline derived tables, fixtures, checksums, and environment notes. Its packaged validator passes all declared checks. Author-generated code and documentation use BSD-3-Clause; author-generated derived data use CC BY 4.0. These grants do not cover separately acquired third-party inputs. No proprietary firmware, vendor artifact, or human-subject result is included.
+
+% CRediT roles are intentionally omitted until supplied and approved by all authors.
+\section*{Declaration of competing interest}
+
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
+
+\section*{Declaration of Generative AI and AI-assisted technologies in the manuscript preparation process}
+
+During the preparation of this work, the authors used OpenAI Codex (GPT-5) for language editing, consistency checking, LaTeX restructuring, and assistance with evidence-processing and validation scripts. The tool did not supply binary observations, source labels, participant data, or vulnerability judgments. The authors reviewed the code, recomputed numerical statements from recorded data, edited the resulting material, and take full responsibility for the content of the publication.
+
+\bibliographystyle{cas-model2-names}
+\bibliography{refs}
+
+\end{document}

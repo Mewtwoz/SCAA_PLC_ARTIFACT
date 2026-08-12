@@ -1,0 +1,3 @@
+command=/usr/bin/python3 workflow/scaa_contract_summary_workflow.py --plcbead inputs/plcbead_bivariate_cards.csv --openplc inputs/openplc_bivariate_cards.csv --schneider inputs/schneider_bivariate_cards.csv --output outputs/contract_summary.csv --validation outputs/workflow_validation.json
+exit_code=0
+stdout_stderr=

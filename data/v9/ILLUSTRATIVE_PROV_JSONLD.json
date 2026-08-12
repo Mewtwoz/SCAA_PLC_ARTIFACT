@@ -1,0 +1,77 @@
+{
+  "@context": {
+    "prov": "http://www.w3.org/ns/prov#",
+    "scaa": "https://w3id.org/scaa/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "scaa:binary/geb_ARRAY_HAV",
+      "@type": "prov:Entity",
+      "scaa:sha256": "a8f12d0f340527bc4f79c88be0b40e9d5c48737c9fab0eabec4d7d20d7a433d5"
+    },
+    {
+      "@id": "scaa:activity/nm/geb_ARRAY_HAV",
+      "@type": "prov:Activity",
+      "prov:used": {
+        "@id": "scaa:binary/geb_ARRAY_HAV"
+      },
+      "scaa:configuredTool": "GNU nm 2.38"
+    },
+    {
+      "@id": "scaa:card/geb_ARRAY_HAV",
+      "@type": "prov:Entity",
+      "prov:wasGeneratedBy": {
+        "@id": "scaa:activity/nm/geb_ARRAY_HAV"
+      },
+      "scaa:recoveryStatus": "NM_SYMBOLS_RECOVERED",
+      "scaa:closureStatus": "complete"
+    },
+    {
+      "@id": "scaa:binary/geb_AIN",
+      "@type": "prov:Entity",
+      "scaa:sha256": "abccc083cd58dbbc53837a05b3ec474f146df458eaa5ca5f79e769b8fb406ebf"
+    },
+    {
+      "@id": "scaa:activity/nm/geb_AIN",
+      "@type": "prov:Activity",
+      "prov:used": {
+        "@id": "scaa:binary/geb_AIN"
+      },
+      "scaa:configuredTool": "GNU nm 2.38"
+    },
+    {
+      "@id": "scaa:card/geb_AIN",
+      "@type": "prov:Entity",
+      "prov:wasGeneratedBy": {
+        "@id": "scaa:activity/nm/geb_AIN"
+      },
+      "scaa:recoveryStatus": "NM_SYMBOLS_RECOVERED",
+      "scaa:closureStatus": "complete"
+    },
+    {
+      "@id": "scaa:binary/codesys__ARRAY_ABS",
+      "@type": "prov:Entity",
+      "scaa:sha256": "0c6a1d48e4c9260487375906668c3e80e5661dc41ab134caa93f900790e8a081"
+    },
+    {
+      "@id": "scaa:activity/nm/codesys__ARRAY_ABS",
+      "@type": "prov:Activity",
+      "prov:used": {
+        "@id": "scaa:binary/codesys__ARRAY_ABS"
+      },
+      "scaa:configuredTool": "GNU nm 2.38"
+    },
+    {
+      "@id": "scaa:card/codesys__ARRAY_ABS",
+      "@type": "prov:Entity",
+      "prov:wasGeneratedBy": {
+        "@id": "scaa:activity/nm/codesys__ARRAY_ABS"
+      },
+      "scaa:recoveryStatus": "CODESYS_CONTAINER_NOT_RECOVERED",
+      "scaa:closureStatus": "complete"
+    }
+  ],
+  "evidence_label": "DERIVED_EVIDENCE",
+  "profile_status": "ILLUSTRATIVE_JSON_LD_CROSSWALK_NOT_FORMALLY_VALIDATED_AS_RO_CRATE",
+  "interpretation_boundary": "Three landed trace examples only; no standards-conformance or semantic-correctness claim."
+}

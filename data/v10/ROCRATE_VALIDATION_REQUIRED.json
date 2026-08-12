@@ -1,0 +1,24 @@
+{
+  "evidence_label": "DERIVED_EVIDENCE",
+  "record_type": "PORTABLE_SUMMARY_OF_OFFICIAL_VALIDATOR_OUTPUT",
+  "validator": "rocrate-validator 0.11.3_b959343+2-dirty",
+  "profile_identifier": "workflow-run-crate",
+  "resolved_profiles": [
+    "process-run-crate-0.5",
+    "ro-crate-1.1",
+    "workflow-ro-crate-1.0",
+    "workflow-run-crate-0.5"
+  ],
+  "requirement_severity": "required",
+  "exit_code": 0,
+  "passed": true,
+  "total_requirements": 24,
+  "passed_requirements": 24,
+  "failed_requirements": 0,
+  "total_checks": 55,
+  "passed_checks": 55,
+  "failed_checks": 0,
+  "finding_count": 0,
+  "source_validator_output_sha256": "e2d81ae0a08ce7911388a76d2be11f67d6b50aed23e7de481ba77fddcb4fe54f",
+  "boundary": "Portable path-sanitized summary. The source SHA-256 identifies the complete observed validator JSON, whose environment-specific command and installation paths are intentionally omitted from this release."
+}

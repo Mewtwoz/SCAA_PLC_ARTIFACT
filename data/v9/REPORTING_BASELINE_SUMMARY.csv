@@ -1,0 +1,4 @@
+representation_id,queries,answerable_queries,not_answerable_queries,interpretation_boundary,evidence_label
+AGGREGATE_ONLY,9,2,7,Deterministic representation capability for nine instantiated audit questions; no human-performance or general superiority claim.,DERIVED_EVIDENCE
+FLAT_PROVENANCE,9,6,3,Deterministic representation capability for nine instantiated audit questions; no human-performance or general superiority claim.,DERIVED_EVIDENCE
+SCAA_BIVARIATE_CONTRACT,9,9,0,Deterministic representation capability for nine instantiated audit questions; no human-performance or general superiority claim.,DERIVED_EVIDENCE

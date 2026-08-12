@@ -1,0 +1,14 @@
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix schema: <https://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<#workflow-run> a prov:Activity ;
+  prov:startedAtTime "2026-08-11T05:44:44+00:00"^^xsd:dateTime ;
+  prov:endedAtTime "2026-08-11T05:44:44+00:00"^^xsd:dateTime ;
+  prov:used <../inputs/plcbead_bivariate_cards.csv>, <../inputs/openplc_bivariate_cards.csv>, <../inputs/schneider_bivariate_cards.csv> ;
+  prov:wasAssociatedWith <#scaa-evidence-build> .
+
+<#scaa-evidence-build> a prov:SoftwareAgent ; schema:name "SCAA-PLC v10 contract summary workflow" .
+
+<../outputs/contract_summary.csv> a prov:Entity ; prov:wasGeneratedBy <#workflow-run> .
+<../outputs/workflow_validation.json> a prov:Entity ; prov:wasGeneratedBy <#workflow-run> .

@@ -1,0 +1,13 @@
+component,command,exit_code,observed_output,evidence_label
+os_kernel,uname -a,0,Linux WINDOWS-6BDS75V 6.6.87.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux,DERIVED_EVIDENCE
+python,python3 --version,0,Python 3.10.12,DERIVED_EVIDENCE
+gcc,gcc --version,0,"gcc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0 | Copyright (C) 2021 Free Software Foundation, Inc. | This is free software; see the source for copying conditions.  There is NO | warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",DERIVED_EVIDENCE
+clang,clang --version,0,Ubuntu clang version 14.0.0-1ubuntu1.1 | Target: x86_64-pc-linux-gnu | Thread model: posix | InstalledDir: /usr/bin,DERIVED_EVIDENCE
+nm,nm --version,0,"GNU nm (GNU Binutils for Ubuntu) 2.38 | Copyright (C) 2022 Free Software Foundation, Inc. | This program is free software; you may redistribute it under the terms of | the GNU General Public License version 3 or (at your option) any later version. | This program has absolutely no warranty.",DERIVED_EVIDENCE
+file,file --version,0,file-5.41 | magic file from /etc/magic:/usr/share/misc/magic,DERIVED_EVIDENCE
+radare2,r2 -v,0,radare2 6.1.9 +36450 abi:111 @ linux-x86_64 | birth: git.6.1.8-33-g654d5474ce 2026-07-02__02:06:08 | commit: 654d5474ce947a6ace8f1f94246be64a8ca3bd14 | options: gpl -O1 cs:5 cl:1 meson,DERIVED_EVIDENCE
+r2pipe,python3 -c import importlib.metadata as m; print(m.version('r2pipe')),0,1.9.6,DERIVED_EVIDENCE
+locale,locale,0,"LANG=C.UTF-8 | LANGUAGE= | LC_CTYPE=""C.UTF-8"" | LC_NUMERIC=""C.UTF-8"" | LC_TIME=""C.UTF-8"" | LC_COLLATE=""C.UTF-8"" | LC_MONETARY=""C.UTF-8"" | LC_MESSAGES=""C.UTF-8"" | LC_PAPER=""C.UTF-8"" | LC_NAME=""C.UTF-8"" | LC_ADDRESS=""C.UTF-8"" | LC_TELEPHONE=""C.UTF-8"" | LC_MEASUREMENT=""C.UTF-8"" | LC_IDENTIFICATION=""C.UTF-8"" | LC_ALL=C.UTF-8",DERIVED_EVIDENCE
+primary_extraction,nm -C --defined-only <binary>,RECORDED_PIPELINE_COMMAND,GNU nm symbol extraction; CODESYS .app rows retained as explained tool gaps,DERIVED_EVIDENCE
+relation_extraction,LD_LIBRARY_PATH=/home/admin1/.local/lib/x86_64-linux-gnu python3 08_tools/v2_3_relation_extraction_batch.py,RECORDED_PIPELINE_COMMAND,r2pipe steps: e anal.hasnext=true; aaa; aflj; agfj/pdfj/afij; izj; axtj,DERIVED_EVIDENCE
+native_build,gcc|clang -O0|-O2 (plus GCC O1/O3 robustness extension) with stripped/unstripped variants,RECORDED_BUILD_CONFIGURATION,x86-64 Linux; exact sample hashes in native manifests,DERIVED_EVIDENCE

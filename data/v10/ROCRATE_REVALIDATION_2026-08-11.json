@@ -1,0 +1,26 @@
+{
+  "evidence_label": "DERIVED_EVIDENCE",
+  "status": "REPRODUCED_RECORDED_COUNTS",
+  "executed_utc": "2026-08-11T14:12:16Z/2026-08-11T14:12:28Z",
+  "input": "data/v10/workflow_run_rocrate",
+  "validator_command": "rocrate-validator validate --profile-identifier workflow-run-crate --requirement-severity <required|recommended> --relative-root-path .",
+  "required_run": {
+    "exit_code": 0,
+    "passed": true,
+    "requirements": "24/24",
+    "checks": "55/55",
+    "finding_count": 0,
+    "raw_output_sha256": "325c6e2759bf711e764d921d1e27f0d2423c6bd55e0626b9dd4156ce4c81a9de"
+  },
+  "required_plus_recommended_run": {
+    "exit_code": 1,
+    "passed": false,
+    "requirements_reported_passed": "55/55",
+    "checks": "134/135",
+    "failed_check_count": 1,
+    "finding_count": 2,
+    "finding_check_identifier": "process-run-crate-0.5_5.1",
+    "raw_output_sha256": "6f9b674a34faaeb459f4ff77da3d8d6278f95419d53068e1ad8d5d00683f8f14"
+  },
+  "boundary": "The raw environment-specific validator JSON was used for this replay but is not packaged; its SHA-256 is retained. The two findings belong to one recommended check and do not alter the 55/55 required-profile result."
+}

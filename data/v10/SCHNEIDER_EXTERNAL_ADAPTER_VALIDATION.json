@@ -1,0 +1,35 @@
+{
+  "boundary": "This is an independent vendor/ARM record-contract instantiation from legally acquired local files. It does not establish raw-data redistributability, semantic correctness, CVE-to-function mapping, behavioral patch confirmation, or multi-vendor generalization.",
+  "checks": {
+    "all_cards_closed": true,
+    "archive_hashes_match_confirmed_inventory": true,
+    "function_counts_recomputed_from_raw_afl": true,
+    "no_raw_payload_written_to_v10": true,
+    "no_vulnerability_label_assigned": true,
+    "payload_hashes_match_v2_14_report": true,
+    "two_vendor_payloads": true
+  },
+  "counts": {
+    "multiplicity_matched_signatures": 7434,
+    "sv340_function_boundaries": 7733,
+    "sv370_function_boundaries": 7920,
+    "vendor_archives": 2,
+    "vendor_cards": 2,
+    "vendor_payloads": 2
+  },
+  "evidence_label": "DERIVED_EVIDENCE",
+  "generated_utc": "2026-08-11T05:44:44+00:00",
+  "input_hashes": {
+    "SCHNEIDER-BMXP341000-SV340": {
+      "afl_sha256": "8d3fa6cacadd9e7e26d10fd5d337109702697313760d8e32eb5e7739f43b45da",
+      "archive_sha256": "e9fd1d4d91f9404e8e0372165c044066d9ea836b48854b3995ba54e58797deb6",
+      "payload_sha256": "185c6b6e9d71cc771466c1fe43ea2efe2c653af2701569ae21525f38ba4df533"
+    },
+    "SCHNEIDER-BMXP341000-SV370": {
+      "afl_sha256": "7001d71c36682f961bfc7d85979a59b7f205575b29778beaae24fe2ca9d30976",
+      "archive_sha256": "ec9b3bb94008bda24226cf6e5c673e3bdae147ced2d853664c2d2d521866a1b6",
+      "payload_sha256": "53d2d8e82e0c0d17321debaefbde4faf7b5a08cbf24af4823c63c16bc9a14db9"
+    }
+  },
+  "status": "PASS_WITH_RESTRICTED_RAW_INPUT_AND_NO_SEMANTIC_LABELS"
+}

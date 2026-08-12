@@ -1,0 +1,434 @@
+\documentclass[a4paper,fleqn]{cas-dc}
+
+\usepackage[authoryear,longnamesfirst]{natbib}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{seqsplit}
+\usepackage{url}
+\usepackage{xurl}
+\usepackage{placeins}
+
+\Urlmuskip=0mu plus 1mu
+\emergencystretch=4em
+\setlength{\tabcolsep}{3pt}
+\newcommand{\SCAA}{SCAA-PLC}
+\newcommand{\artifactpath}[1]{\texttt{\seqsplit{#1}}}
+\providecommand{\Description}[1]{}
+
+\begin{document}
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{0.8}
+\def\textpagefraction{0.08}
+\shorttitle{Sample-Level Evidence Contracts for PLC Binary-Analysis Studies}
+\shortauthors{Ning et al.}
+\hypersetup{pdfauthor={Bowei Ning, Xuejun Zong, Lian Lian, Kan He, Yifei Sun, Yuxiang Lei, Plamen Vasilev}}
+
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\theequation}{S\arabic{equation}}
+
+\onecolumn
+\begin{center}
+{\Large\bfseries Supplementary material for SCAA-PLC: Sample-Level Evidence Contracts for PLC Binary-Analysis Studies\par}
+\vspace{0.6em}
+{\normalsize Bowei Ning, Xuejun Zong, Lian Lian, Kan He, Yifei Sun, Yuxiang Lei, and Plamen Vasilev\par}
+\vspace{0.8em}
+\end{center}
+\hypersetup{pdftitle={Supplementary material for SCAA-PLC: Sample-Level Evidence Contracts for PLC Binary-Analysis Studies},pdfauthor={Bowei Ning, Xuejun Zong, Lian Lian, Kan He, Yifei Sun, Yuxiang Lei, Plamen Vasilev}}
+
+\section*{Evidence label}
+
+DERIVED\_EVIDENCE.
+
+\section{Purpose and submission boundary}
+
+This supplement contains only details that support the current reporting-method research questions: task-specific population flow, source-rule validity, representation-level information retention, record-contract invariants, bounded additional-pipeline instantiation, standards-profile validation, trace cases, and artifact verification. Historical one-fold classifiers, weighted completeness, EC4 spread, and internal readiness verdicts are not submission evidence. They are retained only in the artifact's \path{history/} directory as non-contributory chronology.
+
+\section{Task-specific population flow}
+
+The full manifest contains 2{,}431 binaries. A target is allowed to restrict this population only when the target cannot be defined for a row. Table~\ref{tab:population_flow} is the machine-readable inclusion policy realized in \path{RQ_POPULATION_FLOW.csv}.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}rr>{\raggedright\arraybackslash}p{0.49\textwidth}@{}}
+\caption{Current tasks are no longer controlled by the historical function-label gate.}
+\label{tab:population_flow}\\
+\toprule
+Analysis & Included & Excluded & Basis \\
+\midrule
+\endfirsthead
+\toprule
+Analysis & Included & Excluded & Basis \\
+\midrule
+\endhead
+Card accounting & 2,431 & 0 & Every manifest binary \\
+Tool-output availability & 2,431 & 0 & Target is defined for every attempted binary \\
+Source function-block presence & 1,876 & 555 & Unambiguous mapped Structured Text source \\
+Historical function classifier & 2,353 & 78 & Scorable historical label; not a current RQ gate \\
+OpenPLC adapter instantiation & 10 & 46 & Starting population: 56 hash-profiled binaries; inclusion requires landed relation rows plus a matching sample identifier and SHA-256 \\
+External-vendor adapter & 2 & 0 & Separately acquired Schneider archive/payload corpus with an author-built adapter and hash-verified derived function-list surface \\
+\bottomrule
+\end{longtable}
+
+The OpenPLC eligibility audit reconstructs the landed adapter boundary rather than retroactively presenting it as a prospective sampling plan. Of 56 manifest binaries, 10 have one or more relation rows and a matching relation-to-manifest SHA-256; the other 46 have no landed relation rows. The included/excluded strata are GCC 10/36 and Clang 0/10; O0 9/13, project-O2 1/3, O1 0/4, O2 0/22, and O3 0/4; stripped 8/20 and unstripped 2/26. The per-sample reason is retained in \path{OPENPLC_ADAPTER_ELIGIBILITY_FLOW.csv}, with grouped counts in \path{OPENPLC_ADAPTER_ELIGIBILITY_SUMMARY.csv}.
+
+Figure~\ref{fig:openplc_eligibility} shows the complete 56-to-10 eligibility join and keeps all 46 exclusions visible by compiler, optimization, and stripping stratum.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figs/jss_s4_openplc_eligibility_flow_v11.pdf}
+\Description{A 56-binary OpenPLC manifest passes through a sample-identifier and SHA-256 eligibility rule. Ten binaries with landed relation rows are included and account for 6,657 relation rows. Forty-six binaries without landed relation rows are explicitly excluded. Compiler, optimization, and stripping strata are reported below the flow.}
+\caption{The complete OpenPLC adapter eligibility flow. Inclusion establishes only that a hash-consistent landed relation record can be joined to a manifest row; it is not a semantic-quality filter. All 46 exclusions remain machine-readable.}
+\label{fig:openplc_eligibility}
+\end{figure*}
+
+The 78-row expansion comprises 75 CODESYS binaries and one binary from each non-CODESYS configuration. Rebuilding their feature rows and cards produces zero state/hash mismatches on the 2{,}353 pre-existing cards.
+
+\section{Source-syntax validity-case protocol}
+
+The production SA-001 rule is the conjunction of GEB scope and the lexical predicate \texttt{dt\_FB\_} in \texttt{core\_symbol\_text}. The transfer probe removes only the GEB scope condition. It does not modify the lexical predicate, use source labels during matching, or write back to production cards. OpenPLC rows are therefore \texttt{OUT\_OF\_SCOPE} for the production rule and are scored only for the ungated probe.
+
+The oracle removes Structured Text comments and extracts line-anchored \texttt{FUNCTION\_BLOCK}, \texttt{FUNCTION}, and \texttt{PROGRAM} declarations. Binary and source rows join by normalized program stem within one toolchain. Multiple source files are accepted only when they agree on explicit \texttt{FUNCTION\_BLOCK} presence. The complete mapped population contains 617 GEB, 619 OpenPLC v2, and 640 OpenPLC v3 rows. The same-snapshot oracle supplies the bounded GEB agreement case and the two OpenPLC lexical-transfer probes reported in RQ1.
+
+\section{Fold-wise signature decoder}
+
+Let $s_m(x)$ denote the categorical signature of sample $x$ under representation $m\in\{S2,S3,S6\}$. For held-out fold $k$, Equation~\eqref{eq:signature_decoder} assigns the majority target among training rows with the same signature:
+
+\begin{equation}
+\label{eq:signature_decoder}
+\widehat{y}_{m,k}(x)=
+\begin{cases}
+\operatorname{majority}\{y_j:s_m(x_j)=s_m(x),\,j\notin k\}, & \text{if observed},\\
+\operatorname{majority}\{y_j:j\notin k\}, & \text{otherwise}.
+\end{cases}
+\end{equation}
+
+Ties resolve deterministically toward the numerically smaller class. No held-out row has an unseen signature. Each observation field is represented by a nominal support state (\texttt{supported}, \texttt{not\_supported}, or \texttt{unobserved}) and a separate closure state (\texttt{not\_required}, \texttt{explained}, or \texttt{unexplained}). The compared signatures are \(S2=\{\mathrm{EC1},\text{card closure}\}\), \(S3=\{\mathrm{EC1},\mathrm{EC4},\text{card closure}\}\), and \(S6=\{\mathrm{EC1--EC5},\text{card closure}\}\). The held-out decoder measures source-role information retention. Table~\ref{tab:schema_results} separately reports that result and the lossless EC1 construction check.
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Source-role information-retention results and the separate EC1 construction check used by the main paper.}
+\label{tab:schema_results}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}Xlrrrrr}
+\toprule
+Target & Schema & $n$ & Accuracy & Balanced accuracy & Macro F1 & Ambiguous rows \\
+\midrule
+EC1 construction check & S2 & 2,431 & 1.000 & 1.000 & 1.000 & 0 \\
+EC1 construction check & S3 & 2,431 & 1.000 & 1.000 & 1.000 & 0 \\
+EC1 construction check & S6 & 2,431 & 1.000 & 1.000 & 1.000 & 0 \\
+Source function block & S2 & 1,876 & 0.580 & 0.500 & 0.367 & 1,876 \\
+Source function block & S3 & 1,876 & 0.648 & 0.692 & 0.638 & 1,876 \\
+Source function block & S6 & 1,876 & 0.648 & 0.692 & 0.638 & 1,876 \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+Every source-task signature is target-ambiguous in the full corpus. The reported S2/S3/S6 differences therefore quantify source-role information retention under the transparent decoder. The 1.000 EC1 rows confirm lossless encoding of a target derived from the same recovery status that assigns EC1; they are construction checks rather than independent predictive results.
+
+\section{Contract invariants and trace cases}
+
+Table~\ref{tab:contract_invariants} defines the five machine-checkable properties and records each realized check surface.
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Machine-checkable invariants and their realized check surfaces.}
+\label{tab:contract_invariants}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.20\textwidth}rr>{\raggedright\arraybackslash}X}
+\toprule
+Invariant & Units & Failures & Definition \\
+\midrule
+I1 identity hash & 2,431 & 0 & Card SHA-256 replays against each binary. \\
+I2 explanation closure & 4,176 & 0 & Every \texttt{not\_supported} or \texttt{unobserved} EC1--EC5 field has an explanation event. \\
+I3 tool-gap non-negativity & 555 & 0 & CODESYS tool gaps remain \texttt{unobserved}, not \texttt{not\_supported}. \\
+I4 source trace & 1,876 & 0 & Mapped source hashes replay against source bytes. \\
+I5 cross-pipeline hash join & 6,677 & 0 & Relation/uncertainty hashes join native-manifest rows. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+The running-example artifact contains three rows: \path{geb_ARRAY_HAV} (direct GEB/source agreement), \path{geb_AIN} (rule not supported with U09b), and \path{codesys__ARRAY_ABS} (unobserved because of a U01/U02/U11/U13 tool gap). Each row stores raw observation, rule/provenance, nominal support and closure states, oracle, allowed conclusion, and one rejected aggregate claim. The source oracle verifies the rule in RQ1 but is not used to assign the card state. These traces establish inspectable record chains by construction.
+
+\section{Bounded additional-pipeline instantiation}
+
+The adapter joins a 56-row native manifest to 6{,}657 relation rows and 20 uncertainty rows by \texttt{sample\_id} and SHA-256. It emits 10 cards for relation-backed binaries; 46 manifest rows have no landed relation rows and remain explicit exclusions in Figure~\ref{fig:openplc_eligibility} and the v11 registry. Function identifiers, static relation counts, graph-edge counts, hint counts, and uncertainty stages map into the bivariate observation vocabulary; CVE and patch-role fields remain provenance rather than behavioral labels.
+
+All 10 analyzed binaries are OpenPLC-derived GCC/x86-64 artifacts, nine at O0 and one at project-O2. The mapping was implemented by the authors, and no independently sampled adapter failure set exists.
+
+The separately acquired Schneider corpus uses two legally acquired BMXP341000 firmware archives: SV340 and SV370; its adapter was built by the authors. Archive and embedded-payload hashes replay against the intake inventory, while retained architecture-aware function lists contain 7{,}733 and 7{,}920 heuristic boundaries. EC1 and EC3 are supported; EC2, EC4, and EC5 are unobserved with explanations because core-logic identity, declared state role, and a retained relation graph are unavailable. Both cards have complete closure. The adapter reads the proprietary payloads in memory and writes only hashes and derived summaries. No CVE, behavioral-patch, semantic, or function-correctness label is assigned. The two adapters therefore test bounded record representation, not compiler, vendor, architecture, or schema portability.
+
+\section{Exact supporting tables for the visual narrative}
+
+The main paper uses figures to expose the method sequence and result patterns. Tables~S4--S8 preserve the categorical definitions, exact source-oracle counts, trace records, joins, and configured-tool boundary. Table~S9 records the execution environment; Table~S10 reports the author-defined design-requirement coverage check; and Table~S11 records fault-injection outcomes. Table~S12 gives the provenance crosswalk explicitly, while Tables~S13 and S14 report cross-corpus states and standards-profile/link-presence checks.
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Uncertainty-code families.}
+\label{tab:uncertainty_families}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
+\toprule
+Family & Codes & Role in the framework \\
+\midrule
+Format/container/architecture & U01, U02, U03 & Input format, container parsing, or architecture confirmation is unavailable. \\
+Function and core/runtime evidence & U04, U05 & Function-boundary candidate or core/runtime assignment is partial or unstable. \\
+Static relation and data evidence & U06, U07, U08 & Control-flow graph, call, or data-flow evidence is incomplete or tool-dependent. \\
+State-role evidence & U09 (deprecated umbrella), U09a, U09b & U09a means the state adapter was not attempted; U09b means it was attempted but only weak, generic, or ambiguous evidence was available. \\
+Metadata/tool/human-review/not-applicable & U10, U11, U12, U13, U14 & Metadata gaps, tool failure, tool disagreement, human-review need, or non-applicability. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Exact full-population outcomes underlying the RQ1 matrices in the main paper.}
+\label{tab:source_oracle_counts}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.12\textwidth}rrrrrrrr}
+\toprule
+Configuration & Production scope & $n$ & Source FB & Probe + & TP & FP & FN & TN & Recall \\
+\midrule
+GEB & In scope & 617 & 353 & 353 & 353 & 0 & 0 & 264 & 1.000 \\
+OpenPLC v2 & Out of scope & 619 & 359 & 0 & 0 & 0 & 359 & 260 & 0.000 \\
+OpenPLC v3 & Out of scope & 640 & 376 & 0 & 0 & 0 & 376 & 264 & 0.000 \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Exact trace chains underlying the motivating example in the main paper.}
+\label{tab:trace_cases_exact}
+\begin{tabularx}{0.99\textwidth}{>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.20\textwidth}>{\raggedright\arraybackslash}p{0.20\textwidth}>{\raggedright\arraybackslash}X}
+\toprule
+Sample and observation & EC state & Boundary evidence & Allowed conclusion \\
+\midrule
+\path{geb_ARRAY_HAV}: 1,104 \texttt{nm} functions; GEB-scoped \texttt{dt\_FB\_} & EC1--EC5 \texttt{supported}; closure \texttt{not\_required} & Mapped source declares FB; no U-code & Lexical rule and source syntax agree for this row; runtime semantics do not follow. \\
+\path{geb_AIN}: 1,100 functions; \texttt{dt\_FN\_AIN} & EC4 \texttt{not\_supported}/\texttt{explained}; other fields \texttt{supported} & Source declares \texttt{FUNCTION}; U09b & Rule-not-supported contrast bounds the GEB naming rule, not compiler independence. \\
+\path{codesys__ARRAY_ABS}: configured \texttt{nm} emits zero functions & EC1--EC5 \texttt{unobserved}/\texttt{explained} & No reliable ST oracle; U01/U02/U11/U13 & The configured tool path did not observe the fields; absence of PLC logic is not inferred. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Exact OpenPLC record-contract joins underlying the RQ3 topology in the main paper.}
+\label{tab:cross_pipeline_exact}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}Xr>{\raggedright\arraybackslash}X}
+\toprule
+Record check & Count & Result \\
+\midrule
+Relation-backed native binaries / adapted cards & 10 & All manifest SHA-256 joins match \\
+Static relation records & 6,657 & Eight relation types; all sample/hash joins match \\
+Uncertainty records & 20 & Two recorded uncertainty stages per card \\
+Cards with function and graph records & 10 & Function IDs and graph relations present for every card \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\small
+\caption{The evaluated generic-tool path emits no functions for the sampled CODESYS v3 containers; format-specific prior work prevents a universal opacity claim.}
+\label{tab:codesys_boundary}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
+\toprule
+Aspect & Observation & Scope / interpretation & Source artifact \\
+\midrule
+Current card/tool-output population & 555/2,431 manifest rows; all are explained tool gaps & Installed public-tool and local \texttt{.app} scope & \path{ALL_POPULATION_EVIDENCE_CARDS.csv} \\
+Local public-tool trial & Five sampled \texttt{.app} files identified as \texttt{data}; radare2 reported \texttt{havecode false} and zero functions & Bounded five-file probe & \path{CODESYS_TOOL_TRIAL_RESULTS.csv} \\
+Recorded tool environment & Versioned \texttt{nm}, \texttt{file}, radare2, binwalk, and unblob installations & Reproduction record, not a universal capability assessment & \path{CODESYS_TOOL_ENV_STATE.md} \\
+ICSREF compatibility boundary & ICSREF expects Python 2.7 and CODESYS v2 \texttt{.PRG}; local inputs are v3-style \texttt{.app} files & Compatibility assessment only; no bridge or intended-input run & \path{CODESYS_ICSREF_COMPATIBILITY_REPORT.md} \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Exact execution environment for the reported extraction and validation paths.}
+\label{tab:execution_environment}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.29\textwidth}>{\raggedright\arraybackslash}X}
+\toprule
+Component & Version or setting & Recorded execution boundary \\
+\midrule
+OS and locale & WSL2 Linux 6.6.87.2, x86-64; \texttt{C.UTF-8} & Host-independent virtualization equivalence is not claimed. \\
+Python and compilers & Python 3.10.12; GCC 11.4.0; Clang 14.0.0 & Native builds are x86-64 Linux only. \\
+Binary utilities & GNU \texttt{nm} 2.38; \texttt{file} 5.41 & Primary extraction uses \texttt{nm -C --defined-only}. \\
+radare2 stack & radare2 6.1.9, commit \texttt{654d5474ce}; r2pipe 1.9.6 & Library path: \path{/home/admin1/.local/lib/x86_64-linux-gnu}. \\
+Relation-analysis sequence & \texttt{e anal.hasnext=true}; \texttt{aaa}; \texttt{aflj}; \texttt{agfj}/\texttt{pdfj}/\texttt{afij}; \texttt{izj}; \texttt{axtj} & The recorded commands support replay; they do not guarantee semantic completeness. \\
+RO-Crate validator & \texttt{rocrate-validator 0.11.3\_b959343+2-dirty}; profile \texttt{workflow-run-crate-0.5} & The exact locally reported package version is retained; profile conformance does not validate binary observations. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Author-defined design-requirement coverage for three author-constructed reporting representations. A checkmark means only that the specified fields or typed links are present by construction; the table is not an empirical baseline or a human-performance comparison.}
+\label{tab:report_queries}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}Xccc}
+\toprule
+Design requirement & Aggregate only & Flat provenance & SCAA bivariate contract \\
+\midrule
+Q1 population count & \checkmark & \checkmark & \checkmark \\
+Q2 sample identity and hash & -- & \checkmark & \checkmark \\
+Q3 raw sample-level observation & -- & \checkmark & \checkmark \\
+Q4 configured tool version & \checkmark & \checkmark & \checkmark \\
+Q5 recorded unavailable-output reason & -- & \checkmark & \checkmark \\
+Q6 mapped source hash & -- & \checkmark & \checkmark \\
+Q7 typed claim/field-to-observation trace & -- & -- & \checkmark \\
+Q8 not-supported versus unobserved & -- & -- & \checkmark \\
+Q9 closure completeness & -- & -- & \checkmark \\
+\midrule
+Satisfied requirements & 2/9 & 6/9 & 9/9 \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Fault-injection results on in-memory copies. Every mutation triggered the intended record-contract guard; no source evidence was modified.}
+\label{tab:fault_injection}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.15\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}Xc}
+\toprule
+Test & Injected fault & Observed guard result & Pass \\
+\midrule
+FI-I1 & Replace recorded binary SHA-256 & \texttt{HASH\_MISMATCH} & Yes \\
+FI-I2 & Delete one EC1 closure event & \texttt{UNCLOSED\_UNOBSERVED\_FIELD} & Yes \\
+FI-I3 & Change CODESYS unobserved to not-supported & \texttt{TOOL\_GAP\_MISCLASSIFIED} & Yes \\
+FI-I4 & Replace mapped source SHA-256 & \texttt{SOURCE\_HASH\_MISMATCH} & Yes \\
+FI-I5 & Replace relation-row SHA-256 & \texttt{RELATION\_MANIFEST\_HASH\_MISMATCH} & Yes \\
+FI-ADAPTER-01 & Inject an unknown relation type & \texttt{UNSUPPORTED\_RELATION\_TYPE} & Yes \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Provenance crosswalk used by the standards-profiled v10 export. The standardized identities and run links do not standardize SCAA's support/closure semantics.}
+\label{tab:provenance_crosswalk}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.18\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}X}
+\toprule
+SCAA element & PROV-O concept & Workflow Run RO-Crate concept & Boundary \\
+\midrule
+Sample identity & Entity with content hash & File entity with SHA-256 & Direct mapping in the v10 run crate \\
+Extraction run and tool & Activity using inputs; associated Agent & CreateAction with ComputationalWorkflow instrument & Exported and profile-validated for the summary run \\
+Observation field & Entity generated by extraction activity & Formal parameter/output entity & EC semantics are SCAA-specific \\
+Support and closure & SCAA extension properties & PropertyValue extensions & Neither is a standardized confidence or uncertainty term \\
+Source rule and hash & Entity used by a rule activity & File/CreativeWork input & Source syntax is not runtime semantics \\
+Invariant ledger & Verification activity and result & CreateAction result & Contract consistency is not semantic validation \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Cross-corpus evidence-state summary produced by the deterministic v10 workflow. Counts are card-state observations, not semantic-accuracy measurements.}
+\label{tab:cross_corpus_states}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.19\textwidth}r>{\raggedright\arraybackslash}p{0.19\textwidth}>{\raggedright\arraybackslash}X}
+\toprule
+Corpus / adapter & Cards & Supported fields & Explicitly bounded fields \\
+\midrule
+PLC-BEAD / \texttt{nm} & 2,431 & EC1, EC2, EC3, EC5 on 1,876 rows; EC4 on 475 rows & 555 tool-gap rows in EC1--EC5; 1,401 applicable EC4 non-matches, all explained \\
+OpenPLC / radare2 & 10 & EC1, EC3, EC5 on all 10 cards & EC2 and EC4 unobserved and explained on all 10 cards \\
+Schneider / forced ARM radare2 summaries & 2 & EC1 and EC3 on both cards & EC2, EC4, and EC5 unobserved and explained on both cards; no retained relation graph \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Workflow Run RO-Crate 0.5 profile-validation and PROV-O link-presence results for the v10 three-corpus summary. Neither check establishes binary-observation correctness.}
+\label{tab:standards_validation}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.22\textwidth}rr>{\raggedright\arraybackslash}X}
+\toprule
+Validation surface & Passed & Total & Boundary \\
+\midrule
+Workflow Run RO-Crate required checks & 55 & 55 & Validator exit 0; no required issue \\
+Required plus recommended checks & 134 & 135 & One recommended check failed with two findings: local workflow-file identifier should be an absolute URI \\
+PROV-O link-presence checks & 3 & 3 & \texttt{prov:used}, \texttt{prov:wasGeneratedBy}, and \texttt{prov:wasAssociatedWith} present; no ontology-wide validation is claimed \\
+Restricted-input exclusion & 1 & 1 & No raw Schneider payload copied into the v10 package \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+Validation used \texttt{rocrate-validator 0.11.3\_b959343+2-dirty} with profile identifier \texttt{workflow-run-crate} (resolved as \texttt{workflow-run-crate-0.5}), relative root ``\texttt{.}'', and JSON output. The required run used \texttt{--requirement-severity required} and exited 0; replacing that value with \texttt{recommended} produced the required-plus-recommended run and exited 1 because one recommended \texttt{process-run-crate-0.5\_5.1} check failed with two non-blocking identifier findings. The exact commands and JSON outputs are retained in the v10 validation report.
+
+\section{Schema coverage and content-validity boundary}
+
+All five observation fields occur in the 2{,}431-card population. EC1, EC2, EC3, and EC5 each contain 1{,}876 \texttt{supported}/\texttt{not\_required} and 555 \texttt{unobserved}/\texttt{explained} rows. EC4 contains 475 \texttt{supported}/\texttt{not\_required}, 1{,}401 \texttt{not\_supported}/\texttt{explained}, and 555 \texttt{unobserved}/\texttt{explained} rows. Card closure is \texttt{complete} for all rows. U01, U02, U11, U13, and U09b occur. The other defined U-codes are unobserved in the primary population.
+
+These counts characterize how the implemented vocabulary is exercised in the current population. Independent content-validity, coder-agreement, and analyst-utility studies were not conducted; category necessity, completeness, interpretability, and decision benefit remain future validation questions.
+
+Figures~\ref{fig:ec_status}--\ref{fig:ec_cosupported} are regenerated from the current 2{,}431-row bivariate card table; they do not reuse the historical 2{,}353-row completeness figures retained under \path{history/}.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figs/jss_s1_bivariate_states_v9.pdf}
+\caption{Support and closure are separate nominal dimensions, not a quality or validity score. EC1, EC2, EC3, and EC5 each contain 1{,}876 supported and 555 unobserved rows; EC4 contains 475 supported, 1{,}401 not-supported, and 555 unobserved rows. Every not-supported or unobserved field is explained.}
+\label{fig:ec_status}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figs/jss_s2_primary_reason_v9.pdf}
+\caption{Primary boundary reasons are toolchain-dependent in the current 2{,}431-row population. U01 covers all 555 CODESYS rows; the 1{,}876 non-CODESYS rows contain 1{,}401 U09b records and 475 separate \texttt{NOT\_APPLICABLE} sentinels. U14 is not used for these sentinels.}
+\label{fig:primary_reason}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.72\textwidth]{figs/jss_s3_ec_cosupported_v9.pdf}
+\caption{Pairwise co-supported counts expose the current observations' dependence structure. EC1, EC2, EC3, and EC5 are co-supported on the same 1{,}876 rows, whereas EC4 is co-supported with them on 475 rows.}
+\label{fig:ec_cosupported}
+\end{figure*}
+\FloatBarrier
+
+\section{Current claim-to-artifact matrix}
+
+\begin{small}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.07\textwidth}>{\raggedright\arraybackslash}p{0.16\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.40\textwidth}@{}}
+\toprule
+ID & Status & Allowed wording & Evidence \\
+\midrule
+\endfirsthead
+\toprule
+ID & Status & Allowed wording & Evidence \\
+\midrule
+\endhead
+C1 & SAFE & Current card/tool-output accounting covers all 2,431 manifest binaries; source-role analysis covers 1,876 reliable ST mappings. & \artifactpath{RQ\_POPULATION\_FLOW.csv}; \artifactpath{BIVARIATE\_EVIDENCE\_CARDS.csv}; \artifactpath{ALL\_POPULATION\_SOURCE\_ORACLE.csv} \\
+C2 & CONDITIONAL & The same-snapshot GEB lexical rule agrees on 353 positive and 264 negative rows; its ungated predicate misses 735 OpenPLC source-positive rows. & \artifactpath{FULL\_POPULATION\_TRANSFER\_METRICS.csv}; \artifactpath{ALL\_POPULATION\_SOURCE\_ORACLE.csv}; post-hoc syntax boundary only \\
+C3 & CONDITIONAL & S3 and S6 retain identical source-role information; S2 loses source-role information, while all schemas pass the separate EC1 construction check. & \artifactpath{BIVARIATE\_SCHEMA\_METRICS.csv}; dataset-specific source-role retention only \\
+C4 & SAFE & Five record-contract invariants pass with zero failures, and all six injected faults trigger their intended guards. & \artifactpath{CONTRACT\_INVARIANT\_RESULTS.csv}; \artifactpath{CONTRACT\_NEGATIVE\_TEST\_RESULTS.csv}; machine-contract properties only \\
+C5 & SAFE & Three trace cases connect raw observation, provenance, nominal support, explanation closure, U-code, oracle, and allowed conclusion. & \artifactpath{BIVARIATE\_EVIDENCE\_CARDS.csv} \\
+C6 & CONDITIONAL & The bivariate record contract is instantiated over 10 OpenPLC/radare2 cards and two Schneider/ARM cards with explicit unavailable-field closure. & \artifactpath{BIVARIATE\_CROSS\_PIPELINE\_EVIDENCE\_CARDS.csv}; \artifactpath{SCHNEIDER\_EXTERNAL\_EVIDENCE\_CARDS.csv}; bounded record-level tests only \\
+C7 & SAFE & The 2,353 pre-existing cards have zero state/hash regression mismatches after the 78-row expansion. & \artifactpath{V6\_CONTENT\_VALIDATION\_RESULT.json} \\
+C8 & CONDITIONAL & A released GitHub/Zenodo artifact fixed at commit \href{https://github.com/Mewtwoz/SCAA_PLC_ARTIFACT/commit/fec22022f7cfd960424fe64a636e507467c0c898}{\texttt{fec22022f7cf}} has relative paths, checksums, third-party notices, explicit author-generated code/data licenses, and a clean-room validator. & DOI \href{https://doi.org/10.5281/zenodo.21869718}{\texttt{10.5281/zenodo.21869718}}; raw third-party inputs remain separately acquired \\
+C9 & CONDITIONAL & Three author-constructed report structures satisfy 2/9, 6/9, and 9/9 author-defined design requirements. & \artifactpath{REPORT\_DESIGN\_REQUIREMENT\_COVERAGE.csv}; structural verification over author-defined requirements \\
+C10 & CONDITIONAL & A three-corpus summary is exported as Workflow Run RO-Crate 0.5 with three checked PROV-O link families; all 55 required profile checks pass. & \artifactpath{workflow\_run\_rocrate/ro-crate-metadata.json}; \artifactpath{ROCRATE\_VALIDATION\_REQUIRED.json}; two recommended local-identifier findings remain \\
+\bottomrule
+\end{longtable}
+\end{small}
+
+\section{Artifact integrity and acquisition policy}
+
+The v2.0 release contains author-generated derived data, scripts, checksums, environment notes, and clean-room verification logs. It excludes raw PLC-BEAD binaries and sources because the examined upstream snapshot contains no explicit license file. Reviewers acquire the public snapshot separately and run the supplied verifier, which compares binary and source hashes against the evidence-card and source-oracle records. Cross-pipeline raw binaries are also excluded; only derived manifest, relation, and uncertainty tables required by the reporting analysis are included.
+
+The package is released at \url{https://github.com/Mewtwoz/SCAA_PLC_ARTIFACT/releases/tag/v2.0}, fixed at commit \href{https://github.com/Mewtwoz/SCAA_PLC_ARTIFACT/commit/fec22022f7cfd960424fe64a636e507467c0c898}{\texttt{fec22022f7cf}}, and archived at \href{https://doi.org/10.5281/zenodo.21869718}{\texttt{10.5281/zenodo.21869718}}~\citep{scaa_plc_artifact_v2}. The packaged validator rechecks checksums and row counts, stored-invariant-result completeness, schema-metric replay, relation and uncertainty counts, and path sanitization; it does not rerun raw binary or source extraction. Full I1 binary-hash and I4 source-hash replay requires a separately acquired PLC-BEAD snapshot and the supplied acquisition verifier. Author-generated code and documentation use BSD-3-Clause, and author-generated derived data use CC BY 4.0. Those licenses do not extend to separately acquired upstream inputs.
+
+\bibliographystyle{cas-model2-names}
+\bibliography{refs}
+\end{document}

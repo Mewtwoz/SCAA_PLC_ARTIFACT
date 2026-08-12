@@ -1,0 +1,13 @@
+field,support_status,closure_status,row_count,population,evidence_label
+EC1,supported,not_required,1876,2431,DERIVED_EVIDENCE
+EC1,unobserved,explained,555,2431,DERIVED_EVIDENCE
+EC2,supported,not_required,1876,2431,DERIVED_EVIDENCE
+EC2,unobserved,explained,555,2431,DERIVED_EVIDENCE
+EC3,supported,not_required,1876,2431,DERIVED_EVIDENCE
+EC3,unobserved,explained,555,2431,DERIVED_EVIDENCE
+EC4,not_supported,explained,1401,2431,DERIVED_EVIDENCE
+EC4,supported,not_required,475,2431,DERIVED_EVIDENCE
+EC4,unobserved,explained,555,2431,DERIVED_EVIDENCE
+EC5,supported,not_required,1876,2431,DERIVED_EVIDENCE
+EC5,unobserved,explained,555,2431,DERIVED_EVIDENCE
+CARD,NOT_APPLICABLE,complete,2431,2431,DERIVED_EVIDENCE

@@ -1,0 +1,355 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.1/context",
+    "https://w3id.org/ro/terms/workflow-run/context"
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "about": {
+        "@id": "./"
+      },
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/ro/crate/1.1"
+        },
+        {
+          "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+        }
+      ]
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "SCAA-PLC cross-corpus bivariate contract Workflow Run RO-Crate",
+      "description": "A standards-profiled run over derived PLC-BEAD, OpenPLC/radare2, and Schneider/VxWorks evidence cards. No raw proprietary firmware is included.",
+      "datePublished": "2026-08-11",
+      "license": {
+        "@id": "https://creativecommons.org/licenses/by/4.0/"
+      },
+      "author": {
+        "@id": "#scaa-evidence-build"
+      },
+      "publisher": {
+        "@id": "#scaa-evidence-build"
+      },
+      "conformsTo": [
+        {
+          "@id": "https://w3id.org/ro/wfrun/workflow/0.5"
+        },
+        {
+          "@id": "https://w3id.org/ro/wfrun/process/0.5"
+        },
+        {
+          "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+        }
+      ],
+      "mainEntity": {
+        "@id": "workflow/scaa_contract_summary_workflow.py"
+      },
+      "hasPart": [
+        {
+          "@id": "workflow/scaa_contract_summary_workflow.py"
+        },
+        {
+          "@id": "inputs/plcbead_bivariate_cards.csv"
+        },
+        {
+          "@id": "inputs/openplc_bivariate_cards.csv"
+        },
+        {
+          "@id": "inputs/schneider_bivariate_cards.csv"
+        },
+        {
+          "@id": "outputs/contract_summary.csv"
+        },
+        {
+          "@id": "outputs/workflow_validation.json"
+        },
+        {
+          "@id": "outputs/workflow_run.log"
+        },
+        {
+          "@id": "prov/run_provenance.ttl"
+        },
+        {
+          "@id": "README.md"
+        }
+      ],
+      "mentions": {
+        "@id": "#contract-summary-run"
+      }
+    },
+    {
+      "@id": "https://w3id.org/ro/wfrun/workflow/0.5",
+      "@type": "CreativeWork",
+      "name": "Workflow Run Crate",
+      "version": "0.5"
+    },
+    {
+      "@id": "https://w3id.org/ro/wfrun/process/0.5",
+      "@type": "CreativeWork",
+      "name": "Process Run Crate",
+      "version": "0.5"
+    },
+    {
+      "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0",
+      "@type": "CreativeWork",
+      "name": "Workflow RO-Crate",
+      "version": "1.0"
+    },
+    {
+      "@id": "#python",
+      "@type": "ComputerLanguage",
+      "name": "Python",
+      "url": "https://www.python.org/",
+      "version": "3.10.12"
+    },
+    {
+      "@id": "#scaa-evidence-build",
+      "@type": "Organization",
+      "name": "SCAA-PLC evidence-build process",
+      "url": "https://github.com/Mewtwoz/SCAA_PLC_ARTIFACT"
+    },
+    {
+      "@id": "#contract-summary-run",
+      "@type": "CreateAction",
+      "name": "SCAA cross-corpus bivariate contract summary run",
+      "description": "/usr/bin/python3 workflow/scaa_contract_summary_workflow.py --plcbead inputs/plcbead_bivariate_cards.csv --openplc inputs/openplc_bivariate_cards.csv --schneider inputs/schneider_bivariate_cards.csv --output outputs/contract_summary.csv --validation outputs/workflow_validation.json",
+      "startTime": "2026-08-11T05:44:44+00:00",
+      "endTime": "2026-08-11T05:44:44+00:00",
+      "actionStatus": "http://schema.org/CompletedActionStatus",
+      "instrument": {
+        "@id": "workflow/scaa_contract_summary_workflow.py"
+      },
+      "agent": {
+        "@id": "#scaa-evidence-build"
+      },
+      "object": [
+        {
+          "@id": "inputs/plcbead_bivariate_cards.csv"
+        },
+        {
+          "@id": "inputs/openplc_bivariate_cards.csv"
+        },
+        {
+          "@id": "inputs/schneider_bivariate_cards.csv"
+        }
+      ],
+      "result": [
+        {
+          "@id": "outputs/contract_summary.csv"
+        },
+        {
+          "@id": "outputs/workflow_validation.json"
+        }
+      ],
+      "environment": [
+        {
+          "@id": "#env-os"
+        },
+        {
+          "@id": "#env-python"
+        }
+      ]
+    },
+    {
+      "@id": "#env-os",
+      "@type": "PropertyValue",
+      "name": "operating system",
+      "value": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.35"
+    },
+    {
+      "@id": "#env-python",
+      "@type": "PropertyValue",
+      "name": "Python",
+      "value": "3.10.12"
+    },
+    {
+      "@id": "https://creativecommons.org/licenses/by/4.0/",
+      "@type": "CreativeWork",
+      "name": "Creative Commons Attribution 4.0 International"
+    },
+    {
+      "@id": "https://spdx.org/licenses/BSD-3-Clause",
+      "@type": "CreativeWork",
+      "name": "BSD 3-Clause License"
+    },
+    {
+      "@id": "workflow/scaa_contract_summary_workflow.py",
+      "@type": [
+        "File",
+        "SoftwareSourceCode",
+        "ComputationalWorkflow"
+      ],
+      "name": "SCAA bivariate contract summary workflow",
+      "description": "Validates and summarises bivariate evidence-card states across three named corpora.",
+      "url": "https://github.com/Mewtwoz/SCAA_PLC_ARTIFACT",
+      "version": "10",
+      "conformsTo": {
+        "@id": "https://bioschemas.org/profiles/ComputationalWorkflow/1.0-RELEASE"
+      },
+      "programmingLanguage": {
+        "@id": "#python"
+      },
+      "input": [
+        {
+          "@id": "#input-plcbead"
+        },
+        {
+          "@id": "#input-openplc"
+        },
+        {
+          "@id": "#input-schneider"
+        }
+      ],
+      "output": [
+        {
+          "@id": "#output-summary"
+        },
+        {
+          "@id": "#output-validation"
+        }
+      ],
+      "license": {
+        "@id": "https://spdx.org/licenses/BSD-3-Clause"
+      }
+    },
+    {
+      "@id": "workflow/scaa_contract_summary_workflow.py",
+      "@type": "File",
+      "name": "Executable SCAA contract-summary source",
+      "encodingFormat": "text/x-python",
+      "contentSize": "4808",
+      "sha256": "8672e7fce15cf808402c54c5e402fc6bbf58fc40782cd30eddb05fe02a8e4d15"
+    },
+    {
+      "@id": "inputs/plcbead_bivariate_cards.csv",
+      "@type": "File",
+      "name": "PLC-BEAD bivariate evidence cards",
+      "encodingFormat": "text/csv",
+      "contentSize": "1137968",
+      "sha256": "9f91eec0083e1f42a5ebb9da371c5a6ef31dabaae347b8d209c6f532b1805917",
+      "exampleOfWork": {
+        "@id": "#input-plcbead"
+      }
+    },
+    {
+      "@id": "inputs/openplc_bivariate_cards.csv",
+      "@type": "File",
+      "name": "OpenPLC/radare2 bivariate evidence cards",
+      "encodingFormat": "text/csv",
+      "contentSize": "7495",
+      "sha256": "969cd05096bb301bee13c3a6d1670c47ec757874ebc577e29e193dee1af45b79",
+      "exampleOfWork": {
+        "@id": "#input-openplc"
+      }
+    },
+    {
+      "@id": "inputs/schneider_bivariate_cards.csv",
+      "@type": "File",
+      "name": "Schneider/VxWorks derived bivariate evidence cards",
+      "encodingFormat": "text/csv",
+      "contentSize": "2819",
+      "sha256": "4d6ec3db445fedc8e8eda1bcdb699dedd6339ebb1a4292c9f209a083c79de986",
+      "exampleOfWork": {
+        "@id": "#input-schneider"
+      }
+    },
+    {
+      "@id": "outputs/contract_summary.csv",
+      "@type": "File",
+      "name": "Cross-corpus contract summary",
+      "encodingFormat": "text/csv",
+      "contentSize": "1804",
+      "sha256": "163cedd5d4ef2c002a0f7b8aafaf4d45a7186c7322655346b77bb5494159c4ed",
+      "exampleOfWork": {
+        "@id": "#output-summary"
+      }
+    },
+    {
+      "@id": "outputs/workflow_validation.json",
+      "@type": "File",
+      "name": "Workflow validation result",
+      "encodingFormat": "application/json",
+      "contentSize": "780",
+      "sha256": "75a0bf75ac25b2229774ac963a7cab0c76fcb64d5b2a8b683652fa9ac7c3e7fa",
+      "exampleOfWork": {
+        "@id": "#output-validation"
+      }
+    },
+    {
+      "@id": "outputs/workflow_run.log",
+      "@type": "File",
+      "name": "Workflow execution log",
+      "encodingFormat": "text/plain",
+      "contentSize": "318",
+      "sha256": "061bab531b3288d3c4262ffde17d11ba037a8955d9c3c32270583b03c2a4c6f8"
+    },
+    {
+      "@id": "prov/run_provenance.ttl",
+      "@type": "File",
+      "name": "PROV-O run provenance graph",
+      "encodingFormat": "text/turtle",
+      "contentSize": "770",
+      "sha256": "670879546acbb6e730428a7ac56511a372e20155142a320948b8573b7ff0e75b"
+    },
+    {
+      "@id": "README.md",
+      "@type": "File",
+      "name": "Workflow Run RO-Crate README",
+      "encodingFormat": "text/markdown",
+      "contentSize": "298",
+      "sha256": "7d5c9dcfff98b2fcb5bd5fb82e5c13cd845d8b04333a833359a8e297ad1947a2",
+      "about": {
+        "@id": "./"
+      }
+    },
+    {
+      "@id": "#input-plcbead",
+      "@type": "FormalParameter",
+      "name": "plcbead",
+      "additionalType": "File",
+      "workExample": {
+        "@id": "inputs/plcbead_bivariate_cards.csv"
+      }
+    },
+    {
+      "@id": "#input-openplc",
+      "@type": "FormalParameter",
+      "name": "openplc",
+      "additionalType": "File",
+      "workExample": {
+        "@id": "inputs/openplc_bivariate_cards.csv"
+      }
+    },
+    {
+      "@id": "#input-schneider",
+      "@type": "FormalParameter",
+      "name": "schneider",
+      "additionalType": "File",
+      "workExample": {
+        "@id": "inputs/schneider_bivariate_cards.csv"
+      }
+    },
+    {
+      "@id": "#output-summary",
+      "@type": "FormalParameter",
+      "name": "output",
+      "additionalType": "File",
+      "workExample": {
+        "@id": "outputs/contract_summary.csv"
+      }
+    },
+    {
+      "@id": "#output-validation",
+      "@type": "FormalParameter",
+      "name": "validation",
+      "additionalType": "File",
+      "workExample": {
+        "@id": "outputs/workflow_validation.json"
+      }
+    }
+  ]
+}

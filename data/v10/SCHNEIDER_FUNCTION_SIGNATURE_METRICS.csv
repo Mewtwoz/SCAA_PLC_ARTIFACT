@@ -1,0 +1,2 @@
+comparison,sv340_function_boundaries,sv370_function_boundaries,multiplicity_matched_cc_size_instances,shared_fraction_of_sv340,signatures_only_in_sv340_instances,signatures_only_in_sv370_instances,metric_boundary,evidence_label
+BMXP341000_SV340_vs_SV370,7733,7920,7434,0.961335,134,151,"Heuristic function-boundary and (complexity,size) comparison; not semantic equivalence or patch attribution.",DERIVED_EVIDENCE

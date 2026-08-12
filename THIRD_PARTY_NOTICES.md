@@ -13,6 +13,10 @@
 
 The package includes author-generated derived CSV records needed to verify joins. It excludes native binary payloads and source checkouts. OpenPLC v3 is associated with GPL-3.0 and openplc-runtime with MIT in the source evidence project; those upstream licenses do not assign a license to this artifact's author-generated tables.
 
+## Schneider Modicon M340 firmware
+
+The package contains author-generated hash-addressed corpus profiles, evidence cards, and function-signature summaries for a legally acquired two-version Schneider/ARM VxWorks corpus. It does not contain the proprietary firmware archives, extracted payloads, or retained disassembly. The BSD-3-Clause and CC BY 4.0 grants in this repository do not apply to the excluded proprietary inputs.
+
 ## Research code and derived data
 
 Author-generated research code and documentation are licensed under BSD-3-Clause (`LICENSE`). Author-generated derived data are licensed under CC BY 4.0 (`LICENSE-DATA`). Neither license grant extends to excluded upstream source code or binaries.
