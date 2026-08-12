@@ -3,7 +3,7 @@
 **Evidence label:** `DERIVED_EVIDENCE`
 
 - validated_at: `2026-08-12 Asia/Shanghai`
-- release: `v2.1.0`
+- repository_state: corrected `main` (includes manifest fix `55b57f2d9f92d928daacb15e66c192c23f1e7775`)
 - method: package copied to a new `/tmp` directory with `.git`, `__pycache__`, and bytecode excluded
 - command: `python3 run_artifact.py`
 - exit_code: `0`
@@ -16,3 +16,5 @@
 The isolated run verified the stable checksum file set and file digests; 2,431 primary records; 1,876 source-oracle rows; bivariate card states; source-role prediction and confusion-count replay; the EC1 construction check; five zero-failure invariants; six injected-fault guards; 56 OpenPLC manifest rows, 10 relation-backed inputs, 46 exclusions, 6,657 relations, and 20 uncertainty rows; two closed Schneider cards; 21 Workflow Run summary rows; three PROV-O link families; the 2/9, 6/9, and 9/9 author-defined requirement counts; and the recorded 55/55 required plus 134/135 required-and-recommended RO-Crate check counts.
 
 This validation replays packaged derived records. It does not rerun excluded raw binary/source extraction or create human-validation results.
+
+The immutable v2.1.0 archive has the line-ending checksum-manifest erratum disclosed in `RELEASE_NOTES_v2.1.0.md`; its unchanged archive result is 10/11 core and 39/39 extended checks.
