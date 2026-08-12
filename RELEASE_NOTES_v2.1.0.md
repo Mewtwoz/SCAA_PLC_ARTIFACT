@@ -26,3 +26,9 @@ The RO-Crate recommended-level count is 134/135 checks, not 133/135. One recomme
 - Release commit: `7f87738ecbf19c09d5d63bee99e6de86ac32bce1`
 - Zenodo version DOI: `10.5281/zenodo.21896622`
 - Zenodo concept DOI: `10.5281/zenodo.21869717`
+
+## Post-publication clean-clone erratum (2026-08-12)
+
+A clean checkout and the public Zenodo ZIP expose an integrity-metadata defect: 18 text CSV files are stored with LF endings by Git, while the v2.1.0 checksum manifest was generated from a CRLF working tree. Consequently, v2.1.0 reports failure only for those byte-level checksum entries and `checksums_match`; all other 10 core checks and all 39 extended scientific/package checks pass.
+
+The normalized checksum manifests are corrected on `main` at commit `55b57f2d9f92d928daacb15e66c192c23f1e7775`, where a Linux clean clone passes 11/11 core and 39/39 extended checks. The v2.1.0 tag and Zenodo record remain immutable and were not moved or overwritten. A subsequent corrective release is required for a DOI archive whose bundled checksum manifest passes unchanged.

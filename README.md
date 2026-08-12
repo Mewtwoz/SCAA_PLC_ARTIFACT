@@ -6,6 +6,8 @@ This release synchronizes the public v2.0 artifact with the scientifically locke
 
 The immutable release is available as GitHub tag [`v2.1.0`](https://github.com/Mewtwoz/SCAA_PLC_ARTIFACT/releases/tag/v2.1.0), fixed at commit `7f87738ecbf19c09d5d63bee99e6de86ac32bce1`. Zenodo archives that release under version DOI [`10.5281/zenodo.21896622`](https://doi.org/10.5281/zenodo.21896622) and concept DOI [`10.5281/zenodo.21869717`](https://doi.org/10.5281/zenodo.21869717).
 
+**Post-release integrity note (2026-08-12):** a clean checkout of the immutable v2.1.0 tag reports checksum mismatches for 18 text CSV files because its manifest was generated from CRLF working-tree bytes while Git stores and archives those files with LF endings. All other 10 core checks and all 39 extended checks pass. Commit `55b57f2d9f92d928daacb15e66c192c23f1e7775` corrects the manifests on `main`; a Linux clean clone of that commit passes 11/11 core and 39/39 extended checks. The published tag and DOI were not rewritten. See the GitHub Release erratum before reusing the v2.1.0 checksum manifest.
+
 ## Quick start
 
 From the package root, run:
